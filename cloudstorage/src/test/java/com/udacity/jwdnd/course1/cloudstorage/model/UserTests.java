@@ -70,12 +70,16 @@ public class UserTests {
 	
 	@Test
 	public void canVerifyEquality() {
-		User user1 =  getTestUser();
-		User user2 =  getTestUser();
+		User user1 =  getTestUser_1();
+		User user2 =  getTestUser_1();
 		assertEquals(user1, user2);
 	}
 
-	public static User getTestUser() {
+	public static User getTestUser_1() {
 		return new User(TEST_ID, TEST_USERNAME, TEST_SALT, TEST_PASSWORD, TEST_FIRST_NAME, TEST_LAST_NAME);
+	}
+
+	public static User getTestUser_2() {
+		return new User(TEST_ID_2, TEST_USERNAME_2, TEST_SALT_2, TEST_PASSWORD_2, TEST_FIRST_NAME_2, TEST_LAST_NAME_2);
 	}
 }

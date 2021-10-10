@@ -24,7 +24,7 @@ public class UserService {
 	public Integer createUser(User user) {
 		String encodedSalt = SaltUtility.getEncodedSalt();
 		String hashedPassword = hashService.getHashedValue(user.getPassword(), encodedSalt);
-		return userMapper.insert(new User(null, user.getUsername(), encodedSalt, 
+		return userMapper.create(new User(null, user.getUsername(), encodedSalt, 
 				hashedPassword, user.getFirstName(), user.getLastName()));
 	}
 

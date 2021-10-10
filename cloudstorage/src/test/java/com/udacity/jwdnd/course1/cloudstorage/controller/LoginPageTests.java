@@ -69,7 +69,7 @@ public class LoginPageTests {
 	@Test
 	public void canLogin() {
 		// create the user to login
-		User user = UserTests.getTestUser();
+		User user = UserTests.getTestUser_1();
 		userService.createUser(user);
 		
 		loginPage.login(user.getUsername(),user.getPassword());
@@ -84,7 +84,7 @@ public class LoginPageTests {
 	
 	@Test
 	public void canDetectInvalidUser() {
-		User user = UserTests.getTestUser();
+		User user = UserTests.getTestUser_1();
 		loginPage.login(user.getUsername(),user.getPassword());
 		assertTrue(loginPage.isErrorMessageVisible());
 	}

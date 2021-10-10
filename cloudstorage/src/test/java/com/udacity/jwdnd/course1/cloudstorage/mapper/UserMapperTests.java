@@ -2,7 +2,6 @@ package com.udacity.jwdnd.course1.cloudstorage.mapper;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -28,15 +27,18 @@ public class UserMapperTests {
 	
 	@BeforeEach
 	public void beforeEach() {
-		user = UserTests.getTestUser();
-		assertNull(userMapper.findByUsername(user.getUsername()));
-		rowNum = userMapper.insert(user);
-		assertTrue(rowNum > 0);
+		user = UserTests.getTestUser_1();
+		rowNum = userMapper.create(user);
 	}
 	
 	@Test
 	public void canAccessMapper() {
 		assertNotNull(userMapper);
+	}
+	
+	@Test
+	public void canCreateUser() {
+		assertTrue(rowNum > 0);
 	}
 	
 	@Test
@@ -51,6 +53,17 @@ public class UserMapperTests {
 		User newUser = userMapper.findByUsername(user.getUsername());
 		assertNotNull(newUser);
 		assertEquals(user, newUser);
+	}
+	
+	@Test
+	public void canUpdateUser() {
+		User user2 = UserTests.getTestUser_2();
+//		user.setLastName(user2.getLastName());
+//		user.setPassword(user2.getPassword());
+//		user.setSalt(user2.getSalt());
+		userMapper.updateFirstName(user.getUserId(), user2.getFirstName());
+		User newUser = userMapper.findById(user.getUserId());
+		assertEquals(user2.getFirstName(), newUser.getFirstName());
 	}
 	
 }

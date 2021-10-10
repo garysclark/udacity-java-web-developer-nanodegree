@@ -33,7 +33,7 @@ public class UserServiceTests {
 
 	@Test
 	public void canCreateAndRetrieveUser() {
-		User user = UserTests.getTestUser();
+		User user = UserTests.getTestUser_1();
 
 		assertTrue(userService.isUserNameAvailable(user.getUsername()));
 		assertTrue(userService.createUser(user) > 0);
@@ -49,6 +49,6 @@ public class UserServiceTests {
 		assertEquals(user.getLastName(), newUser.getLastName());
 		
 		// check for no side effect change
-		assertEquals(user, UserTests.getTestUser());
+		assertEquals(user, UserTests.getTestUser_1());
 	}
 }

@@ -71,7 +71,7 @@ public class SignupPageTests {
 	
 	@Test
 	public void canSignupUser() {
-		User user = UserTests.getTestUser();
+		User user = UserTests.getTestUser_1();
 		signupPage.signupUser(user.getFirstName(),user.getLastName(),user.getUsername(),user.getPassword());
 		signupPage.waitForSuccessMessage();
 		User newUser = userService.getUser(user.getUsername());
@@ -83,7 +83,7 @@ public class SignupPageTests {
 	
 	@Test
 	public void canPreventDuplicateUsername() {
-		User user = UserTests.getTestUser();
+		User user = UserTests.getTestUser_1();
 		signupPage.signupUser(user.getFirstName(),user.getLastName(),user.getUsername(),user.getPassword());
 		signupPage.waitForSuccessMessage();
 		signupPage.signupUser(user.getFirstName(),user.getLastName(),user.getUsername(),user.getPassword());
