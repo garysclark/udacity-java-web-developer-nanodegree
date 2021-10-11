@@ -58,14 +58,11 @@ public class UserMapperTests {
 	@Test
 	public void canUpdateUser() {
 		User user2 = UserTests.getTestUser_2();
-		user.setLastName(user2.getLastName());
-		user.setPassword(user2.getPassword());
-		user.setSalt(user2.getSalt());
 		userMapper.updateUser(user.getUserId(), user2.getFirstName(), user2.getLastName(), user2.getPassword());
-		User newUser = userMapper.findById(user.getUserId());
-		assertEquals(user2.getFirstName(), newUser.getFirstName());
-		assertEquals(user2.getLastName(), newUser.getLastName());
-		assertEquals(user2.getPassword(), newUser.getPassword());
+		User updatedUser = userMapper.findById(user.getUserId());
+		assertEquals(user2.getFirstName(), updatedUser.getFirstName());
+		assertEquals(user2.getLastName(), updatedUser.getLastName());
+		assertEquals(user2.getPassword(), updatedUser.getPassword());
 	}
 	
 }

@@ -21,7 +21,7 @@ public class NoteTests {
 
 	@BeforeEach
 	public void beforeEach() {
-		note = getTestNote();
+		note = getTestNote_1();
 	}
 	
 	@Test
@@ -47,12 +47,16 @@ public class NoteTests {
 	
 	@Test
 	public void canVerifyEquals() {
-		Note note1 = getTestNote();
-		Note note2 = getTestNote();
+		Note note1 = getTestNote_1();
+		Note note2 = getTestNote_1();
 		assertEquals(note1, note2);
 	}
 
-	static public Note getTestNote() {
+	static public Note getTestNote_1() {
 		return new Note(TEST_ID, TEST_TITLE, TEST_DESCRIPTION, TEST_USERID);
+	}
+
+	public static Note getTestNote_2() {
+		return new Note(TEST_ID_2, TEST_TITLE_2, TEST_DESCRIPTION_2, TEST_USERID_2);
 	}
 }
