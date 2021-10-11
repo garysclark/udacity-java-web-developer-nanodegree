@@ -2,6 +2,7 @@ package com.udacity.jwdnd.course1.cloudstorage.mapper;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -63,6 +64,13 @@ public class UserMapperTests {
 		assertEquals(user2.getFirstName(), updatedUser.getFirstName());
 		assertEquals(user2.getLastName(), updatedUser.getLastName());
 		assertEquals(user2.getPassword(), updatedUser.getPassword());
+	}
+	
+	@Test
+	public void canDeleteUser() {
+		User userToDelete = userMapper.findByUsername(user.getUsername());
+		userMapper.delete(userToDelete.getUserId());
+		assertNull(userMapper.findById(userToDelete.getUserId()));
 	}
 	
 }

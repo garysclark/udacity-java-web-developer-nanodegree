@@ -1,5 +1,6 @@
 package com.udacity.jwdnd.course1.cloudstorage.mapper;
 
+import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Options;
@@ -23,5 +24,8 @@ public interface UserMapper {
 
 	@Update("UPDATE USERS SET firstName=#{firstName}, lastName=#{lastName}, password=#{password} WHERE userid = #{userid}")
 	void updateUser(Integer userid, String firstName, String lastName, String password);
+
+	@Delete("DELETE FROM USERS WHERE userid = #{userid}")
+	void delete(Integer userid);
 
 }
