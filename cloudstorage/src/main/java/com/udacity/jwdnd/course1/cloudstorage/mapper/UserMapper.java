@@ -21,7 +21,7 @@ public interface UserMapper {
 	@Select("SELECT * FROM USERS WHERE username = #{username}")
 	User findByUsername(String username);
 
-	@Update("UPDATE USERS SET firstName=#{firstName} WHERE userid = #{userid}")
-	void updateFirstName(Integer userid, String firstName);
+	@Update("UPDATE USERS SET firstName=#{firstName}, lastName=#{lastName}, password=#{password} WHERE userid = #{userid}")
+	void updateUser(Integer userid, String firstName, String lastName, String password);
 
 }

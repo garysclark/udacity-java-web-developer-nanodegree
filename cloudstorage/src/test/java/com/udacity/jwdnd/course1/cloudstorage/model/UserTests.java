@@ -20,7 +20,7 @@ public class UserTests {
 	private static final String TEST_SALT_2 = "salt2";
 	private static final String TEST_PASSWORD_2 = "password2";
 	private static final String TEST_FIRST_NAME_2 = "FirstName2";
-	private static final String TEST_LAST_NAME_2 = "LastName";
+	private static final String TEST_LAST_NAME_2 = "LastName2";
 
 	private Integer userId;
 	private String username;
