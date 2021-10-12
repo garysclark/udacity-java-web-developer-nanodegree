@@ -1,6 +1,9 @@
 package com.udacity.jwdnd.course1.cloudstorage.controller;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import java.util.List;
 
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
@@ -14,6 +17,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.test.annotation.DirtiesContext;
 
+import com.udacity.jwdnd.course1.cloudstorage.model.Note;
 import com.udacity.jwdnd.course1.cloudstorage.model.User;
 import com.udacity.jwdnd.course1.cloudstorage.model.UserTests;
 import com.udacity.jwdnd.course1.cloudstorage.services.UserService;
@@ -25,6 +29,10 @@ import io.github.bonigarcia.wdm.WebDriverManager;
 @AutoConfigureTestDatabase
 public class HomePageTests {
 
+	private static final String TEST_NOTE_TITLE = "Test Note Title";
+
+	private static final String TEST_NOTE_DESCRIPTION = "Test note description.";
+
 	@LocalServerPort
 	private Integer port;
 	
@@ -34,6 +42,8 @@ public class HomePageTests {
 	private HomePage homePage;
 
 	private LoginPage loginPage;
+
+	private User user;
 	
 	private static WebDriver driver;
 	
@@ -53,7 +63,7 @@ public class HomePageTests {
 		driver.get("http://localhost:" + port + "/home");
 		loginPage = new LoginPage(driver);
 		homePage = new HomePage(driver);
-		User user = UserTests.getTestUser_1();
+		user = UserTests.getTestUser_1();
 		userService.createUser(user);
 		loginPage.login(user.getUsername(),user.getPassword());
 	}
@@ -67,7 +77,17 @@ public class HomePageTests {
 	@Test
 	public void canSelectNotesTab() {
 		homePage.selectNotesTab();
-		assertTrue(homePage.isNotesTabVisible());
+		assertTrue(homePage.isAddNoteButtonVisible());
+	}
+	
+	@Test
+	public void canCreateNote() {
+		homePage.selectNotesTab();
+		homePage.createNote(TEST_NOTE_TITLE, TEST_NOTE_DESCRIPTION);
+		List<Note> notes = homePage.getNotes();
+		assertEquals(1, notes.size());
+		assertEquals(TEST_NOTE_TITLE, notes.get(0).getNotetitle());
+		assertEquals(TEST_NOTE_DESCRIPTION, notes.get(0).getNotedescription());
 	}
 
 }
