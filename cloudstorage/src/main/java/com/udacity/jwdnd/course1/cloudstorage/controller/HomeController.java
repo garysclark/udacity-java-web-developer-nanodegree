@@ -27,6 +27,7 @@ public class HomeController {
 	public String getNotes(Model model, Authentication authentication) {
 		User user = userService.getUser(authentication.getName());
 		model.addAttribute("notes", noteService.getNotes(user.getUserId()));
+		model.addAttribute("activeTab", "files");
 		return "home";
 	}
 

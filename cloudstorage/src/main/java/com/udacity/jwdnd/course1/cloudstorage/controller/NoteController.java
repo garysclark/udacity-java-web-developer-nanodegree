@@ -3,7 +3,6 @@ package com.udacity.jwdnd.course1.cloudstorage.controller;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,13 +22,6 @@ public class NoteController {
 	public NoteController(UserService userService, NoteService noteService) {
 		this.userService = userService;
 		this.noteService = noteService;
-	}
-
-	@GetMapping()
-	public String getNotes(Model model, Authentication authentication) {
-		User user = userService.getUser(authentication.getName());
-		model.addAttribute("notes", noteService.getNotes(user.getUserId()));
-		return "home";
 	}
 	
 	@PostMapping()
@@ -51,6 +43,7 @@ public class NoteController {
 			model.addAttribute("errorMessage", errorMessage);
 		}
 		model.addAttribute("notes", noteService.getNotes(user.getUserId()));
+		model.addAttribute("activeTab", "notes");
 		
 		return "home";
 	}
