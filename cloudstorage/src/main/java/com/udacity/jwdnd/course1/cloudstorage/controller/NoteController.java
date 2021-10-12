@@ -5,7 +5,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.udacity.jwdnd.course1.cloudstorage.model.Note;
 import com.udacity.jwdnd.course1.cloudstorage.model.User;
@@ -13,7 +12,6 @@ import com.udacity.jwdnd.course1.cloudstorage.services.NoteService;
 import com.udacity.jwdnd.course1.cloudstorage.services.UserService;
 
 @Controller
-@RequestMapping("/notes")
 public class NoteController {
 	
 	private UserService userService;
@@ -24,7 +22,7 @@ public class NoteController {
 		this.noteService = noteService;
 	}
 	
-	@PostMapping()
+	@PostMapping("/notes")
 	public String createNote(Model model, @ModelAttribute Note note, Authentication authentication) {
 		String errorMessage = null;
 		
@@ -42,6 +40,16 @@ public class NoteController {
 			model.addAttribute("ifError", true);
 			model.addAttribute("errorMessage", errorMessage);
 		}
+		model.addAttribute("notes", noteService.getNotes(user.getUserId()));
+		model.addAttribute("activeTab", "notes");
+		
+		return "home";
+	}
+	
+	@PostMapping("notes/delete")
+	public String deleteNote(Model model, @ModelAttribute Note note, Authentication authentication) {
+		User user = userService.getUser(authentication.getName());
+		noteService.deleteNote(note.getNoteid());
 		model.addAttribute("notes", noteService.getNotes(user.getUserId()));
 		model.addAttribute("activeTab", "notes");
 		

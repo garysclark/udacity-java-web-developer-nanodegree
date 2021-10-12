@@ -82,6 +82,7 @@
 						+ Add a New Note</button>
 					<div th:insert="fragments/notes-list :: notes-list"></div>
 					<div th:insert="fragments/note-modal :: note-modal"></div>
+					<div th:insert="fragments/note-delete-modal :: note-delete-modal"></div>
 
 				</div>
 				<div class="tab-pane fade"
@@ -177,6 +178,12 @@
 			$('#note-title').val(noteTitle ? noteTitle : '');
 			$('#note-description').val(noteDescription ? noteDescription : '');
 			$('#noteModal').modal('show');
+		}
+
+		// For opening the note modal
+		function showDeleteNoteModal(noteId) {
+			$('#delete-note-id').val(noteId ? noteId : '');
+			$('#noteDeleteModal').modal('show');
 		}
 
 		// For opening the credentials modal

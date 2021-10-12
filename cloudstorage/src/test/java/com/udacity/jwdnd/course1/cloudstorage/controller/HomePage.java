@@ -44,6 +44,9 @@ public class HomePage {
 	@FindBy(id = "delete-note-button")
 	private WebElement deleteNoteButton;
 
+	@FindBy(id = "delete-note-confirm-button")
+	private WebElement deleteNoteConfirmButton;
+
 	public HomePage(WebDriver driver) {
 		PageFactory.initElements(driver, this);
 		jse = (JavascriptExecutor)driver;
@@ -96,6 +99,7 @@ public class HomePage {
 
 	public void deleteNote() {
 		deleteNoteButton.click();
+		deleteNoteConfirmButton.click();
 	}
 
 }
