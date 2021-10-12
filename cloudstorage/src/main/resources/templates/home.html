@@ -77,7 +77,7 @@
 				<div class="tab-pane fade"
 					th:classappend="${#strings.equals(activeTab, 'notes')?'show active':''}"
 					id="nav-notes" role="tabpanel" aria-labelledby="nav-notes-tab">
-					<button style="margin: 0.25em;" type="button"
+					<button id="add-note-btn" style="margin: 0.25em;" type="button"
 						class="btn btn-info float-right" onclick="showNoteModal()">
 						+ Add a New Note</button>
 					<div th:insert="fragments/notes-list :: notes-list"></div>
