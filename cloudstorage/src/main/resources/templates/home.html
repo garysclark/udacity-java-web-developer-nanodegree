@@ -84,14 +84,22 @@
 									<th style="width: 60%" scope="col">Description</th>
 								</tr>
 							</thead>
-							<tbody>
+							<tbody th:each="note:${notes}" id="notes-table-body">
 								<tr>
 									<td>
-										<button type="button" class="btn btn-success">Edit</button> <a
-										class="btn btn-danger">Delete</a>
+										<button type="button" class="btn btn-success"
+											id="edit-note-button" th:note-title="${note.getNotetitle()}"
+											th:note-description="${note.getNotedescription()}"
+											th:note-id="${note.getNoteid()}"
+											onclick="showEditNoteModal(this.getAttribute('note-id'),this.getAttribute('note-title'),this.getAttribute('note-description'))">Edit
+										</button>
+										<button type="button" class="btn btn-danger"
+											id="delete-note-button" th:note-id="${note.getNoteid()}"
+											onclick="showDeleteNoteModal(this.getAttribute('note-id'))">Delete
+										</button>
 									</td>
-									<th scope="row">Example Note Title</th>
-									<td>Example Note Description</td>
+									<th id="table-noteTitle" th:text="${note.getNotetitle()}" scope="row">Example Note Title</th>
+									<td th:text="${note.getNotedescription()}">Example Note Description</td>
 								</tr>
 							</tbody>
 						</table>
@@ -109,16 +117,16 @@
 									</button>
 								</div>
 								<div class="modal-body">
-									<form action="#" method="POST">
-										<input type="hidden" name="noteId" id="note-id">
+									<form action="#" th:action="@{/notes}" method="POST">
+										<input type="hidden" name="noteid" id="note-id">
 										<div class="form-group">
 											<label for="note-title" class="col-form-label">Title</label>
-											<input type="text" name="noteTitle" class="form-control"
+											<input type="text" name="notetitle" class="form-control"
 												id="note-title" maxlength="20" required>
 										</div>
 										<div class="form-group">
 											<label for="note-description" class="col-form-label">Description</label>
-											<textarea class="form-control" name="noteDescription"
+											<textarea class="form-control" name="notedescription"
 												id="note-description" rows="5" maxlength="1000" required></textarea>
 										</div>
 										<button id="noteSubmit" type="submit" class="d-none"></button>

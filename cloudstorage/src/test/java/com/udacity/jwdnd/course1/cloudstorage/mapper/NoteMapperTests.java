@@ -5,6 +5,8 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.util.List;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -79,6 +81,13 @@ public class NoteMapperTests {
 	public void canFindNoteById() {
 		Note foundNote = noteMapper.findById(firstNote.getNoteid());
 		assertEquals(firstNote, foundNote);
+	}
+	
+	@Test
+	public void canFindByUserId() {
+		noteMapper.update(secondNote.getNoteid(), secondNote.getNotetitle(), secondNote.getNotedescription(), createdUser1.getUserId());
+		List<Note> notes = noteMapper.findByUserId(firstNote.getUserid());
+		assertEquals(2, notes.size());
 	}
 	
 	@Test
