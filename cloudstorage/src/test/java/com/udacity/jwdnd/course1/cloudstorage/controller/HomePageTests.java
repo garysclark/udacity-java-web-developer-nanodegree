@@ -66,7 +66,10 @@ public class HomePageTests {
 		user = UserTests.getTestUser_1();
 		userService.createUser(user);
 		loginPage.login(user.getUsername(),user.getPassword());
-	}
+
+		homePage.selectNotesTab();
+		homePage.createNote(TEST_NOTE_TITLE, TEST_NOTE_DESCRIPTION);
+}
 	
 	@Test
 	public void canAccessHomePage() {
@@ -76,18 +79,23 @@ public class HomePageTests {
 	
 	@Test
 	public void canSelectNotesTab() {
-		homePage.selectNotesTab();
 		assertTrue(homePage.isAddNoteButtonVisible());
 	}
 	
 	@Test
 	public void canCreateNote() {
-		homePage.selectNotesTab();
-		homePage.createNote(TEST_NOTE_TITLE, TEST_NOTE_DESCRIPTION);
 		List<Note> notes = homePage.getNotes();
 		assertEquals(1, notes.size());
 		assertEquals(TEST_NOTE_TITLE, notes.get(0).getNotetitle());
 		assertEquals(TEST_NOTE_DESCRIPTION, notes.get(0).getNotedescription());
+	}
+	
+	@Test
+	public void canDeleteNote() {
+		homePage.createNote(TEST_NOTE_TITLE, TEST_NOTE_DESCRIPTION);
+		assertEquals(2, homePage.getNotes().size());
+		homePage.deleteNote();
+		assertEquals(0, homePage.getNotes().size());
 	}
 
 }

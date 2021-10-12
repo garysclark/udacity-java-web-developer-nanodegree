@@ -38,8 +38,11 @@ public class HomePage {
 
 	private WebDriverWait wait;
 
-	@FindBy(id = "notes-table-body")
+	@FindBy(id = "userTable")
 	private WebElement notesTable;
+
+	@FindBy(id = "delete-note-button")
+	private WebElement deleteNoteButton;
 
 	public HomePage(WebDriver driver) {
 		PageFactory.initElements(driver, this);
@@ -71,11 +74,17 @@ public class HomePage {
 		noteTitle.sendKeys(title);
 		noteDescription.sendKeys(description);
 		saveChangesButton.click();
+		try {
+			Thread.sleep(500);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	public List<Note> getNotes() {
 		ArrayList<Note> notes = new ArrayList<>();
-		List<WebElement> elements = notesTable.findElements(By.tagName("tr"));
+		List<WebElement> elements = notesTable.findElements(By.tagName("tbody"));
 		for(WebElement trElement:elements) {
 			String title = trElement.findElement(By.id("table-noteTitle")).getText();
 			String description = trElement.findElement(By.id("table-noteDescription")).getText();
@@ -83,6 +92,10 @@ public class HomePage {
 			notes.add(note);
 		}
 		return notes;
+	}
+
+	public void deleteNote() {
+		deleteNoteButton.click();
 	}
 
 }
