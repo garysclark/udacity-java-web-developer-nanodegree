@@ -173,10 +173,11 @@
 	<!--For opening the note modal-->
 	<script type="text/javascript">
 		// For opening the note modal
-		function showNoteModal(noteId, noteTitle, noteDescription) {
+		function showNoteModal(noteId, noteTitle, noteDescription, userId) {
 			$('#note-id').val(noteId ? noteId : '');
 			$('#note-title').val(noteTitle ? noteTitle : '');
 			$('#note-description').val(noteDescription ? noteDescription : '');
+			$('#user-id').val(userId ? userId : '');
 			$('#noteModal').modal('show');
 		}
 

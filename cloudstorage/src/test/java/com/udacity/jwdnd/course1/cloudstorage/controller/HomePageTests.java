@@ -33,6 +33,10 @@ public class HomePageTests {
 
 	private static final String TEST_NOTE_DESCRIPTION = "Test note description.";
 
+	private static final String TEST_EDITED_NOTE_TITLE = "Edited Note Title";
+
+	private static final String TEST_EDITED_NOTE_DESCRIPTION = "Edited Note Description";
+
 	@LocalServerPort
 	private Integer port;
 	
@@ -106,4 +110,11 @@ public class HomePageTests {
 		assertEquals(1, homePage.getNotes().size());
 	}
 
+	@Test
+	public void canEditNote() {
+		homePage.editNote(0, TEST_EDITED_NOTE_TITLE, TEST_EDITED_NOTE_DESCRIPTION);
+		List<Note> notes = homePage.getNotes();
+		assertEquals(TEST_EDITED_NOTE_TITLE, notes.get(0).getNotetitle());
+		assertEquals(TEST_EDITED_NOTE_DESCRIPTION, notes.get(0).getNotedescription());
+	}
 }

@@ -25,17 +25,26 @@ public class NoteController {
 	@PostMapping("/notes")
 	public String createNote(@ModelAttribute Note note, RedirectAttributes redirectAttributes, Authentication authentication) {
 		String errorMessage = null;
-		
+		String successMessage = null;
 		User user = userService.getUser(authentication.getName());
-		Integer userId = user.getUserId();
-		note.setUserid(userId);
-		int rowsAdded = noteService.createNote(note);
-		if(rowsAdded < 0) {
-			errorMessage = "There was an error adding the note.  Please try again.";
+		
+		if(noteService.findNote(note.getNoteid()) == null)
+		{
+			Integer userId = user.getUserId();
+			note.setUserid(userId);
+			int rowsAdded = noteService.createNote(note);
+			if(rowsAdded < 0) {
+				errorMessage = "There was an error adding the note.  Please try again.";
+			} else {
+				successMessage = "You successfully added a note";
+			}
+		} else {
+			noteService.updateNote(note);
+			successMessage = "You successfully updated a note";
 		}
 		if(errorMessage == null) {
 			redirectAttributes.addFlashAttribute("ifSuccess", true);
-			redirectAttributes.addFlashAttribute("successMessage", "You successfully added a note");
+			redirectAttributes.addFlashAttribute("successMessage", successMessage);
 		} else {
 			redirectAttributes.addFlashAttribute("ifError", true);
 			redirectAttributes.addFlashAttribute("errorMessage", errorMessage);

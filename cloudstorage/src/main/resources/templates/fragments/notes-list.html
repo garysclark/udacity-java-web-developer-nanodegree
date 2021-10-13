@@ -18,7 +18,8 @@
 							id="edit-note-button" th:note-title="${note.getNotetitle()}"
 							th:note-description="${note.getNotedescription()}"
 							th:note-id="${note.getNoteid()}"
-							onclick="showEditNoteModal(this.getAttribute('note-id'),this.getAttribute('note-title'),this.getAttribute('note-description'))">Edit
+							th:user-id="${note.getUserid()}"
+							onclick="showNoteModal(this.getAttribute('note-id'),this.getAttribute('note-title'),this.getAttribute('note-description'),this.getAttribute('user-id'))">Edit
 						</button>
 						<button type="button" class="btn btn-danger"
 							id="delete-note-button" th:note-id="${note.getNoteid()}"

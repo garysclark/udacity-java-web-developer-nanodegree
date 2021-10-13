@@ -109,4 +109,21 @@ public class HomePage {
 		logoutButton.click();
 	}
 
+	public void editNote(int noteIndex, String title, String description) {
+		List<WebElement> elements = notesTable.findElements(By.tagName("tbody"));
+		WebElement rowElement = elements.get(noteIndex);
+		rowElement.findElement(By.id("edit-note-button")).click();
+		noteTitle.clear();
+		noteTitle.sendKeys(title);
+		noteDescription.clear();
+		noteDescription.sendKeys(description);
+		saveChangesButton.click();
+		try {
+			Thread.sleep(500);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
 }

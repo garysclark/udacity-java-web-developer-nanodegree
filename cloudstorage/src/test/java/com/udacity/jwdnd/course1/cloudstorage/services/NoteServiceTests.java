@@ -23,6 +23,8 @@ import com.udacity.jwdnd.course1.cloudstorage.model.UserTests;
 @AutoConfigureTestDatabase
 public class NoteServiceTests {
 
+	private static final String TEST_EDITED_NOTE = " - EDITED";
+
 	@Autowired
 	private NoteService noteService;
 	
@@ -59,5 +61,29 @@ public class NoteServiceTests {
 	public void canGetNotes() {
 		List<Note> notes = noteService.getNotes(newUser.getUserId());
 		assertEquals(1, notes.size());
+	}
+	
+	@Test
+	public void canFindNoteById() {
+		List<Note> notes = noteService.getNotes(newUser.getUserId());
+		Note noteToBeFound = notes.get(0);
+		Note noteFoundById = noteService.findNote(noteToBeFound.getNoteid());
+		assertEquals(noteToBeFound, noteFoundById);
+	}
+	
+	@Test
+	public void canUpdateNote() {
+		List<Note> notes = noteService.getNotes(newUser.getUserId());
+		Note noteToEdit = notes.get(0);
+
+		String editedTitle = noteToEdit.getNotetitle() + TEST_EDITED_NOTE;
+		String editedDescription = noteToEdit.getNotedescription() + TEST_EDITED_NOTE;
+		noteToEdit.setNotetitle(editedTitle);
+		noteToEdit.setNotedescription(editedDescription);
+
+		noteService.updateNote(noteToEdit);
+		Note updatedNote = noteService.findNote(noteToEdit.getNoteid());
+		
+		assertEquals(noteToEdit, updatedNote);
 	}
 }
