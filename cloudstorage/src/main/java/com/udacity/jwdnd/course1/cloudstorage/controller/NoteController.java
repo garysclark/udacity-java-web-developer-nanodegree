@@ -2,9 +2,9 @@ package com.udacity.jwdnd.course1.cloudstorage.controller;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.udacity.jwdnd.course1.cloudstorage.model.Note;
 import com.udacity.jwdnd.course1.cloudstorage.model.User;
@@ -23,7 +23,7 @@ public class NoteController {
 	}
 	
 	@PostMapping("/notes")
-	public String createNote(Model model, @ModelAttribute Note note, Authentication authentication) {
+	public String createNote(@ModelAttribute Note note, RedirectAttributes redirectAttributes, Authentication authentication) {
 		String errorMessage = null;
 		
 		User user = userService.getUser(authentication.getName());
@@ -34,26 +34,26 @@ public class NoteController {
 			errorMessage = "There was an error adding the note.  Please try again.";
 		}
 		if(errorMessage == null) {
-			model.addAttribute("ifSuccess", true);
-			model.addAttribute("successMessage", "You successfully added a note");
+			redirectAttributes.addFlashAttribute("ifSuccess", true);
+			redirectAttributes.addFlashAttribute("successMessage", "You successfully added a note");
 		} else {
-			model.addAttribute("ifError", true);
-			model.addAttribute("errorMessage", errorMessage);
+			redirectAttributes.addFlashAttribute("ifError", true);
+			redirectAttributes.addFlashAttribute("errorMessage", errorMessage);
 		}
-		model.addAttribute("notes", noteService.getNotes(user.getUserId()));
-		model.addAttribute("activeTab", "notes");
+		redirectAttributes.addFlashAttribute("notes", noteService.getNotes(user.getUserId()));
+		redirectAttributes.addFlashAttribute("activeTab", "notes");
 		
-		return "home";
+		return "redirect:/home";
 	}
 	
 	@PostMapping("notes/delete")
-	public String deleteNote(Model model, @ModelAttribute Note note, Authentication authentication) {
+	public String deleteNote(@ModelAttribute Note note, RedirectAttributes redirectAttributes, Authentication authentication) {
 		User user = userService.getUser(authentication.getName());
 		noteService.deleteNote(note.getNoteid());
-		model.addAttribute("notes", noteService.getNotes(user.getUserId()));
-		model.addAttribute("activeTab", "notes");
+		redirectAttributes.addFlashAttribute("notes", noteService.getNotes(user.getUserId()));
+		redirectAttributes.addFlashAttribute("activeTab", "notes");
 		
-		return "home";
+		return "redirect:/home";
 	}
 
 }

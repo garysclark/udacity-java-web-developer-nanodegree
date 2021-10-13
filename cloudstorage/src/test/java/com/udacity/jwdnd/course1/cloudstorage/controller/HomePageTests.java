@@ -97,5 +97,13 @@ public class HomePageTests {
 		homePage.deleteNote();
 		assertEquals(1, homePage.getNotes().size());
 	}
+	
+	@Test
+	public void canSeeNotesAfterLogoutLogin() {
+		homePage.logout();
+		loginPage.login(user.getUsername(),user.getPassword());
+		homePage.selectNotesTab();
+		assertEquals(1, homePage.getNotes().size());
+	}
 
 }
