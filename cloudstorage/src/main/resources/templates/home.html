@@ -40,18 +40,18 @@
 				<div class="tab-pane fade"
 					th:classappend="${#strings.equals(activeTab, 'files')?'show active':''}"
 					id="nav-files" role="tabpanel" aria-labelledby="nav-files-tab">
-					<form action="#" enctype="multipart/form-data" method="POST">
+					<form action="#" enctype="multipart/form-data" th:action="@{/files}" th:object="${fileDTO}"  method="POST">
 						<div class="container">
 							<div class="row" style="margin: 1em;">
 								<div class="col-sm-2">
 									<label for="fileUpload">Upload a New File:</label>
 								</div>
 								<div class="col-sm-6">
-									<input type="file" class="form-control-file" id="fileUpload"
+									<input th:field="*{file}" type="file" class="form-control-file" id="fileUpload"
 										name="fileUpload">
 								</div>
 								<div class="col-sm-4">
-									<button type="submit" class="btn btn-dark">Upload</button>
+									<button id="file-upload-btn" type="submit" class="btn btn-dark">Upload</button>
 								</div>
 							</div>
 						</div>
