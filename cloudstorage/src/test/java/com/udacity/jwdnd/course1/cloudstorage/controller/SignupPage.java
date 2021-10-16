@@ -5,7 +5,8 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
+
+import com.udacity.jwdnd.course1.cloudstorage.utilities.WaitUtility;
 
 public class SignupPage {
 
@@ -36,14 +37,14 @@ public class SignupPage {
 	@FindBy(id = "back-to-login-link")
 	private WebElement backToLoginLink;
 
-	private WebDriverWait wait;
+	private WaitUtility wait;
 
 	@FindBy(id = "signup-login-link")
 	private WebElement signupLoginLink;
 
 	public SignupPage(WebDriver driver) {
 		PageFactory.initElements(driver, this);
-		wait = new WebDriverWait(driver, 5);
+		wait = new WaitUtility(driver, 5);
 	}
 
 	public boolean isPageReady() {
@@ -72,12 +73,6 @@ public class SignupPage {
 
 	public void waitForSuccessMessage() {
 		wait.until(ExpectedConditions.visibilityOf(successMessage));
-		try {
-			Thread.sleep(500);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 	}
 
 	public void selectSuccessLoginLink() {

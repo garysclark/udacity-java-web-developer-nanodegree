@@ -39,7 +39,7 @@ public class HomePageTests {
 
 	@LocalServerPort
 	private Integer port;
-	
+
 	@Autowired
 	private UserService userService;
 
@@ -48,20 +48,20 @@ public class HomePageTests {
 	private LoginPage loginPage;
 
 	private User user;
-	
+
 	private static WebDriver driver;
-	
+
 	@BeforeAll
 	static public void beforeAll() {
 		WebDriverManager.chromedriver().setup();
 		driver = new ChromeDriver();
 	}
-	
+
 	@AfterAll
 	static public void afterAll() {
 		driver.quit();
 	}
-	
+
 	@BeforeEach
 	public void beforeEach() {
 		driver.get("http://localhost:" + port + "/home");
@@ -73,19 +73,20 @@ public class HomePageTests {
 
 		homePage.selectNotesTab();
 		homePage.createNote(TEST_NOTE_TITLE, TEST_NOTE_DESCRIPTION);
-}
-	
+		homePage.waitForNotesTab();
+	}
+
 	@Test
 	public void canAccessHomePage() {
 		assertTrue(homePage.isPageReady());
 
 	}
-	
+
 	@Test
 	public void canSelectNotesTab() {
 		assertTrue(homePage.isAddNoteButtonVisible());
 	}
-	
+
 	@Test
 	public void canCreateNote() {
 		List<Note> notes = homePage.getNotes();
@@ -93,18 +94,20 @@ public class HomePageTests {
 		assertEquals(TEST_NOTE_TITLE, notes.get(0).getNotetitle());
 		assertEquals(TEST_NOTE_DESCRIPTION, notes.get(0).getNotedescription());
 	}
-	
+
 	@Test
 	public void canDeleteNote() {
 		homePage.createNote(TEST_NOTE_TITLE, TEST_NOTE_DESCRIPTION);
 		assertEquals(2, homePage.getNotes().size());
 		homePage.deleteNote();
+		homePage.waitForNotesTab();
 		assertEquals(1, homePage.getNotes().size());
 	}
-	
+
 	@Test
 	public void canSeeNotesAfterLogoutLogin() {
 		homePage.logout();
+		loginPage.waitForLoginPage();
 		loginPage.login(user.getUsername(),user.getPassword());
 		homePage.selectNotesTab();
 		assertEquals(1, homePage.getNotes().size());

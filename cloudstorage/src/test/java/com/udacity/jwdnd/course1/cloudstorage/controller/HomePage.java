@@ -10,9 +10,9 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.udacity.jwdnd.course1.cloudstorage.model.Note;
+import com.udacity.jwdnd.course1.cloudstorage.utilities.WaitUtility;
 
 public class HomePage {
 
@@ -36,7 +36,7 @@ public class HomePage {
 	@FindBy(id = "save-changes-btn")
 	private WebElement saveChangesButton;
 
-	private WebDriverWait wait;
+	private WaitUtility wait;
 
 	@FindBy(id = "userTable")
 	private WebElement notesTable;
@@ -53,7 +53,7 @@ public class HomePage {
 	public HomePage(WebDriver driver) {
 		PageFactory.initElements(driver, this);
 		jse = (JavascriptExecutor)driver;
-		wait = new WebDriverWait(driver, 5);
+		wait = new WaitUtility(driver, 5);
 	}
 
 	public boolean isPageReady() {
@@ -63,12 +63,6 @@ public class HomePage {
 	public void selectNotesTab() {
 		jse.executeScript("arguments[0].click()", notesTab);
 		wait.until(ExpectedConditions.elementToBeClickable(addNoteButton));
-		try {
-			Thread.sleep(500);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 	}
 
 	public boolean isAddNoteButtonVisible() {
@@ -80,12 +74,6 @@ public class HomePage {
 		noteTitle.sendKeys(title);
 		noteDescription.sendKeys(description);
 		saveChangesButton.click();
-		try {
-			Thread.sleep(500);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 	}
 
 	public List<Note> getNotes() {
@@ -102,6 +90,7 @@ public class HomePage {
 
 	public void deleteNote() {
 		deleteNoteButton.click();
+		wait.until(ExpectedConditions.visibilityOf(deleteNoteConfirmButton));
 		deleteNoteConfirmButton.click();
 	}
 
@@ -118,12 +107,10 @@ public class HomePage {
 		noteDescription.clear();
 		noteDescription.sendKeys(description);
 		saveChangesButton.click();
-		try {
-			Thread.sleep(500);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+	}
+
+	public void waitForNotesTab() {
+		wait.until(ExpectedConditions.elementToBeClickable(addNoteButton));
 	}
 
 }

@@ -4,6 +4,9 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+
+import com.udacity.jwdnd.course1.cloudstorage.utilities.WaitUtility;
 
 public class LoginPage {
 
@@ -28,8 +31,11 @@ public class LoginPage {
 	@FindBy(id = "signup-page-link")
 	private WebElement signupPageLink;
 
+	private WaitUtility wait;
+
 	public LoginPage(WebDriver driver) {
 		PageFactory.initElements(driver, this);
+		wait = new WaitUtility(driver, 5);
 	}
 
 	public boolean isPageReady() {
@@ -52,6 +58,10 @@ public class LoginPage {
 
 	public void selectSetupLink() {
 		signupPageLink.click();
+	}
+
+	public void waitForLoginPage() {
+		wait.until(ExpectedConditions.visibilityOf(pageTitle));
 	}
 
 }
