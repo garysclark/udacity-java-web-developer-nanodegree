@@ -98,8 +98,9 @@ public class HomePageTests {
 	@Test
 	public void canDeleteNote() {
 		homePage.createNote(TEST_NOTE_TITLE, TEST_NOTE_DESCRIPTION);
+		homePage.waitForNotesTab();
 		assertEquals(2, homePage.getNotes().size());
-		homePage.deleteNote();
+		homePage.deleteNote(1);
 		homePage.waitForNotesTab();
 		assertEquals(1, homePage.getNotes().size());
 	}

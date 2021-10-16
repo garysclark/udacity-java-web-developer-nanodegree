@@ -62,7 +62,7 @@ public class FileTests {
 		assertEquals(file, file2);
 	}
 
-	static private File getTestFile() {
+	static public File getTestFile() {
 		return new File(TEST_FILE_ID, TEST_FILE_NAME, TEST_CONTENT_TYPE, TEST_FILE_SIZE, TEST_USER_ID, TEST_FILE_DATA);
 	}
 }

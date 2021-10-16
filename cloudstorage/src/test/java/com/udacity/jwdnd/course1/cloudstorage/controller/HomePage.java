@@ -91,10 +91,15 @@ public class HomePage {
 		return notes;
 	}
 
-	public void deleteNote() {
-		deleteNoteButton.click();
-		wait.until(ExpectedConditions.visibilityOf(deleteModalLabel));
+	public void deleteNote(int noteNumber) {
+		WebElement deleteButton = getDeleteButtonForNote(noteNumber);
+		deleteButton.click();
 		deleteNoteConfirmButton.click();
+	}
+
+	private WebElement getDeleteButtonForNote(int noteNumber) {
+		List<WebElement> elements = notesTable.findElements(By.tagName("tbody"));
+		return elements.get(noteNumber).findElement(By.id("delete-note-button"));
 	}
 
 	public void logout() {
