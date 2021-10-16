@@ -15,20 +15,20 @@
 				<tr>
 					<td>
 						<button type="button" class="btn btn-success"
-							id="edit-note-button" th:note-title="${note.getNotetitle()}"
-							th:note-description="${note.getNotedescription()}"
-							th:note-id="${note.getNoteid()}"
+							id="edit-note-button" th:note-title="${note.getTitle()}"
+							th:note-description="${note.getDescription()}"
+							th:note-id="${note.getId()}"
 							th:user-id="${note.getUserid()}"
 							onclick="showNoteModal(this.getAttribute('note-id'),this.getAttribute('note-title'),this.getAttribute('note-description'),this.getAttribute('user-id'))">Edit
 						</button>
 						<button type="button" class="btn btn-danger"
-							id="delete-note-button" th:note-id="${note.getNoteid()}"
+							id="delete-note-button" th:note-id="${note.getId()}"
 							onclick="showDeleteNoteModal(this.getAttribute('note-id'))">Delete
 						</button>
 					</td>
-					<th id="table-noteTitle" th:text="${note.getNotetitle()}"
+					<th id="table-noteTitle" th:text="${note.getTitle()}"
 						scope="row">Example Note Title</th>
-					<td id="table-noteDescription" th:text="${note.getNotedescription()}">Example Note
+					<td id="table-noteDescription" th:text="${note.getDescription()}">Example Note
 						Description</td>
 				</tr>
 			</tbody>

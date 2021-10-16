@@ -79,29 +79,29 @@ public class NoteMapperTests {
 	
 	@Test
 	public void canFindNoteById() {
-		Note foundNote = noteMapper.findById(firstNote.getNoteid());
+		Note foundNote = noteMapper.findById(firstNote.getId());
 		assertEquals(firstNote, foundNote);
 	}
 	
 	@Test
 	public void canFindByUserId() {
-		noteMapper.update(secondNote.getNoteid(), secondNote.getNotetitle(), secondNote.getNotedescription(), createdUser1.getUserId());
+		noteMapper.update(secondNote.getId(), secondNote.getTitle(), secondNote.getDescription(), createdUser1.getUserId());
 		List<Note> notes = noteMapper.findByUserId(firstNote.getUserid());
 		assertEquals(2, notes.size());
 	}
 	
 	@Test
 	public void canUpdateNote() {
-		noteMapper.update(firstNote.getNoteid(), secondNote.getNotetitle(), secondNote.getNotedescription(), secondNote.getUserid());
-		Note updatedNote = noteMapper.findById(firstNote.getNoteid());
-		assertEquals(secondNote.getNotetitle(), updatedNote.getNotetitle());
-		assertEquals(secondNote.getNotedescription(), updatedNote.getNotedescription());
+		noteMapper.update(firstNote.getId(), secondNote.getTitle(), secondNote.getDescription(), secondNote.getUserid());
+		Note updatedNote = noteMapper.findById(firstNote.getId());
+		assertEquals(secondNote.getTitle(), updatedNote.getTitle());
+		assertEquals(secondNote.getDescription(), updatedNote.getDescription());
 		assertEquals(secondNote.getUserid(), updatedNote.getUserid());
 	}
 	
 	@Test
 	public void canDeleteNote() {
-		noteMapper.delete(secondNote.getNoteid());
-		assertNull(noteMapper.findById(secondNote.getNoteid()));
+		noteMapper.delete(secondNote.getId());
+		assertNull(noteMapper.findById(secondNote.getId()));
 	}
 }

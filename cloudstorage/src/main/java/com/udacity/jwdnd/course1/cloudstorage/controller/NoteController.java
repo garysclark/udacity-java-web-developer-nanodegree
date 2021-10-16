@@ -28,7 +28,7 @@ public class NoteController {
 		String successMessage = null;
 		User user = userService.getUser(authentication.getName());
 		
-		if(noteService.findNote(note.getNoteid()) == null)
+		if(noteService.findNote(note.getId()) == null)
 		{
 			Integer userId = user.getUserId();
 			note.setUserid(userId);
@@ -58,7 +58,7 @@ public class NoteController {
 	@PostMapping("notes/delete")
 	public String deleteNote(@ModelAttribute Note note, RedirectAttributes redirectAttributes, Authentication authentication) {
 		User user = userService.getUser(authentication.getName());
-		noteService.deleteNote(note.getNoteid());
+		noteService.deleteNote(note.getId());
 		redirectAttributes.addFlashAttribute("notes", noteService.getNotes(user.getUserId()));
 		redirectAttributes.addFlashAttribute("activeTab", "notes");
 		

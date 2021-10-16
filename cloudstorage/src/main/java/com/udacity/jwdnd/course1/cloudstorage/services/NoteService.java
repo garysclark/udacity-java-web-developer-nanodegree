@@ -33,7 +33,7 @@ public class NoteService {
 	}
 
 	public void updateNote(Note note) {
-		noteMapper.update(note.getNoteid(), note.getNotetitle(), note.getNotedescription(), note.getUserid());
+		noteMapper.update(note.getId(), note.getTitle(), note.getDescription(), note.getUserid());
 	}
 	
 }

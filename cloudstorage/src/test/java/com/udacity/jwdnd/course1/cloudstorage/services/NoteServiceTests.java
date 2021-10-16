@@ -67,7 +67,7 @@ public class NoteServiceTests {
 	public void canFindNoteById() {
 		List<Note> notes = noteService.getNotes(newUser.getUserId());
 		Note noteToBeFound = notes.get(0);
-		Note noteFoundById = noteService.findNote(noteToBeFound.getNoteid());
+		Note noteFoundById = noteService.findNote(noteToBeFound.getId());
 		assertEquals(noteToBeFound, noteFoundById);
 	}
 	
@@ -76,13 +76,13 @@ public class NoteServiceTests {
 		List<Note> notes = noteService.getNotes(newUser.getUserId());
 		Note noteToEdit = notes.get(0);
 
-		String editedTitle = noteToEdit.getNotetitle() + TEST_EDITED_NOTE;
-		String editedDescription = noteToEdit.getNotedescription() + TEST_EDITED_NOTE;
-		noteToEdit.setNotetitle(editedTitle);
-		noteToEdit.setNotedescription(editedDescription);
+		String editedTitle = noteToEdit.getTitle() + TEST_EDITED_NOTE;
+		String editedDescription = noteToEdit.getDescription() + TEST_EDITED_NOTE;
+		noteToEdit.setTitle(editedTitle);
+		noteToEdit.setDescription(editedDescription);
 
 		noteService.updateNote(noteToEdit);
-		Note updatedNote = noteService.findNote(noteToEdit.getNoteid());
+		Note updatedNote = noteService.findNote(noteToEdit.getId());
 		
 		assertEquals(noteToEdit, updatedNote);
 	}

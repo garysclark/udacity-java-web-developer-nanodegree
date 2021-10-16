@@ -23,4 +23,13 @@ public class WaitUtility {
 		}
 	}
 
+	public void until(int i) {
+		try {
+			Thread.sleep(i);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
 }

@@ -49,6 +49,9 @@ public class HomePage {
 
 	@FindBy(id = "logout-btn")
 	private WebElement logoutButton;
+	
+	@FindBy (id = "noteDeleteModalLabel")
+	private WebElement deleteModalLabel;
 
 	public HomePage(WebDriver driver) {
 		PageFactory.initElements(driver, this);
@@ -90,7 +93,7 @@ public class HomePage {
 
 	public void deleteNote() {
 		deleteNoteButton.click();
-		wait.until(ExpectedConditions.visibilityOf(deleteNoteConfirmButton));
+		wait.until(ExpectedConditions.visibilityOf(deleteModalLabel));
 		deleteNoteConfirmButton.click();
 	}
 

@@ -16,15 +16,15 @@ public class Note {
 		this.userid = userid;
 	}
 
-	public Integer getNoteid() {
+	public Integer getId() {
 		return noteid;
 	}
 
-	public String getNotetitle() {
+	public String getTitle() {
 		return notetitle;
 	}
 
-	public String getNotedescription() {
+	public String getDescription() {
 		return notedescription;
 	}
 
@@ -32,15 +32,15 @@ public class Note {
 		return userid;
 	}
 
-	public void setNoteid(Integer noteid) {
+	public void setId(Integer noteid) {
 		this.noteid = noteid;
 	}
 
-	public void setNotetitle(String notetitle) {
+	public void setTitle(String notetitle) {
 		this.notetitle = notetitle;
 	}
 
-	public void setNotedescription(String notedescription) {
+	public void setDescription(String notedescription) {
 		this.notedescription = notedescription;
 	}
 

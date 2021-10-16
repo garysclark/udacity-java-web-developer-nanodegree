@@ -91,8 +91,8 @@ public class HomePageTests {
 	public void canCreateNote() {
 		List<Note> notes = homePage.getNotes();
 		assertEquals(1, notes.size());
-		assertEquals(TEST_NOTE_TITLE, notes.get(0).getNotetitle());
-		assertEquals(TEST_NOTE_DESCRIPTION, notes.get(0).getNotedescription());
+		assertEquals(TEST_NOTE_TITLE, notes.get(0).getTitle());
+		assertEquals(TEST_NOTE_DESCRIPTION, notes.get(0).getDescription());
 	}
 
 	@Test
@@ -117,7 +117,7 @@ public class HomePageTests {
 	public void canEditNote() {
 		homePage.editNote(0, TEST_EDITED_NOTE_TITLE, TEST_EDITED_NOTE_DESCRIPTION);
 		List<Note> notes = homePage.getNotes();
-		assertEquals(TEST_EDITED_NOTE_TITLE, notes.get(0).getNotetitle());
-		assertEquals(TEST_EDITED_NOTE_DESCRIPTION, notes.get(0).getNotedescription());
+		assertEquals(TEST_EDITED_NOTE_TITLE, notes.get(0).getTitle());
+		assertEquals(TEST_EDITED_NOTE_DESCRIPTION, notes.get(0).getDescription());
 	}
 }

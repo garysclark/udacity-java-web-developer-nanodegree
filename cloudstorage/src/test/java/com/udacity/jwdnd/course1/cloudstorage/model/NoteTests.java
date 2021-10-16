@@ -27,20 +27,20 @@ public class NoteTests {
 	@Test
 	public void canCreateNote() {
 		assertNotNull(note);
-		assertEquals(TEST_ID, note.getNoteid());
-		assertEquals(TEST_TITLE, note.getNotetitle());
-		assertEquals(TEST_DESCRIPTION, note.getNotedescription());
+		assertEquals(TEST_ID, note.getId());
+		assertEquals(TEST_TITLE, note.getTitle());
+		assertEquals(TEST_DESCRIPTION, note.getDescription());
 		assertEquals(TEST_USERID, note.getUserid());
 	}
 	
 	@Test
 	public void canSetNoteAttributes() {
-		note.setNoteid(TEST_ID_2);
-		assertEquals(TEST_ID_2, note.getNoteid());
-		note.setNotetitle(TEST_TITLE_2);
-		assertEquals(TEST_TITLE_2, note.getNotetitle());
-		note.setNotedescription(TEST_DESCRIPTION_2);
-		assertEquals(TEST_DESCRIPTION_2, note.getNotedescription());
+		note.setId(TEST_ID_2);
+		assertEquals(TEST_ID_2, note.getId());
+		note.setTitle(TEST_TITLE_2);
+		assertEquals(TEST_TITLE_2, note.getTitle());
+		note.setDescription(TEST_DESCRIPTION_2);
+		assertEquals(TEST_DESCRIPTION_2, note.getDescription());
 		note.setUserid(TEST_USERID_2);
 		assertEquals(TEST_USERID_2, note.getUserid());
 	}
