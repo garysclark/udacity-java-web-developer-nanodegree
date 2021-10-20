@@ -36,7 +36,7 @@ public class LoginPageTests {
 	
 	private LoginPage loginPage;
 
-	private HomePage homePage;
+	private HomePageNotesTab homePage;
 
 	private SignupPage signupPage;
 	
@@ -55,7 +55,7 @@ public class LoginPageTests {
 	public void beforeEach() {
 		driver.get("http://localhost:" + port + "/login");
 		loginPage = new LoginPage(driver);
-		homePage = new HomePage(driver);
+		homePage = new HomePageNotesTab(driver);
 		signupPage = new SignupPage(driver);
 	}
 	

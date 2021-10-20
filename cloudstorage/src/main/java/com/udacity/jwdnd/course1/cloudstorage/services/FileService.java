@@ -28,7 +28,7 @@ public class FileService {
 			return -1;
 		}
 		
-		File newFile = new File(null, file.getName(), file.getContentType(), Long.toString(file.getSize()), userId, data);
+		File newFile = new File(null, file.getOriginalFilename(), file.getContentType(), Long.toString(file.getSize()), userId, data);
 		
 		return fileMapper.create(newFile);
 	}

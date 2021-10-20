@@ -27,7 +27,7 @@ import io.github.bonigarcia.wdm.WebDriverManager;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 @AutoConfigureTestDatabase
-public class HomePageTests {
+public class HomePageNotesTabTests {
 
 	private static final String TEST_NOTE_TITLE = "Test Note Title";
 
@@ -43,7 +43,7 @@ public class HomePageTests {
 	@Autowired
 	private UserService userService;
 
-	private HomePage homePage;
+	private HomePageNotesTab homePage;
 
 	private LoginPage loginPage;
 
@@ -66,7 +66,7 @@ public class HomePageTests {
 	public void beforeEach() {
 		driver.get("http://localhost:" + port + "/home");
 		loginPage = new LoginPage(driver);
-		homePage = new HomePage(driver);
+		homePage = new HomePageNotesTab(driver);
 		user = UserTests.getTestUser_1();
 		userService.createUser(user);
 		loginPage.login(user.getUsername(),user.getPassword());

@@ -53,7 +53,7 @@ public class FileServiceTests {
 		
 		Mockito.when(multipartFile.getContentType()).thenReturn(testFile.getContentType());
 		Mockito.when(multipartFile.getBytes()).thenReturn(testFile.getData());
-		Mockito.when(multipartFile.getName()).thenReturn(testFile.getName());
+		Mockito.when(multipartFile.getOriginalFilename()).thenReturn(testFile.getName());
 		Mockito.when(multipartFile.getSize()).thenReturn(Long.parseLong(testFile.getSize()));
 	
 		Integer rowAdded = fileService.addFile(testFile.getUserId(), multipartFile);

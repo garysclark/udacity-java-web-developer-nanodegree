@@ -14,7 +14,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import com.udacity.jwdnd.course1.cloudstorage.model.Note;
 import com.udacity.jwdnd.course1.cloudstorage.utilities.WaitUtility;
 
-public class HomePage {
+public class HomePageNotesTab {
 
 	@FindBy(className = "display-5")
 	private WebElement pageTitle;
@@ -53,7 +53,7 @@ public class HomePage {
 	@FindBy (id = "noteDeleteModalLabel")
 	private WebElement deleteModalLabel;
 
-	public HomePage(WebDriver driver) {
+	public HomePageNotesTab(WebDriver driver) {
 		PageFactory.initElements(driver, this);
 		jse = (JavascriptExecutor)driver;
 		wait = new WaitUtility(driver, 5);
