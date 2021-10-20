@@ -1,6 +1,11 @@
 package com.udacity.jwdnd.course1.cloudstorage.controller;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.List;
 
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
@@ -24,6 +29,10 @@ import io.github.bonigarcia.wdm.WebDriverManager;
 @AutoConfigureTestDatabase
 public class HomePageFilesTabTests {
 
+	private static final String TEST_RELATIVE_PATH = "src/main/resources/";
+
+	private static final String TEST_FILENAME = "schema.sql";
+
 	private static ChromeDriver driver;
 
 	@LocalServerPort
@@ -31,7 +40,7 @@ public class HomePageFilesTabTests {
 
 	@Autowired
 	private UserService userService;
-
+	
 	private HomePageFilesTab filesTab;
 
 	private LoginPage loginPage;
@@ -63,5 +72,14 @@ public class HomePageFilesTabTests {
 	@Test
 	public void canAccessFilesTab() {
 		assertTrue(filesTab.isReady());
+	}
+	
+	@Test
+	public void canUploadFile() throws IOException {
+		String absolute = new File(TEST_RELATIVE_PATH + TEST_FILENAME).getCanonicalPath();
+		filesTab.setFileName(absolute);
+		filesTab.selectUpload();
+		List<String> fileNames = filesTab.getFileNames();
+		assertEquals(1, fileNames.size());
 	}
 }

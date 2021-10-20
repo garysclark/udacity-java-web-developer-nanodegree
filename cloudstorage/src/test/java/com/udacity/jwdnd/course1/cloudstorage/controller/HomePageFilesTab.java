@@ -1,5 +1,9 @@
 package com.udacity.jwdnd.course1.cloudstorage.controller;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -7,6 +11,7 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
+import com.udacity.jwdnd.course1.cloudstorage.model.Note;
 import com.udacity.jwdnd.course1.cloudstorage.utilities.WaitUtility;
 
 public class HomePageFilesTab {
@@ -23,6 +28,9 @@ public class HomePageFilesTab {
 	@FindBy (id = "fileUpload")
 	private WebElement fileSelectorControl;
 
+	@FindBy (id = "fileTable")
+	private WebElement fileTable;
+
 	public HomePageFilesTab(ChromeDriver driver) {
 		PageFactory.initElements(driver, this);
 		jse = (JavascriptExecutor)driver;
@@ -38,9 +46,22 @@ public class HomePageFilesTab {
 		wait.until(ExpectedConditions.elementToBeClickable(fileUploadButton));
 	}
 
-	public String selectFile() {
-		fileSelectorControl.click();
-		return null;
+	public void setFileName(String fileName) {
+		fileSelectorControl.sendKeys(fileName);
+	}
+
+	public void selectUpload() {
+		fileUploadButton.click();
+	}
+
+	public List<String> getFileNames() {
+		ArrayList<String> fileNames = new ArrayList<>();
+		List<WebElement> elements = fileTable.findElements(By.tagName("tbody"));
+		for(WebElement trElement:elements) {
+			String fileName = trElement.findElement(By.id("table-fileName")).getText();
+			fileNames.add(fileName);
+		}
+		return fileNames;
 	}
 
 }
