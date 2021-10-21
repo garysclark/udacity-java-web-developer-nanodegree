@@ -47,6 +47,8 @@ public class HomePageFilesTabTests {
 
 	private User user;
 
+	private HomePageNotesTab notesTab;
+
 	@BeforeAll
 	static public void beforeAll() {
 		WebDriverManager.chromedriver().setup();
@@ -59,14 +61,20 @@ public class HomePageFilesTabTests {
 	}
 
 	@BeforeEach
-	public void beforeEach() {
+	public void beforeEach() throws IOException {
 		driver.get("http://localhost:" + port + "/home");
 		filesTab = new HomePageFilesTab(driver);
 		loginPage = new LoginPage(driver);
+		notesTab = new HomePageNotesTab(driver);
+		
 		user = UserTests.getTestUser_1();
 		userService.createUser(user);
 		loginPage.login(user.getUsername(),user.getPassword());
+
 		filesTab.selectFilesTab();
+		String absolute = new File(TEST_RELATIVE_PATH + TEST_FILENAME).getCanonicalPath();
+		filesTab.setFileName(absolute);
+		filesTab.selectUpload();
 	}
 	
 	@Test
@@ -76,9 +84,16 @@ public class HomePageFilesTabTests {
 	
 	@Test
 	public void canUploadFile() throws IOException {
-		String absolute = new File(TEST_RELATIVE_PATH + TEST_FILENAME).getCanonicalPath();
-		filesTab.setFileName(absolute);
-		filesTab.selectUpload();
+		List<String> fileNames = filesTab.getFileNames();
+		assertEquals(1, fileNames.size());
+	}
+	
+	@Test
+	public void verifyFileListPersists() {
+		notesTab.logout();
+		loginPage.waitForLoginPage();
+		loginPage.login(user.getUsername(),user.getPassword());
+		filesTab.selectFilesTab();
 		List<String> fileNames = filesTab.getFileNames();
 		assertEquals(1, fileNames.size());
 	}
