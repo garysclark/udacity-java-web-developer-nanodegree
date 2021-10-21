@@ -43,26 +43,29 @@ public class NoteController {
 			successMessage = "You successfully updated a note";
 		}
 		if(errorMessage == null) {
-			redirectAttributes.addFlashAttribute("ifSuccess", true);
+			redirectAttributes.addFlashAttribute("success", true);
 			redirectAttributes.addFlashAttribute("successMessage", successMessage);
 		} else {
-			redirectAttributes.addFlashAttribute("ifError", true);
+			redirectAttributes.addFlashAttribute("error", true);
 			redirectAttributes.addFlashAttribute("errorMessage", errorMessage);
 		}
 		redirectAttributes.addFlashAttribute("notes", noteService.getNotes(user.getUserId()));
 		redirectAttributes.addFlashAttribute("activeTab", "notes");
 		
-		return "redirect:/home";
+		return "redirect:/result";
 	}
 	
 	@PostMapping("notes/delete")
 	public String deleteNote(@ModelAttribute Note note, RedirectAttributes redirectAttributes, Authentication authentication) {
 		User user = userService.getUser(authentication.getName());
 		noteService.deleteNote(note.getId());
+		String successMessage = "You successfully deleted a note";
+		redirectAttributes.addFlashAttribute("success", true);
+		redirectAttributes.addFlashAttribute("successMessage", successMessage);
 		redirectAttributes.addFlashAttribute("notes", noteService.getNotes(user.getUserId()));
 		redirectAttributes.addFlashAttribute("activeTab", "notes");
 		
-		return "redirect:/home";
+		return "redirect:/result";
 	}
 
 }

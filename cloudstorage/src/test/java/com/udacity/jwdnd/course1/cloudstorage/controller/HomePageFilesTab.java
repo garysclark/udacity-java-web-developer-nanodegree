@@ -63,4 +63,8 @@ public class HomePageFilesTab {
 		return fileNames;
 	}
 
+	public void waitForFilesTab() {
+		wait.until(ExpectedConditions.elementToBeClickable(fileUploadButton));
+	}
+
 }

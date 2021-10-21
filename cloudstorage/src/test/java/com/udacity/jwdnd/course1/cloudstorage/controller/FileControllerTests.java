@@ -42,7 +42,7 @@ public class FileControllerTests {
 	@Captor
 	private ArgumentCaptor<String> keyCaptor;
 	@Captor
-	private ArgumentCaptor<String> valueCaptor;
+	private ArgumentCaptor<Object> valueCaptor;
 	
 	private FileController fileController;
 	private User user;
@@ -75,7 +75,7 @@ public class FileControllerTests {
 	
 		String response = fileController.uploadFile(redirectAttributes, authentication, model, file);
 
-		verifyWithResult("successMessage", "You successfully added a file.", response);
+		verifyWithResult("success", true, "successMessage", "You successfully added a file.", response);
 	}
 
 	@Test
@@ -84,24 +84,27 @@ public class FileControllerTests {
 		
 		String response = fileController.uploadFile(redirectAttributes, authentication, model, file);
 
-		verifyWithResult("errorMessage", "There was an error adding the note.  Please try again.", response);
+		verifyWithResult("error", true, "errorMessage", "There was an error adding the note.  Please try again.", response);
 	}
 	
-	private void verifyWithResult(String resultKey, String resultValue, String response) {
+	private void verifyWithResult(String resultKey, boolean resultValue, String messageKey, String messageValue, String response) {
 		Mockito.verify(fileService).addFile(user.getUserId(), file);
-		Mockito.verify(redirectAttributes, times(3)).addFlashAttribute(keyCaptor.capture(), valueCaptor.capture());
+		Mockito.verify(redirectAttributes, times(4)).addFlashAttribute(keyCaptor.capture(), valueCaptor.capture());
 		List<String> keys = keyCaptor.getAllValues();
-		List<String> values = valueCaptor.getAllValues();
+		List<Object> values = valueCaptor.getAllValues();
 
 		assertEquals(resultKey, keys.get(0));
 		assertEquals(resultValue, values.get(0));
 
-		assertEquals("files", keys.get(1));
-		assertEquals(storedFiles, values.get(1));
+		assertEquals(messageKey, keys.get(1));
+		assertEquals(messageValue, values.get(1));
 
-		assertEquals("activeTab", keys.get(2));
-		assertEquals("files", values.get(2));
+		assertEquals("files", keys.get(2));
+		assertEquals(storedFiles, values.get(2));
 
-		assertEquals("redirect:/home", response);
+		assertEquals("activeTab", keys.get(3));
+		assertEquals("files", values.get(3));
+
+		assertEquals("redirect:/result", response);
 	}
 }

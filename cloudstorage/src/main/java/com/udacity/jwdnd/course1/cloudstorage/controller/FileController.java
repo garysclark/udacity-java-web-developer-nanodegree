@@ -36,14 +36,16 @@ public class FileController {
 		int rowAdded = fileService.addFile(user.getUserId(), file);
 	
 		if(rowAdded < 0) {
+			redirectAttributes.addFlashAttribute("error", true);
 			redirectAttributes.addFlashAttribute("errorMessage", "There was an error adding the note.  Please try again.");
 		} else {
+			redirectAttributes.addFlashAttribute("success", true);
 			redirectAttributes.addFlashAttribute("successMessage", "You successfully added a file.");
 		}
 
 		redirectAttributes.addFlashAttribute("files", fileService.getFiles(user.getUserId()));
 		redirectAttributes.addFlashAttribute("activeTab", "files");
-		return "redirect:/home";
+		return "redirect:/result";
 	}
 
 }

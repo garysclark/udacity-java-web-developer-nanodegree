@@ -49,6 +49,8 @@ public class HomePageNotesTabTests {
 
 	private User user;
 
+	private ResultsPage resultsPage;
+
 	private static WebDriver driver;
 
 	@BeforeAll
@@ -67,12 +69,19 @@ public class HomePageNotesTabTests {
 		driver.get("http://localhost:" + port + "/home");
 		loginPage = new LoginPage(driver);
 		notesTab = new HomePageNotesTab(driver);
+		resultsPage = new ResultsPage(driver);
 		user = UserTests.getTestUser_1();
 		userService.createUser(user);
 		loginPage.login(user.getUsername(),user.getPassword());
 
 		notesTab.selectNotesTab();
 		notesTab.createNote(TEST_NOTE_TITLE, TEST_NOTE_DESCRIPTION);
+		handleSuccessResult();
+	}
+
+	private void handleSuccessResult() {
+		resultsPage.waitForSuccessResultPage();
+		resultsPage.selectSuccessContinueLink();
 		notesTab.waitForNotesTab();
 	}
 
@@ -98,10 +107,10 @@ public class HomePageNotesTabTests {
 	@Test
 	public void canDeleteNote() {
 		notesTab.createNote(TEST_NOTE_TITLE, TEST_NOTE_DESCRIPTION);
-		notesTab.waitForNotesTab();
+		handleSuccessResult();
 		assertEquals(2, notesTab.getNotes().size());
 		notesTab.deleteNote(1);
-		notesTab.waitForNotesTab();
+		handleSuccessResult();
 		assertEquals(1, notesTab.getNotes().size());
 	}
 
@@ -117,6 +126,7 @@ public class HomePageNotesTabTests {
 	@Test
 	public void canEditNote() {
 		notesTab.editNote(0, TEST_EDITED_NOTE_TITLE, TEST_EDITED_NOTE_DESCRIPTION);
+		handleSuccessResult();
 		List<Note> notes = notesTab.getNotes();
 		assertEquals(TEST_EDITED_NOTE_TITLE, notes.get(0).getTitle());
 		assertEquals(TEST_EDITED_NOTE_DESCRIPTION, notes.get(0).getDescription());

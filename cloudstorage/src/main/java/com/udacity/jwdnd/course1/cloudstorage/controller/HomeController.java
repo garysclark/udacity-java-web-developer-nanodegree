@@ -38,10 +38,11 @@ public class HomeController {
 	}
 
 	@GetMapping()
-	public String getContent(Model model, Authentication authentication) {
-		String activeTab = (String) model.getAttribute("activeTab");
+	public String getContent(Model model, Authentication authentication, String activeTab) {
 		if(activeTab == null) {
 			model.addAttribute("activeTab", "files");
+		} else {
+			model.addAttribute("activeTab", activeTab);
 		}
 
 		User user = userService.getUser(authentication.getName());

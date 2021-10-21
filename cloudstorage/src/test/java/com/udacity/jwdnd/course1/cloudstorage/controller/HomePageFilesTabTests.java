@@ -49,6 +49,8 @@ public class HomePageFilesTabTests {
 
 	private HomePageNotesTab notesTab;
 
+	private ResultsPage resultsPage;
+
 	@BeforeAll
 	static public void beforeAll() {
 		WebDriverManager.chromedriver().setup();
@@ -66,6 +68,7 @@ public class HomePageFilesTabTests {
 		filesTab = new HomePageFilesTab(driver);
 		loginPage = new LoginPage(driver);
 		notesTab = new HomePageNotesTab(driver);
+		resultsPage = new ResultsPage(driver);
 		
 		user = UserTests.getTestUser_1();
 		userService.createUser(user);
@@ -75,8 +78,15 @@ public class HomePageFilesTabTests {
 		String absolute = new File(TEST_RELATIVE_PATH + TEST_FILENAME).getCanonicalPath();
 		filesTab.setFileName(absolute);
 		filesTab.selectUpload();
+		handleSuccessResult();
 	}
 	
+	private void handleSuccessResult() {
+		resultsPage.waitForSuccessResultPage();
+		resultsPage.selectSuccessContinueLink();
+		filesTab.waitForFilesTab();
+	}
+
 	@Test
 	public void canAccessFilesTab() {
 		assertTrue(filesTab.isReady());
@@ -97,4 +107,6 @@ public class HomePageFilesTabTests {
 		List<String> fileNames = filesTab.getFileNames();
 		assertEquals(1, fileNames.size());
 	}
+	
+	
 }
