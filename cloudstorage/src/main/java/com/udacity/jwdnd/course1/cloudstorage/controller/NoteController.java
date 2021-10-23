@@ -33,14 +33,18 @@ public class NoteController {
 			Integer userId = user.getUserId();
 			note.setUserid(userId);
 			int rowsAdded = noteService.createNote(note);
-			if(rowsAdded < 0) {
-				errorMessage = "There was an error adding the note.  Please try again.";
+			if(rowsAdded > 0) {
+				successMessage = "You successfully added a note.";
 			} else {
-				successMessage = "You successfully added a note";
+				errorMessage = "There was an error adding the note.  Please try again.";
 			}
 		} else {
-			noteService.updateNote(note);
-			successMessage = "You successfully updated a note";
+			int rowsUpdated = noteService.updateNote(note);
+			if(rowsUpdated > 0) {
+				successMessage = "You successfully updated a note.";
+			} else {
+				errorMessage = "There was an error updating the note.  Please try again.";
+			}
 		}
 		if(errorMessage == null) {
 			redirectAttributes.addFlashAttribute("success", true);
@@ -56,11 +60,23 @@ public class NoteController {
 	
 	@PostMapping("notes/delete")
 	public String deleteNote(@ModelAttribute Note note, RedirectAttributes redirectAttributes, Authentication authentication) {
-		User user = userService.getUser(authentication.getName());
-		noteService.deleteNote(note);
-		String successMessage = "You successfully deleted a note";
-		redirectAttributes.addFlashAttribute("success", true);
-		redirectAttributes.addFlashAttribute("successMessage", successMessage);
+		String errorMessage = null;
+		String successMessage = null;
+
+		int rowsDeleted = noteService.deleteNote(note);
+		
+		if(rowsDeleted > 0) {
+			successMessage = "You successfully deleted a note.";
+		} else {
+			errorMessage = "There was an error deleting the note.  Please try again.";
+		}
+		if(errorMessage == null) {
+			redirectAttributes.addFlashAttribute("success", true);
+			redirectAttributes.addFlashAttribute("successMessage", successMessage);
+		} else {
+			redirectAttributes.addFlashAttribute("error", true);
+			redirectAttributes.addFlashAttribute("errorMessage", errorMessage);
+		}
 		redirectAttributes.addFlashAttribute("activeTab", "notes");
 		
 		return "redirect:/result";
