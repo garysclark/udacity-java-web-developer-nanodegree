@@ -23,6 +23,7 @@ public class UserMapperTests {
 	
 	@Autowired
 	private UserMapper userMapper;
+
 	private User user;
 	private Integer rowNum;
 	
