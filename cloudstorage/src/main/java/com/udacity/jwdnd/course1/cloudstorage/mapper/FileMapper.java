@@ -25,9 +25,9 @@ public interface FileMapper {
 	File findById(Integer id);
 
 	@Update("UPDATE FILES SET filename=#{name}, contenttype=#{contentType}, filesize=#{size}, userid=#{userId}, filedata=#{data} WHERE fileId = #{id}")
-	void update(Integer id, String name, String contentType, String size, Integer userId, byte[] data);
+	Integer update(Integer id, String name, String contentType, String size, Integer userId, byte[] data);
 
 	@Delete("DELETE FROM FILES WHERE fileId = #{id}")
-	void delete(File file);
+	Integer delete(File file);
 
 }

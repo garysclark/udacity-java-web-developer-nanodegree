@@ -58,7 +58,7 @@ public class NoteController {
 	@PostMapping("notes/delete")
 	public String deleteNote(@ModelAttribute Note note, RedirectAttributes redirectAttributes, Authentication authentication) {
 		User user = userService.getUser(authentication.getName());
-		noteService.deleteNote(note.getId());
+		noteService.deleteNote(note);
 		String successMessage = "You successfully deleted a note";
 		redirectAttributes.addFlashAttribute("success", true);
 		redirectAttributes.addFlashAttribute("successMessage", successMessage);

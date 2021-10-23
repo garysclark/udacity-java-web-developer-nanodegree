@@ -22,12 +22,12 @@ public interface NoteMapper {
 	Note findById(Integer noteid);
 
 	@Update("UPDATE NOTES SET notetitle=#{notetitle}, notedescription=#{notedescription}, userid=#{userid} WHERE noteid = #{noteid}")
-	void update(Integer noteid, String notetitle, String notedescription, Integer userid);
-
-	@Delete("DELETE FROM NOTES WHERE noteid = #{noteid}")
-	void delete(Integer noteid);
+	Integer update(Integer noteid, String notetitle, String notedescription, Integer userid);
 
 	@Select("SELECT * FROM NOTES WHERE userid = #{userid}")
 	List<Note> findByUserId(Integer userid);
+
+	@Delete("DELETE FROM NOTES WHERE noteid = #{noteid}")
+	Integer delete(Note note);
 
 }

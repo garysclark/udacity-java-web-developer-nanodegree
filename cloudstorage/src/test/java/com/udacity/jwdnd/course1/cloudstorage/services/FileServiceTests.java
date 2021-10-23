@@ -48,7 +48,7 @@ public class FileServiceTests {
 	public void canAddFile() throws IOException {
 		Mockito.when(fileMapper.create(Mockito.any(File.class))).thenReturn(1);
 		
-		File testFile = FileTests.getTestFile();
+		File testFile = FileTests.getTestFile_1();
 		testFile.setId(null);
 		
 		Mockito.when(multipartFile.getContentType()).thenReturn(testFile.getContentType());

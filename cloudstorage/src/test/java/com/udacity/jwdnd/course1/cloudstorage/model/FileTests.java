@@ -26,7 +26,7 @@ public class FileTests {
 
 	@BeforeEach
 	public void beforeEach() {
-		file = getTestFile();
+		file = getTestFile_1();
 	}
 
 	@Test
@@ -58,11 +58,15 @@ public class FileTests {
 	
 	@Test
 	public void canVerifyEquals() {
-		File file2 = getTestFile();
+		File file2 = getTestFile_1();
 		assertEquals(file, file2);
 	}
 
-	static public File getTestFile() {
+	static public File getTestFile_1() {
 		return new File(TEST_FILE_ID, TEST_FILE_NAME, TEST_CONTENT_TYPE, TEST_FILE_SIZE, TEST_USER_ID, TEST_FILE_DATA);
+	}
+
+	static public File getTestFile_2() {
+		return new File(TEST_FILE_ID_2, TEST_FILE_NAME_2, TEST_CONTENT_TYPE_2, TEST_FILE_SIZE_2, TEST_USER_ID_2, TEST_FILE_DATA_2);
 	}
 }

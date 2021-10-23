@@ -69,8 +69,22 @@ public class UserMapperTests {
 	@Test
 	public void canDeleteUser() {
 		User userToDelete = userMapper.findByUsername(user.getUsername());
-		userMapper.delete(userToDelete.getUserId());
+		userMapper.delete(userToDelete);
 		assertNull(userMapper.findById(userToDelete.getUserId()));
+	}
+	
+	@Test
+	public void canDetectUpdateError() {
+		User user2 = UserTests.getTestUser_2();
+		Integer rowsAffected = userMapper.updateUser(user2.getUserId(), user2.getFirstName(), user2.getLastName(), user2.getPassword());
+		assertEquals(0, rowsAffected);
+	}
+	
+	@Test
+	public void canDetectDeleteError() {
+		User user2 = UserTests.getTestUser_2();
+		Integer rowsAffected = userMapper.delete(user2);
+		assertEquals(0, rowsAffected);
 	}
 	
 }

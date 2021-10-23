@@ -53,7 +53,7 @@ public class FileMapperTests {
 		userMapper.create(testUser2);
 		createdUser2 = userMapper.findByUsername(testUser2.getUsername());
 
-		file = FileTests.getTestFile();
+		file = FileTests.getTestFile_1();
 		file.setUserId(createdUser1.getUserId());
 		rowNum = fileMapper.create(file);
 	}
@@ -106,5 +106,19 @@ public class FileMapperTests {
 		fileMapper.delete(file);
 		File storedFile = fileMapper.findById(file.getId());
 		assertNull(storedFile);
+	}
+	
+	@Test
+	public void canDetectUpdateError() {
+		File file2 = FileTests.getTestFile_2();
+		Integer rowsAffected = fileMapper.update(file2.getId(), file2.getName(), file2.getContentType(), file2.getSize(), file2.getUserId(), file2.getData());
+		assertEquals(0, rowsAffected);
+	}
+	
+	@Test
+	public void canDetectDeleteError() {
+		File file2 = FileTests.getTestFile_2();
+		Integer rowsAffected = fileMapper.delete(file2);
+		assertEquals(0, rowsAffected);
 	}
 }

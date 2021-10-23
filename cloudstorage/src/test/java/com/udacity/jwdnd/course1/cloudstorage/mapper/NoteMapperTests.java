@@ -101,7 +101,21 @@ public class NoteMapperTests {
 	
 	@Test
 	public void canDeleteNote() {
-		noteMapper.delete(secondNote.getId());
+		noteMapper.delete(secondNote);
 		assertNull(noteMapper.findById(secondNote.getId()));
+	}
+	
+	@Test
+	public void canDetectUpdateError() {
+		Note note2 = NoteTests.getTestNote_2();
+		Integer rowsAffected = noteMapper.update(note2.getId(), note2.getTitle(), note2.getDescription(), note2.getUserid());
+		assertEquals(0, rowsAffected);
+	}
+	
+	@Test
+	public void canDetectDeleteError() {
+		Note note2 = NoteTests.getTestNote_2();
+		Integer rowsAffected = noteMapper.delete(note2);
+		assertEquals(0, rowsAffected);
 	}
 }
