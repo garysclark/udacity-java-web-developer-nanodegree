@@ -49,7 +49,6 @@ public class NoteController {
 			redirectAttributes.addFlashAttribute("error", true);
 			redirectAttributes.addFlashAttribute("errorMessage", errorMessage);
 		}
-		redirectAttributes.addFlashAttribute("notes", noteService.getNotes(user.getUserId()));
 		redirectAttributes.addFlashAttribute("activeTab", "notes");
 		
 		return "redirect:/result";
@@ -62,7 +61,6 @@ public class NoteController {
 		String successMessage = "You successfully deleted a note";
 		redirectAttributes.addFlashAttribute("success", true);
 		redirectAttributes.addFlashAttribute("successMessage", successMessage);
-		redirectAttributes.addFlashAttribute("notes", noteService.getNotes(user.getUserId()));
 		redirectAttributes.addFlashAttribute("activeTab", "notes");
 		
 		return "redirect:/result";

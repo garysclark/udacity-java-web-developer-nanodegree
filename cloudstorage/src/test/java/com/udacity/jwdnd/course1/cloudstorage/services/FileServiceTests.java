@@ -2,6 +2,7 @@ package com.udacity.jwdnd.course1.cloudstorage.services;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 import java.io.IOException;
 import java.util.List;
@@ -65,7 +66,7 @@ public class FileServiceTests {
 	}
 	
 	@Test
-	public void canHandleMapperError() {
+	public void canHandleAddFileError() {
 		Mockito.when(fileMapper.create(Mockito.any(File.class))).thenReturn(-1);
 
 		Integer rowAdded = fileService.addFile(0, multipartFile);
@@ -81,5 +82,15 @@ public class FileServiceTests {
 
 		List<File> files = fileService.getFiles(userId);
 		assertNotNull(files);
+	}
+	
+	@Test
+	public void canHandleGetFilesError() {
+		Integer userId = 99;
+		
+		Mockito.when(fileMapper.findByUserId(userId)).thenReturn(null);
+
+		List<File> files = fileService.getFiles(userId);
+		assertNull(files);
 	}
 }

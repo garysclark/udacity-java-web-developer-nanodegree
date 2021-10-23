@@ -89,7 +89,7 @@ public class FileControllerTests {
 	
 	private void verifyWithResult(String resultKey, boolean resultValue, String messageKey, String messageValue, String response) {
 		Mockito.verify(fileService).addFile(user.getUserId(), file);
-		Mockito.verify(redirectAttributes, times(4)).addFlashAttribute(keyCaptor.capture(), valueCaptor.capture());
+		Mockito.verify(redirectAttributes, times(3)).addFlashAttribute(keyCaptor.capture(), valueCaptor.capture());
 		List<String> keys = keyCaptor.getAllValues();
 		List<Object> values = valueCaptor.getAllValues();
 
@@ -99,11 +99,8 @@ public class FileControllerTests {
 		assertEquals(messageKey, keys.get(1));
 		assertEquals(messageValue, values.get(1));
 
-		assertEquals("files", keys.get(2));
-		assertEquals(storedFiles, values.get(2));
-
-		assertEquals("activeTab", keys.get(3));
-		assertEquals("files", values.get(3));
+		assertEquals("activeTab", keys.get(2));
+		assertEquals("files", values.get(2));
 
 		assertEquals("redirect:/result", response);
 	}

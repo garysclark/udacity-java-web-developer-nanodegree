@@ -3,7 +3,6 @@ package com.udacity.jwdnd.course1.cloudstorage.services;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -22,10 +21,11 @@ import com.udacity.jwdnd.course1.cloudstorage.model.UserTests;
 
 public class NoteServiceTests {
 
-	private static final List<Note> TEST_NOTES = new ArrayList<Note>();
-	
 	@Mock
 	private NoteMapper noteMapper;
+	@Mock
+	private List<Note> notes;
+	
 	@Captor
 	private ArgumentCaptor<Note> noteCaptor;
 	private NoteService noteService;
@@ -69,11 +69,11 @@ public class NoteServiceTests {
 	
 	@Test
 	public void canGetNotes() {
-		Mockito.when(noteMapper.findByUserId(user.getUserId())).thenReturn(TEST_NOTES);
+		Mockito.when(noteMapper.findByUserId(user.getUserId())).thenReturn(notes);
 
 		List<Note> notes = noteService.getNotes(user.getUserId());
 
-		assertEquals(TEST_NOTES, notes);
+		assertEquals(notes, notes);
 	}
 	
 	@Test

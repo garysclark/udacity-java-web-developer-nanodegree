@@ -43,7 +43,6 @@ public class FileController {
 			redirectAttributes.addFlashAttribute("successMessage", "You successfully added a file.");
 		}
 
-		redirectAttributes.addFlashAttribute("files", fileService.getFiles(user.getUserId()));
 		redirectAttributes.addFlashAttribute("activeTab", "files");
 		return "redirect:/result";
 	}
