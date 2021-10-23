@@ -17,23 +17,23 @@ public class NoteService {
 	}
 
 	public Integer createNote(Note note) {
-		return noteMapper.create(note);
+		return noteMapper.create(new Note(null, note.getTitle(), note.getDescription(), note.getUserid()));
 	}
 
 	public List<Note> getNotes(Integer userId) {
 		return noteMapper.findByUserId(userId);
 	}
 
-	public void deleteNote(Note note) {
-		noteMapper.delete(note);
+	public Integer deleteNote(Note note) {
+		return noteMapper.delete(note);
 	}
 
 	public Note findNote(Integer noteid) {
 		return noteMapper.findById(noteid);
 	}
 
-	public void updateNote(Note note) {
-		noteMapper.update(note.getId(), note.getTitle(), note.getDescription(), note.getUserid());
+	public Integer updateNote(Note note) {
+		return noteMapper.update(note.getId(), note.getTitle(), note.getDescription(), note.getUserid());
 	}
 	
 }
