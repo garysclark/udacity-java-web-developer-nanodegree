@@ -75,7 +75,7 @@ public class FileControllerTests {
 	
 		String response = fileController.uploadFile(redirectAttributes, authentication, model, file);
 
-		verifyWithResult("success", true, "successMessage", "You successfully added a file.", response);
+		verifyWithResult(true, FileController.ADD_FILE_SUCCESS_MESSAGE, response);
 	}
 
 	@Test
@@ -84,24 +84,24 @@ public class FileControllerTests {
 		
 		String response = fileController.uploadFile(redirectAttributes, authentication, model, file);
 
-		verifyWithResult("error", true, "errorMessage", "There was an error adding the note.  Please try again.", response);
+		verifyWithResult(false, FileController.ADD_FILE_ERROR_MESSAGE, response);
 	}
 	
-	private void verifyWithResult(String resultKey, boolean resultValue, String messageKey, String messageValue, String response) {
+	private void verifyWithResult(boolean resultValue, String messageValue, String response) {
 		Mockito.verify(fileService).addFile(user.getUserId(), file);
 		Mockito.verify(redirectAttributes, times(3)).addFlashAttribute(keyCaptor.capture(), valueCaptor.capture());
 		List<String> keys = keyCaptor.getAllValues();
 		List<Object> values = valueCaptor.getAllValues();
 
-		assertEquals(resultKey, keys.get(0));
+		assertEquals("success", keys.get(0));
 		assertEquals(resultValue, values.get(0));
 
-		assertEquals(messageKey, keys.get(1));
+		assertEquals("message", keys.get(1));
 		assertEquals(messageValue, values.get(1));
 
 		assertEquals("activeTab", keys.get(2));
 		assertEquals("files", values.get(2));
 
-		assertEquals("redirect:/result", response);
+		assertEquals(FileController.MAPPING_RESULT, response);
 	}
 }

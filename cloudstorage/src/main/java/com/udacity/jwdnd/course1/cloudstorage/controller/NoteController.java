@@ -19,7 +19,7 @@ public class NoteController {
 	static final String DELETE_NOTE_SUCCESS_MESSAGE = "You successfully deleted a note.";
 	static final String UPDATE_NOTE_ERROR_MESSAGE = "There was an error updating the note.  Please try again.";
 	static final String UPDATE_NOTE_SUCCESS_MESSAGE = "You successfully updated a note.";
-	static final String ADD_NOT_ERROR_MESSAGE = "There was an error adding the note.  Please try again.";
+	static final String ADD_NOTE_ERROR_MESSAGE = "There was an error adding the note.  Please try again.";
 	static final String ADD_NOTE_SUCCESS_MESSAGE = "You successfully added a note.";
 
 	private UserService userService;
@@ -42,7 +42,7 @@ public class NoteController {
 			if(rowsAdded > 0) {
 				setupResult(true, ADD_NOTE_SUCCESS_MESSAGE, redirectAttributes);
 			} else {
-				setupResult(false, ADD_NOT_ERROR_MESSAGE, redirectAttributes);
+				setupResult(false, ADD_NOTE_ERROR_MESSAGE, redirectAttributes);
 			}
 		} else {
 			int rowsUpdated = noteService.updateNote(note);

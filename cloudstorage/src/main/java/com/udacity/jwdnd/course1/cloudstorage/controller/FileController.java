@@ -16,6 +16,10 @@ import com.udacity.jwdnd.course1.cloudstorage.services.UserService;
 @Controller
 public class FileController {
 
+	static final String MAPPING_RESULT = "redirect:/result";
+	static final String ADD_FILE_SUCCESS_MESSAGE = "You successfully added a file.";
+	static final String ADD_FILE_ERROR_MESSAGE = "There was an error adding the note.  Please try again.";
+
 	private UserService userService;
 	private FileService fileService;
 
@@ -35,16 +39,19 @@ public class FileController {
 		User user = userService.getUser(userName);
 		int rowAdded = fileService.addFile(user.getUserId(), file);
 	
-		if(rowAdded < 0) {
-			redirectAttributes.addFlashAttribute("error", true);
-			redirectAttributes.addFlashAttribute("errorMessage", "There was an error adding the note.  Please try again.");
+		if(rowAdded > 0) {
+			setupResult(true, ADD_FILE_SUCCESS_MESSAGE, redirectAttributes);
 		} else {
-			redirectAttributes.addFlashAttribute("success", true);
-			redirectAttributes.addFlashAttribute("successMessage", "You successfully added a file.");
+			setupResult(false, ADD_FILE_ERROR_MESSAGE, redirectAttributes);
 		}
 
+		return MAPPING_RESULT;
+	}
+	
+	private void setupResult(boolean isSuccess, String message, RedirectAttributes redirectAttributes) {
+		redirectAttributes.addFlashAttribute("success", isSuccess);
+		redirectAttributes.addFlashAttribute("message", message);
 		redirectAttributes.addFlashAttribute("activeTab", "files");
-		return "redirect:/result";
 	}
 
 }

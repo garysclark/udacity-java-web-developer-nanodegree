@@ -76,7 +76,7 @@ public class NoteControllerTests {
 		String response = noteController.createNote(note, redirectAttributes, authentication);
 		
 		Mockito.verify(noteService).createNote(note);
-		verifyWithResult(false, NoteController.ADD_NOT_ERROR_MESSAGE, response);
+		verifyWithResult(false, NoteController.ADD_NOTE_ERROR_MESSAGE, response);
 	}
 	
 	@Test
