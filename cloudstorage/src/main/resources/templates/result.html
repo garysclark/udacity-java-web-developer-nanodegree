@@ -19,7 +19,7 @@
 			<span th:text="${successMessage}">Your changes were successfully saved. </span><span>Click <a id="success-continue-link" th:href="@{'/home?activeTab=' + ${activeTab}}">here</a>
 				to continue.</span> 
 		</div>
-		<div th:if="${error}" class="alert alert-danger fill-parent">
+		<div th:unless="${success}" class="alert alert-danger fill-parent">
 			<h1 class="display-5">Error</h1>
 			<span th:text="${errorMessage}">Example Error Message</span><span>Click <a th:href="@{'/home?activeTab=' + ${activeTab}}">here</a>
 				to continue.</span>

@@ -65,7 +65,7 @@ public class NoteControllerTests {
 		String response = noteController.createNote(note, redirectAttributes, authentication);
 		
 		Mockito.verify(noteService).createNote(note);
-		verifyWithResult("success", true, "successMessage", "You successfully added a note.", response);
+		verifyWithResult(true, NoteController.ADD_NOTE_SUCCESS_MESSAGE, response);
 	}
 	
 	@Test
@@ -76,7 +76,7 @@ public class NoteControllerTests {
 		String response = noteController.createNote(note, redirectAttributes, authentication);
 		
 		Mockito.verify(noteService).createNote(note);
-		verifyWithResult("error", true, "errorMessage", "There was an error adding the note.  Please try again.", response);
+		verifyWithResult(false, NoteController.ADD_NOT_ERROR_MESSAGE, response);
 	}
 	
 	@Test
@@ -87,7 +87,7 @@ public class NoteControllerTests {
 		String response = noteController.createNote(note, redirectAttributes, authentication);
 		
 		Mockito.verify(noteService).updateNote(note);
-		verifyWithResult("success", true, "successMessage", "You successfully updated a note.", response);
+		verifyWithResult(true, NoteController.UPDATE_NOTE_SUCCESS_MESSAGE, response);
 	}
 	
 	@Test
@@ -98,7 +98,7 @@ public class NoteControllerTests {
 		String response = noteController.createNote(note, redirectAttributes, authentication);
 		
 		Mockito.verify(noteService).updateNote(note);
-		verifyWithResult("error", true, "errorMessage", "There was an error updating the note.  Please try again.", response);
+		verifyWithResult(false, NoteController.UPDATE_NOTE_ERROR_MESSAGE, response);
 	}
 	
 	@Test
@@ -107,7 +107,7 @@ public class NoteControllerTests {
 		String response = noteController.deleteNote(note, redirectAttributes, authentication);
 		
 		Mockito.verify(noteService).deleteNote(note);
-		verifyWithResult("success", true, "successMessage", "You successfully deleted a note.", response);
+		verifyWithResult(true, NoteController.DELETE_NOTE_SUCCESS_MESSAGE, response);
 	}
 	
 	@Test
@@ -116,23 +116,23 @@ public class NoteControllerTests {
 		String response = noteController.deleteNote(note, redirectAttributes, authentication);
 		
 		Mockito.verify(noteService).deleteNote(note);
-		verifyWithResult("error", true, "errorMessage", "There was an error deleting the note.  Please try again.", response);
+		verifyWithResult(false, NoteController.DELETE_NOTE_ERROR_MESSAGE, response);
 	}
 	
-	private void verifyWithResult(String resultKey, boolean resultValue, String messageKey, String messageValue, String response) {
+	private void verifyWithResult(boolean resultValue, String messageValue, String response) {
 		Mockito.verify(redirectAttributes, times(3)).addFlashAttribute(keyCaptor.capture(), valueCaptor.capture());
 		List<String> keys = keyCaptor.getAllValues();
 		List<Object> values = valueCaptor.getAllValues();
 
-		assertEquals(resultKey, keys.get(0));
+		assertEquals("success", keys.get(0));
 		assertEquals(resultValue, values.get(0));
 
-		assertEquals(messageKey, keys.get(1));
+		assertEquals("message", keys.get(1));
 		assertEquals(messageValue, values.get(1));
 
 		assertEquals("activeTab", keys.get(2));
 		assertEquals("notes", values.get(2));
 
-		assertEquals("redirect:/result", response);
+		assertEquals(NoteController.MAPPING_RESULT, response);
 	}
 }

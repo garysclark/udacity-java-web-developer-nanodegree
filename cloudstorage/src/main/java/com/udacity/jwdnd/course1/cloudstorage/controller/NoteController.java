@@ -14,6 +14,14 @@ import com.udacity.jwdnd.course1.cloudstorage.services.UserService;
 @Controller
 public class NoteController {
 	
+	static final String MAPPING_RESULT = "redirect:/result";
+	static final String DELETE_NOTE_ERROR_MESSAGE = "There was an error deleting the note.  Please try again.";
+	static final String DELETE_NOTE_SUCCESS_MESSAGE = "You successfully deleted a note.";
+	static final String UPDATE_NOTE_ERROR_MESSAGE = "There was an error updating the note.  Please try again.";
+	static final String UPDATE_NOTE_SUCCESS_MESSAGE = "You successfully updated a note.";
+	static final String ADD_NOT_ERROR_MESSAGE = "There was an error adding the note.  Please try again.";
+	static final String ADD_NOTE_SUCCESS_MESSAGE = "You successfully added a note.";
+
 	private UserService userService;
 	private NoteService noteService;
 
@@ -24,8 +32,6 @@ public class NoteController {
 	
 	@PostMapping("/notes")
 	public String createNote(@ModelAttribute Note note, RedirectAttributes redirectAttributes, Authentication authentication) {
-		String errorMessage = null;
-		String successMessage = null;
 		User user = userService.getUser(authentication.getName());
 		
 		if(noteService.findNote(note.getId()) == null)
@@ -34,52 +40,39 @@ public class NoteController {
 			note.setUserid(userId);
 			int rowsAdded = noteService.createNote(note);
 			if(rowsAdded > 0) {
-				successMessage = "You successfully added a note.";
+				setupResult(true, ADD_NOTE_SUCCESS_MESSAGE, redirectAttributes);
 			} else {
-				errorMessage = "There was an error adding the note.  Please try again.";
+				setupResult(false, ADD_NOT_ERROR_MESSAGE, redirectAttributes);
 			}
 		} else {
 			int rowsUpdated = noteService.updateNote(note);
 			if(rowsUpdated > 0) {
-				successMessage = "You successfully updated a note.";
+				setupResult(true, UPDATE_NOTE_SUCCESS_MESSAGE, redirectAttributes);
 			} else {
-				errorMessage = "There was an error updating the note.  Please try again.";
+				setupResult(false, UPDATE_NOTE_ERROR_MESSAGE, redirectAttributes);
 			}
 		}
-		if(errorMessage == null) {
-			redirectAttributes.addFlashAttribute("success", true);
-			redirectAttributes.addFlashAttribute("successMessage", successMessage);
-		} else {
-			redirectAttributes.addFlashAttribute("error", true);
-			redirectAttributes.addFlashAttribute("errorMessage", errorMessage);
-		}
-		redirectAttributes.addFlashAttribute("activeTab", "notes");
 		
-		return "redirect:/result";
+		return MAPPING_RESULT;
 	}
 	
 	@PostMapping("notes/delete")
 	public String deleteNote(@ModelAttribute Note note, RedirectAttributes redirectAttributes, Authentication authentication) {
-		String errorMessage = null;
-		String successMessage = null;
-
 		int rowsDeleted = noteService.deleteNote(note);
 		
 		if(rowsDeleted > 0) {
-			successMessage = "You successfully deleted a note.";
+			setupResult(true, DELETE_NOTE_SUCCESS_MESSAGE, redirectAttributes);
 		} else {
-			errorMessage = "There was an error deleting the note.  Please try again.";
+			setupResult(false, DELETE_NOTE_ERROR_MESSAGE, redirectAttributes);
 		}
-		if(errorMessage == null) {
-			redirectAttributes.addFlashAttribute("success", true);
-			redirectAttributes.addFlashAttribute("successMessage", successMessage);
-		} else {
-			redirectAttributes.addFlashAttribute("error", true);
-			redirectAttributes.addFlashAttribute("errorMessage", errorMessage);
-		}
-		redirectAttributes.addFlashAttribute("activeTab", "notes");
 		
-		return "redirect:/result";
+		return MAPPING_RESULT;
+	}
+	
+	private void setupResult(boolean isSuccess, String message, RedirectAttributes redirectAttributes) {
+		redirectAttributes.addFlashAttribute("success", isSuccess);
+		redirectAttributes.addFlashAttribute("message", message);
+		redirectAttributes.addFlashAttribute("activeTab", "notes");
 	}
 
 }
