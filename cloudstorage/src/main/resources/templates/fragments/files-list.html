@@ -12,7 +12,7 @@
 			</thead>
 			<tbody th:each="file:${files}" id="files-table-body">
 				<tr>
-					<td><a target="_blank" class="btn btn-success">View</a> <a
+					<td><a th:href="@{'files/view?fileId=' + ${file.id}}" target="_blank" class="btn btn-success">View</a> <a
 						class="btn btn-danger">Delete</a></td>
 					<th  id="table-fileName" th:text="${file.getName()}" scope="row">ExampleFile.txt</th>
 				</tr>

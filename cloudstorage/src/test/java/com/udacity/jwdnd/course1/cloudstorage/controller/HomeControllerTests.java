@@ -65,7 +65,7 @@ public class HomeControllerTests {
 		Mockito.when(userService.getUser(user.getUsername())).thenReturn(user);
 		Mockito.when(authentication.getName()).thenReturn(user.getUsername());
 		Mockito.when(noteService.getNotes(user.getUserId())).thenReturn(notes);
-		Mockito.when(fileService.getFiles(user.getUserId())).thenReturn(files);		
+		Mockito.when(fileService.getFilesByUserId(user.getUserId())).thenReturn(files);		
 		String response = homeController.getContent(model, authentication, null);
 		
 		Mockito.verify(model, times(3)).addAttribute(keyCaptor.capture(), valueCaptor.capture());

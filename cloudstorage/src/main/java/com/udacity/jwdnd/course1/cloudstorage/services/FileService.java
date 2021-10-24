@@ -33,7 +33,7 @@ public class FileService {
 		return fileMapper.create(newFile);
 	}
 
-	public List<File> getFiles(Integer userId) {
+	public List<File> getFilesByUserId(Integer userId) {
 		return fileMapper.findByUserId(userId);
 	}
 

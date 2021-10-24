@@ -80,7 +80,7 @@ public class FileServiceTests {
 		
 		Mockito.when(fileMapper.findByUserId(userId)).thenReturn(userFiles);
 
-		List<File> files = fileService.getFiles(userId);
+		List<File> files = fileService.getFilesByUserId(userId);
 		assertNotNull(files);
 	}
 	
@@ -90,7 +90,7 @@ public class FileServiceTests {
 		
 		Mockito.when(fileMapper.findByUserId(userId)).thenReturn(null);
 
-		List<File> files = fileService.getFiles(userId);
+		List<File> files = fileService.getFilesByUserId(userId);
 		assertNull(files);
 	}
 }

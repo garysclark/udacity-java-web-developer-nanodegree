@@ -53,7 +53,7 @@ public class HomeController {
 		}
 		
 		if(model.getAttribute("files") == null) {
-			List<File> files = fileService.getFiles(user.getUserId());
+			List<File> files = fileService.getFilesByUserId(user.getUserId());
 			model.addAttribute("files", files);
 		}
 

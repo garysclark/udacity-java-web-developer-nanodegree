@@ -55,7 +55,7 @@ public class FileControllerTests {
 		fileController = new FileController(fileService, userService);
 		Mockito.when(authentication.getName()).thenReturn(user.getUsername());
 		Mockito.when(userService.getUser(user.getUsername())).thenReturn(user);
-		Mockito.when(fileService.getFiles(user.getUserId())).thenReturn(storedFiles);
+		Mockito.when(fileService.getFilesByUserId(user.getUserId())).thenReturn(storedFiles);
 	}
 	
 	@Test
