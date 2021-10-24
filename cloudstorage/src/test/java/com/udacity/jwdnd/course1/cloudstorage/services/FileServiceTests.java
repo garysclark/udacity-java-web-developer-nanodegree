@@ -93,4 +93,14 @@ public class FileServiceTests {
 		List<File> files = fileService.getFilesByUserId(userId);
 		assertNull(files);
 	}
+	
+	@Test
+	public void canGetFileByFileId() {
+		File file = FileTests.getTestFile_1();
+		Mockito.when(fileMapper.findById(file.getId())).thenReturn(file);
+		
+		File foundFile = fileService.getFileByFileId(file.getId());
+		
+		assertEquals(file, foundFile);
+	}
 }

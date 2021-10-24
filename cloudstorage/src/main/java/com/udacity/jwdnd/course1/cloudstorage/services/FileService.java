@@ -37,4 +37,8 @@ public class FileService {
 		return fileMapper.findByUserId(userId);
 	}
 
+	public File getFileByFileId(Integer fileId) {
+		return fileMapper.findById(fileId);
+	}
+
 }

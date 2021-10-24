@@ -63,7 +63,7 @@ public class HomePageFilesTabTests {
 	}
 
 	@BeforeEach
-	public void beforeEach() throws IOException {
+	public void beforeEach(){
 		driver.get("http://localhost:" + port + "/home");
 		filesTab = new HomePageFilesTab(driver);
 		loginPage = new LoginPage(driver);
@@ -75,14 +75,11 @@ public class HomePageFilesTabTests {
 		loginPage.login(user.getUsername(),user.getPassword());
 
 		filesTab.selectFilesTab();
-		String absolute = new File(TEST_RELATIVE_PATH + TEST_FILENAME).getCanonicalPath();
-		filesTab.setFileName(absolute);
-		filesTab.selectUpload();
-		handleSuccessResult();
 	}
 	
 	private void handleSuccessResult() {
 		resultsPage.waitForSuccessResultPage();
+		assertEquals(FileController.ADD_FILE_SUCCESS_MESSAGE, resultsPage.getSuccessMessage());
 		resultsPage.selectSuccessContinueLink();
 		filesTab.waitForFilesTab();
 	}
@@ -94,18 +91,36 @@ public class HomePageFilesTabTests {
 	
 	@Test
 	public void canUploadFile() throws IOException {
+		uploadValidFile();
 		List<String> fileNames = filesTab.getFileNames();
 		assertEquals(1, fileNames.size());
 	}
 	
+	private void uploadValidFile() throws IOException {
+		String absolute = new File(TEST_RELATIVE_PATH + TEST_FILENAME).getCanonicalPath();
+		filesTab.setFileName(absolute);
+		filesTab.selectUpload();
+		handleSuccessResult();
+	}
+
 	@Test
-	public void verifyFileListPersists() {
+	public void verifyFileListPersists() throws IOException {
+		uploadValidFile();
 		notesTab.logout();
 		loginPage.waitForLoginPage();
 		loginPage.login(user.getUsername(),user.getPassword());
 		filesTab.selectFilesTab();
 		List<String> fileNames = filesTab.getFileNames();
 		assertEquals(1, fileNames.size());
+	}
+	
+	@Test
+	public void canHandleNoFileSelectedError() throws IOException {
+		filesTab.selectUpload();
+		resultsPage.waitForErrorResultPage();
+		assertEquals(FileController.ADD_NO_FILE_SELECTED_ERROR_MESSAGE, resultsPage.getErrorMessage());
+		resultsPage.selectErrorContinueLink();
+		filesTab.waitForFilesTab();
 	}
 	
 	

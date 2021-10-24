@@ -13,6 +13,7 @@ import org.mockito.Captor;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.ui.Model;
 import org.springframework.web.multipart.MultipartFile;
@@ -43,11 +44,11 @@ public class FileControllerTests {
 	private ArgumentCaptor<String> keyCaptor;
 	@Captor
 	private ArgumentCaptor<Object> valueCaptor;
-	
+
 	private FileController fileController;
 	private User user;
 	private List<File> storedFiles;
-	
+
 	@BeforeEach
 	public void beforeEach() {
 		MockitoAnnotations.initMocks(this);
@@ -57,22 +58,23 @@ public class FileControllerTests {
 		Mockito.when(userService.getUser(user.getUsername())).thenReturn(user);
 		Mockito.when(fileService.getFilesByUserId(user.getUserId())).thenReturn(storedFiles);
 	}
-	
+
 	@Test
 	public void canCreateFileController() {
 		assertNotNull(fileController);
 	}
-	
+
 	@Test
 	public void canGetDTO() {
 		FileDTO dto = fileController.getFileDTO();
 		assertNotNull(dto);
 	}
-	
+
 	@Test
 	public void canUploadFile() {
+		Mockito.when(file.getOriginalFilename()).thenReturn("File Name");
 		Mockito.when(fileService.addFile(user.getUserId(), file)).thenReturn(1);
-	
+
 		String response = fileController.uploadFile(redirectAttributes, authentication, model, file);
 
 		verifyWithResult(true, FileController.ADD_FILE_SUCCESS_MESSAGE, response);
@@ -80,15 +82,27 @@ public class FileControllerTests {
 
 	@Test
 	public void canHandleAddFileError() {
+		Mockito.when(file.getOriginalFilename()).thenReturn("File Name");
 		Mockito.when(fileService.addFile(user.getUserId(), file)).thenReturn(-1);
-		
+
 		String response = fileController.uploadFile(redirectAttributes, authentication, model, file);
 
 		verifyWithResult(false, FileController.ADD_FILE_ERROR_MESSAGE, response);
 	}
-	
+
+	@Test
+	public void canHandleNoFileSelectedError() {
+		Mockito.when(file.getOriginalFilename()).thenReturn("");
+
+		String response = fileController.uploadFile(redirectAttributes, authentication, model, file);
+
+		verifyWithResult(false, FileController.ADD_NO_FILE_SELECTED_ERROR_MESSAGE, response);
+	}
+
 	private void verifyWithResult(boolean resultValue, String messageValue, String response) {
-		Mockito.verify(fileService).addFile(user.getUserId(), file);
+		if(!messageValue.equals(FileController.ADD_NO_FILE_SELECTED_ERROR_MESSAGE)) {
+			Mockito.verify(fileService).addFile(user.getUserId(), file);
+		}
 		Mockito.verify(redirectAttributes, times(3)).addFlashAttribute(keyCaptor.capture(), valueCaptor.capture());
 		List<String> keys = keyCaptor.getAllValues();
 		List<Object> values = valueCaptor.getAllValues();
@@ -103,5 +117,14 @@ public class FileControllerTests {
 		assertEquals("files", values.get(2));
 
 		assertEquals(FileController.MAPPING_RESULT, response);
+	}
+
+//	@Test
+	public void canViewFile() {
+		Integer fileId = 1;
+
+		ResponseEntity<byte[]> response = fileController.viewFile(redirectAttributes, authentication, fileId);
+
+		assertNotNull(response);
 	}
 }
