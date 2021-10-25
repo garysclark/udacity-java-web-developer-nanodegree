@@ -57,6 +57,7 @@
 						</div>
 					</form>
 					<div th:insert="fragments/files-list :: files-list"></div>
+					<div th:insert="fragments/file-delete-modal :: file-delete-modal"></div>
 				</div>
 				<div class="tab-pane fade"
 					th:classappend="${#strings.equals(activeTab, 'notes')?'show active':''}"
@@ -169,6 +170,19 @@
 		function showDeleteNoteModal(noteId) {
 			$('#delete-note-id').val(noteId ? noteId : '');
 			$('#noteDeleteModal').modal('show');
+		}
+
+		// For opening the note modal
+		function showDeleteFileModal(fileId) {
+			$('#delete-file-id').val(fileId ? fileId : '');
+			$('#fileDeleteModal').modal('show');
+		}
+
+		// For opening the note modal
+		function showDeleteModal(type,id) {
+			$('#type').val(type ? type : '');
+			$('#id').val(id ? id : '');
+			$('#deleteModal').modal('show');
 		}
 
 		// For opening the credentials modal

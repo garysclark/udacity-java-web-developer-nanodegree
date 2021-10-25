@@ -10,14 +10,14 @@ public class FileTests {
 
 	private static final Integer TEST_FILE_ID = 99;
 	private static final String TEST_FILE_NAME = "File Name";
-	private static final String TEST_CONTENT_TYPE = "Content Type";
+	private static final String TEST_CONTENT_TYPE = "application/vnd.oasis.opendocument.text";
 	private static final String TEST_FILE_SIZE = "224455";
 	private static final Integer TEST_USER_ID = 999;
 	private static final byte[] TEST_FILE_DATA = {11,22,33,44};
 
 	private static final Integer TEST_FILE_ID_2 = 100;
 	private static final String TEST_FILE_NAME_2 = "File Name 2";
-	private static final String TEST_CONTENT_TYPE_2 = "Content Type 2";
+	private static final String TEST_CONTENT_TYPE_2 = "application/oasis.opendocument.text";
 	private static final String TEST_FILE_SIZE_2 = "55443322";
 	private static final Integer TEST_USER_ID_2 = 1000;
 	private static final byte[] TEST_FILE_DATA_2 = {44,33,22,11};

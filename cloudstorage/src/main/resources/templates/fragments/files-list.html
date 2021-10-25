@@ -2,7 +2,7 @@
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:th="https://www.thymeleaf.org">
 <body>
-	<div th:fragment="files-list"  class="table-responsive">
+	<div th:fragment="files-list" class="table-responsive">
 		<table class="table table-striped" id="fileTable">
 			<thead>
 				<tr>
@@ -12,9 +12,14 @@
 			</thead>
 			<tbody th:each="file:${files}" id="files-table-body">
 				<tr>
-					<td><a th:href="@{'files/view?fileId=' + ${file.id}}" target="_blank" class="btn btn-success">View</a> <a
-						class="btn btn-danger">Delete</a></td>
-					<th  id="table-fileName" th:text="${file.getName()}" scope="row">ExampleFile.txt</th>
+					<td><a th:href="@{'files/view?fileId=' + ${file.id}}"
+						target="_blank" class="btn btn-success">View</a> 
+						<button type="button" class="btn btn-danger"
+							id="delete-file-button" th:id="${file.getId()}"
+							onclick="showDeleteFileModal(this.getAttribute('id'))">Delete
+						</button>
+						</td>
+					<th id="table-fileName" th:text="${file.getName()}" scope="row">ExampleFile.txt</th>
 				</tr>
 			</tbody>
 		</table>

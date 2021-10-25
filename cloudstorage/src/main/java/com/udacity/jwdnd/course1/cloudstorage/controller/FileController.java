@@ -58,6 +58,11 @@ public class FileController {
 
 		return MAPPING_RESULT;
 	}
+	
+	@PostMapping("/files/delete")
+	public String deleteFile(@ModelAttribute File file, RedirectAttributes redirectAttributes, Authentication authentication) {
+		return MAPPING_RESULT;
+	}
 
 	@GetMapping("/files/view")
 	public ResponseEntity<byte[]> viewFile(RedirectAttributes redirectAttributes, Authentication authentication, Integer fileId) {

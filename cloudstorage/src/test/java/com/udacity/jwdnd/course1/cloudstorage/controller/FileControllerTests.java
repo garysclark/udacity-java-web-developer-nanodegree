@@ -21,6 +21,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.udacity.jwdnd.course1.cloudstorage.dto.FileDTO;
 import com.udacity.jwdnd.course1.cloudstorage.model.File;
+import com.udacity.jwdnd.course1.cloudstorage.model.FileTests;
 import com.udacity.jwdnd.course1.cloudstorage.model.User;
 import com.udacity.jwdnd.course1.cloudstorage.model.UserTests;
 import com.udacity.jwdnd.course1.cloudstorage.services.FileService;
@@ -119,12 +120,15 @@ public class FileControllerTests {
 		assertEquals(FileController.MAPPING_RESULT, response);
 	}
 
-//	@Test
+	@Test
 	public void canViewFile() {
 		Integer fileId = 1;
-
+		File file = FileTests.getTestFile_1();
+		Mockito.when(fileService.getFileByFileId(fileId)).thenReturn(file);
+		
 		ResponseEntity<byte[]> response = fileController.viewFile(redirectAttributes, authentication, fileId);
 
 		assertNotNull(response);
+		assertEquals(file.getData(), response.getBody());
 	}
 }
