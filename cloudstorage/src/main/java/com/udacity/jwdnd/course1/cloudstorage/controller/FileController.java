@@ -23,8 +23,10 @@ public class FileController {
 
 	static final String MAPPING_RESULT = "redirect:/result";
 	static final String ADD_FILE_SUCCESS_MESSAGE = "You successfully added a file.";
-	static final String ADD_FILE_ERROR_MESSAGE = "There was an error adding the note.  Please try again.";
+	static final String ADD_FILE_ERROR_MESSAGE = "There was an error adding the file.  Please try again.";
 	static final String ADD_NO_FILE_SELECTED_ERROR_MESSAGE = "No file selected. Please try again.";
+	static final String DELETE_FILE_SUCCESS_MESSAGE = "You successfully deleted a file.";
+	static final String DELETE_FILE_ERROR_MESSAGE = "There was an error deleting the file.  Please try again.";
 
 	private UserService userService;
 	private FileService fileService;
@@ -61,6 +63,15 @@ public class FileController {
 	
 	@PostMapping("/files/delete")
 	public String deleteFile(@ModelAttribute File file, RedirectAttributes redirectAttributes, Authentication authentication) {
+		
+		int rowsDeleted = fileService.deleteFile(file);
+		
+		if(rowsDeleted > 0) {
+			setupResult(true, DELETE_FILE_SUCCESS_MESSAGE, redirectAttributes);
+		} else {
+			setupResult(false, DELETE_FILE_ERROR_MESSAGE, redirectAttributes);
+		}
+		
 		return MAPPING_RESULT;
 	}
 

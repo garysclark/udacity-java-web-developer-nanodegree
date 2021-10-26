@@ -33,11 +33,13 @@ public class FileServiceTests {
 	private ArgumentCaptor<File> fileArgument;
 	
 	private FileService fileService;
+	private File testFile;
 	
 	@BeforeEach
 	public void beforeEach() {
 		MockitoAnnotations.initMocks(this);
 		fileService = new FileService(fileMapper);
+		testFile = FileTests.getTestFile_1();
 	}
 	
 	@Test
@@ -49,7 +51,6 @@ public class FileServiceTests {
 	public void canAddFile() throws IOException {
 		Mockito.when(fileMapper.create(Mockito.any(File.class))).thenReturn(1);
 		
-		File testFile = FileTests.getTestFile_1();
 		testFile.setId(null);
 		
 		Mockito.when(multipartFile.getContentType()).thenReturn(testFile.getContentType());
@@ -76,31 +77,44 @@ public class FileServiceTests {
 	
 	@Test
 	public void canGetListOfFilesForUser() {
-		Integer userId = 99;
-		
-		Mockito.when(fileMapper.findByUserId(userId)).thenReturn(userFiles);
+		Mockito.when(fileMapper.findByUserId(testFile.getUserId())).thenReturn(userFiles);
 
-		List<File> files = fileService.getFilesByUserId(userId);
+		List<File> files = fileService.getFilesByUserId(testFile.getUserId());
 		assertNotNull(files);
 	}
 	
 	@Test
 	public void canHandleGetFilesError() {
-		Integer userId = 99;
-		
-		Mockito.when(fileMapper.findByUserId(userId)).thenReturn(null);
+		Mockito.when(fileMapper.findByUserId(testFile.getUserId())).thenReturn(null);
 
-		List<File> files = fileService.getFilesByUserId(userId);
+		List<File> files = fileService.getFilesByUserId(testFile.getUserId());
 		assertNull(files);
 	}
 	
 	@Test
 	public void canGetFileByFileId() {
-		File file = FileTests.getTestFile_1();
-		Mockito.when(fileMapper.findById(file.getId())).thenReturn(file);
+		Mockito.when(fileMapper.findById(testFile.getId())).thenReturn(testFile);
 		
-		File foundFile = fileService.getFileByFileId(file.getId());
+		File foundFile = fileService.getFileByFileId(testFile.getId());
 		
-		assertEquals(file, foundFile);
+		assertEquals(testFile, foundFile);
+	}
+	
+	@Test
+	public void canDeleteFile() {
+		Mockito.when(fileMapper.delete(testFile)).thenReturn(1);
+		
+		int rowsDeleted = fileService.deleteFile(testFile);
+		
+		assertEquals(1, rowsDeleted);
+	}
+	
+	@Test
+	public void canHandleDeleteFileError() {
+		Mockito.when(fileMapper.delete(testFile)).thenReturn(0);
+		
+		int rowsDeleted = fileService.deleteFile(testFile);
+		
+		assertEquals(0, rowsDeleted);
 	}
 }

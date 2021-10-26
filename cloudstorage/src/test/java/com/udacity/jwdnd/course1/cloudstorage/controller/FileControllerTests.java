@@ -36,7 +36,7 @@ public class FileControllerTests {
 	@Mock
 	private Model model;
 	@Mock
-	private MultipartFile file;
+	private MultipartFile multipartFile;
 	@Mock
 	private FileService fileService;
 	@Mock
@@ -73,37 +73,78 @@ public class FileControllerTests {
 
 	@Test
 	public void canUploadFile() {
-		Mockito.when(file.getOriginalFilename()).thenReturn("File Name");
-		Mockito.when(fileService.addFile(user.getUserId(), file)).thenReturn(1);
+		Mockito.when(multipartFile.getOriginalFilename()).thenReturn("File Name");
+		Mockito.when(fileService.addFile(user.getUserId(), multipartFile)).thenReturn(1);
 
-		String response = fileController.uploadFile(redirectAttributes, authentication, model, file);
+		String response = fileController.uploadFile(redirectAttributes, authentication, model, multipartFile);
 
-		verifyWithResult(true, FileController.ADD_FILE_SUCCESS_MESSAGE, response);
+		verifyAddFileWithResult(true, FileController.ADD_FILE_SUCCESS_MESSAGE, response);
 	}
 
 	@Test
 	public void canHandleAddFileError() {
-		Mockito.when(file.getOriginalFilename()).thenReturn("File Name");
-		Mockito.when(fileService.addFile(user.getUserId(), file)).thenReturn(-1);
+		Mockito.when(multipartFile.getOriginalFilename()).thenReturn("File Name");
+		Mockito.when(fileService.addFile(user.getUserId(), multipartFile)).thenReturn(-1);
 
-		String response = fileController.uploadFile(redirectAttributes, authentication, model, file);
+		String response = fileController.uploadFile(redirectAttributes, authentication, model, multipartFile);
 
-		verifyWithResult(false, FileController.ADD_FILE_ERROR_MESSAGE, response);
+		verifyAddFileWithResult(false, FileController.ADD_FILE_ERROR_MESSAGE, response);
 	}
 
 	@Test
 	public void canHandleNoFileSelectedError() {
-		Mockito.when(file.getOriginalFilename()).thenReturn("");
+		Mockito.when(multipartFile.getOriginalFilename()).thenReturn("");
 
-		String response = fileController.uploadFile(redirectAttributes, authentication, model, file);
+		String response = fileController.uploadFile(redirectAttributes, authentication, model, multipartFile);
 
-		verifyWithResult(false, FileController.ADD_NO_FILE_SELECTED_ERROR_MESSAGE, response);
+		verifyAddFileWithResult(false, FileController.ADD_NO_FILE_SELECTED_ERROR_MESSAGE, response);
 	}
 
-	private void verifyWithResult(boolean resultValue, String messageValue, String response) {
+	private void verifyAddFileWithResult(boolean resultValue, String messageValue, String response) {
 		if(!messageValue.equals(FileController.ADD_NO_FILE_SELECTED_ERROR_MESSAGE)) {
-			Mockito.verify(fileService).addFile(user.getUserId(), file);
+			Mockito.verify(fileService).addFile(user.getUserId(), multipartFile);
 		}
+		verifyResultAndAttributes(resultValue, messageValue, response);
+	}
+
+	@Test
+	public void canViewFile() {
+		Integer fileId = 1;
+		File file = FileTests.getTestFile_1();
+		Mockito.when(fileService.getFileByFileId(fileId)).thenReturn(file);
+
+		ResponseEntity<byte[]> response = fileController.viewFile(redirectAttributes, authentication, fileId);
+
+		assertNotNull(response);
+		assertEquals(file.getData(), response.getBody());
+	}
+
+	@Test
+	public void canDeleteFile() {
+		File file = FileTests.getTestFile_1();
+		Mockito.when(fileService.deleteFile(file)).thenReturn(1);
+		
+		String response = fileController.deleteFile(file, redirectAttributes, authentication);
+
+		verifyDeleteFileWithResult(true, FileController.DELETE_FILE_SUCCESS_MESSAGE, response, file);
+	}
+
+	@Test
+	public void canHandleDeleteFileError() {
+		File file = FileTests.getTestFile_1();
+		Mockito.when(fileService.deleteFile(file)).thenReturn(0);
+		
+		String response = fileController.deleteFile(file, redirectAttributes, authentication);
+
+		verifyDeleteFileWithResult(false, FileController.DELETE_FILE_ERROR_MESSAGE, response, file);
+	}
+
+	private void verifyDeleteFileWithResult(boolean resultValue, String messageValue, String response, File file) {
+		Mockito.verify(fileService).deleteFile(file);
+		verifyResultAndAttributes(resultValue, messageValue, response);
+	}
+
+	private void verifyResultAndAttributes(boolean resultValue, String messageValue, String response) {
 		Mockito.verify(redirectAttributes, times(3)).addFlashAttribute(keyCaptor.capture(), valueCaptor.capture());
 		List<String> keys = keyCaptor.getAllValues();
 		List<Object> values = valueCaptor.getAllValues();
@@ -118,17 +159,5 @@ public class FileControllerTests {
 		assertEquals("files", values.get(2));
 
 		assertEquals(FileController.MAPPING_RESULT, response);
-	}
-
-	@Test
-	public void canViewFile() {
-		Integer fileId = 1;
-		File file = FileTests.getTestFile_1();
-		Mockito.when(fileService.getFileByFileId(fileId)).thenReturn(file);
-		
-		ResponseEntity<byte[]> response = fileController.viewFile(redirectAttributes, authentication, fileId);
-
-		assertNotNull(response);
-		assertEquals(file.getData(), response.getBody());
 	}
 }

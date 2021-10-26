@@ -31,7 +31,9 @@ public class HomePageFilesTabTests {
 
 	private static final String TEST_RELATIVE_PATH = "src/main/resources/";
 
-	private static final String TEST_FILENAME = "schema.sql";
+	private static final String TEST_FILENAME_1 = "schema.sql";
+
+	private static final String TEST_FILENAME_2 = "application.properties";
 
 	private static ChromeDriver driver;
 
@@ -77,9 +79,16 @@ public class HomePageFilesTabTests {
 		filesTab.selectFilesTab();
 	}
 	
-	private void handleSuccessResult() {
+	private void uploadValidFile(String filePath) throws IOException {
+		String absolute = new File(filePath).getCanonicalPath();
+		filesTab.setFileName(absolute);
+		filesTab.selectUpload();
+		handleSuccessResult(FileController.ADD_FILE_SUCCESS_MESSAGE);
+	}
+
+	private void handleSuccessResult(String message) {
 		resultsPage.waitForSuccessResultPage();
-		assertEquals(FileController.ADD_FILE_SUCCESS_MESSAGE, resultsPage.getSuccessMessage());
+		assertEquals(message, resultsPage.getSuccessMessage());
 		resultsPage.selectSuccessContinueLink();
 		filesTab.waitForFilesTab();
 	}
@@ -91,21 +100,14 @@ public class HomePageFilesTabTests {
 	
 	@Test
 	public void canUploadFile() throws IOException {
-		uploadValidFile();
+		uploadValidFile(TEST_RELATIVE_PATH + TEST_FILENAME_1);
 		List<String> fileNames = filesTab.getFileNames();
 		assertEquals(1, fileNames.size());
-	}
-	
-	private void uploadValidFile() throws IOException {
-		String absolute = new File(TEST_RELATIVE_PATH + TEST_FILENAME).getCanonicalPath();
-		filesTab.setFileName(absolute);
-		filesTab.selectUpload();
-		handleSuccessResult();
 	}
 
 	@Test
 	public void verifyFileListPersists() throws IOException {
-		uploadValidFile();
+		uploadValidFile(TEST_RELATIVE_PATH + TEST_FILENAME_1);
 		notesTab.logout();
 		loginPage.waitForLoginPage();
 		loginPage.login(user.getUsername(),user.getPassword());
@@ -123,5 +125,14 @@ public class HomePageFilesTabTests {
 		filesTab.waitForFilesTab();
 	}
 	
+	@Test
+	public void canDeleteFile() throws IOException {
+		uploadValidFile(TEST_RELATIVE_PATH + TEST_FILENAME_1);
+		uploadValidFile(TEST_RELATIVE_PATH + TEST_FILENAME_2);
+		assertEquals(2, filesTab.getFileNames().size());
+		filesTab.deleteFile(0);
+		handleSuccessResult(FileController.DELETE_FILE_SUCCESS_MESSAGE);
+		assertEquals(1, filesTab.getFileNames().size());
+	}
 	
 }

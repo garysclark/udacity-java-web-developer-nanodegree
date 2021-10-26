@@ -30,6 +30,9 @@ public class HomePageFilesTab {
 	@FindBy (id = "fileTable")
 	private WebElement fileTable;
 
+	@FindBy(id = "delete-file-confirm-button")
+	private WebElement deleteFileConfirmButton;
+
 	public HomePageFilesTab(ChromeDriver driver) {
 		PageFactory.initElements(driver, this);
 		jse = (JavascriptExecutor)driver;
@@ -65,6 +68,17 @@ public class HomePageFilesTab {
 
 	public void waitForFilesTab() {
 		wait.until(ExpectedConditions.elementToBeClickable(fileUploadButton));
+	}
+
+	public void deleteFile(int fileNumber) {
+		WebElement deleteButton = getDeleteButtonForFile(fileNumber);
+		deleteButton.click();
+		deleteFileConfirmButton.click();
+	}
+
+	private WebElement getDeleteButtonForFile(int fileNumber) {
+		List<WebElement> elements = fileTable.findElements(By.tagName("button"));
+		return elements.get(fileNumber);
 	}
 
 }
