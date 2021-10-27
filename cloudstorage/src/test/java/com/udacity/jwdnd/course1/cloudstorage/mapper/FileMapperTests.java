@@ -83,6 +83,12 @@ public class FileMapperTests {
 	}
 	
 	@Test
+	public void canFindByFilename() {
+		File storedFile = fileMapper.findByFileName(file.getUserId(), file.getName());
+		assertEquals(file, storedFile);
+	}
+	
+	@Test
 	public void canUpdateFile() {
 		file.setContentType(file.getContentType() + TEST_SUFFIX);
 		

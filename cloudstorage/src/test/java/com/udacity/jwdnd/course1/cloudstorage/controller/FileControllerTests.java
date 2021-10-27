@@ -97,13 +97,11 @@ public class FileControllerTests {
 
 		String response = fileController.uploadFile(redirectAttributes, authentication, model, multipartFile);
 
-		verifyAddFileWithResult(false, FileController.ADD_NO_FILE_SELECTED_ERROR_MESSAGE, response);
+		verifyResultAndAttributes(false, FileController.ADD_NO_FILE_SELECTED_ERROR_MESSAGE, response);
 	}
 
 	private void verifyAddFileWithResult(boolean resultValue, String messageValue, String response) {
-		if(!messageValue.equals(FileController.ADD_NO_FILE_SELECTED_ERROR_MESSAGE)) {
-			Mockito.verify(fileService).addFile(user.getUserId(), multipartFile);
-		}
+		Mockito.verify(fileService).addFile(user.getUserId(), multipartFile);
 		verifyResultAndAttributes(resultValue, messageValue, response);
 	}
 
@@ -123,7 +121,7 @@ public class FileControllerTests {
 	public void canDeleteFile() {
 		File file = FileTests.getTestFile_1();
 		Mockito.when(fileService.deleteFile(file)).thenReturn(1);
-		
+
 		String response = fileController.deleteFile(file, redirectAttributes, authentication);
 
 		verifyDeleteFileWithResult(true, FileController.DELETE_FILE_SUCCESS_MESSAGE, response, file);
@@ -133,10 +131,21 @@ public class FileControllerTests {
 	public void canHandleDeleteFileError() {
 		File file = FileTests.getTestFile_1();
 		Mockito.when(fileService.deleteFile(file)).thenReturn(0);
-		
+
 		String response = fileController.deleteFile(file, redirectAttributes, authentication);
 
 		verifyDeleteFileWithResult(false, FileController.DELETE_FILE_ERROR_MESSAGE, response, file);
+	}
+
+	@Test
+	public void canHandleDuplicateFilenameError() {
+		File file = FileTests.getTestFile_1();
+		Mockito.when(multipartFile.getOriginalFilename()).thenReturn("File Name");
+		Mockito.when(fileService.getFileByFileName(user.getUserId(), file.getName())).thenReturn(file);
+
+		String response = fileController.uploadFile(redirectAttributes, authentication, model, multipartFile);
+
+		verifyResultAndAttributes(false, FileController.DUPLICATE_FILENAME_ERROR_MESSAGE, response);
 	}
 
 	private void verifyDeleteFileWithResult(boolean resultValue, String messageValue, String response, File file) {

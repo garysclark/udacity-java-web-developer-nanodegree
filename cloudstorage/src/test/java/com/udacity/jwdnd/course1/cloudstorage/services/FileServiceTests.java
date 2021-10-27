@@ -99,7 +99,15 @@ public class FileServiceTests {
 		
 		assertEquals(testFile, foundFile);
 	}
-	
+
+	@Test
+	public void caGetFileByFileName() {
+		Mockito.when(fileMapper.findByFileName(testFile.getUserId(), testFile.getName())).thenReturn(testFile);
+		
+		File foundFile = fileService.getFileByFileName(testFile.getUserId(), testFile.getName());
+		
+		assertEquals(testFile, foundFile);
+	}
 	@Test
 	public void canDeleteFile() {
 		Mockito.when(fileMapper.delete(testFile)).thenReturn(1);
