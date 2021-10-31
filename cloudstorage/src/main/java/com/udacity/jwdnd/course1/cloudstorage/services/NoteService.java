@@ -33,7 +33,7 @@ public class NoteService {
 	}
 
 	public Integer updateNote(Note note) {
-		return noteMapper.update(note.getId(), note.getTitle(), note.getDescription(), note.getUserid());
+		return noteMapper.update(note);
 	}
 	
 }

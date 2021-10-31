@@ -30,39 +30,20 @@ public class NoteMapperTests {
 	@Autowired
 	private UserMapper userMapper;
 
-	private User testUser1;
+	private User user;
 
-	private User createdUser1;
+	private Note note;
 
-	private Note firstNote;
-
-	private User testUser2;
-
-	private User createdUser2;
-
-	private Note secondNote;
-
-	private Integer firstRowNum;
-
-	private Integer secondRowNum;
+	private Integer rowsCreated;
 
 	@BeforeEach
 	public void beforeEach() {
-		testUser1 = UserTests.getTestUser_1();
-		userMapper.create(testUser1);
-		createdUser1 = userMapper.findByUsername(testUser1.getUsername());
+		user = UserTests.getTestUser_1();
+		userMapper.create(user);
 
-		testUser2 = UserTests.getTestUser_2();
-		userMapper.create(testUser2);
-		createdUser2 = userMapper.findByUsername(testUser2.getUsername());
-
-		firstNote = NoteTests.getTestNote_1();
-		firstNote.setUserid(createdUser1.getUserId());
-		firstRowNum = noteMapper.create(firstNote);
-
-		secondNote = NoteTests.getTestNote_2();
-		secondNote.setUserid(createdUser2.getUserId());
-		secondRowNum = noteMapper.create(secondNote);
+		note = NoteTests.getTestNote_1();
+		note.setUserid(user.getUserId());
+		rowsCreated = noteMapper.create(note);
 	}
 	
 	@Test
@@ -73,42 +54,52 @@ public class NoteMapperTests {
 	
 	@Test
 	public void canCreateNote() {
-		assertTrue(firstRowNum > 0);
-		assertTrue(secondRowNum > 0);
+		assertTrue(rowsCreated > 0);
 	}
 	
 	@Test
 	public void canFindNoteById() {
-		Note foundNote = noteMapper.findById(firstNote.getId());
-		assertEquals(firstNote, foundNote);
+		Note foundNote = noteMapper.findById(note.getId());
+		assertEquals(note, foundNote);
 	}
 	
 	@Test
 	public void canFindByUserId() {
-		noteMapper.update(secondNote.getId(), secondNote.getTitle(), secondNote.getDescription(), createdUser1.getUserId());
-		List<Note> notes = noteMapper.findByUserId(firstNote.getUserid());
+		Note secondNote = NoteTests.getTestNote_2();
+		secondNote.setUserid(user.getUserId());
+		noteMapper.create(secondNote);
+		List<Note> notes = noteMapper.findByUserId(note.getUserid());
 		assertEquals(2, notes.size());
 	}
 	
 	@Test
 	public void canUpdateNote() {
-		noteMapper.update(firstNote.getId(), secondNote.getTitle(), secondNote.getDescription(), secondNote.getUserid());
-		Note updatedNote = noteMapper.findById(firstNote.getId());
-		assertEquals(secondNote.getTitle(), updatedNote.getTitle());
-		assertEquals(secondNote.getDescription(), updatedNote.getDescription());
-		assertEquals(secondNote.getUserid(), updatedNote.getUserid());
+		Note secondNote = NoteTests.getTestNote_2();
+		note.setDescription(secondNote.getDescription());
+		note.setTitle(secondNote.getTitle());
+		
+		User user2 = UserTests.getTestUser_2();
+		userMapper.create(user2);
+		secondNote.setUserid(user2.getUserId());
+		
+		note.setUserid(secondNote.getUserid());
+		
+		noteMapper.update(note);
+		
+		Note updatedNote = noteMapper.findById(note.getId());
+		assertEquals(note, updatedNote);
 	}
 	
 	@Test
 	public void canDeleteNote() {
-		noteMapper.delete(secondNote);
-		assertNull(noteMapper.findById(secondNote.getId()));
+		noteMapper.delete(note);
+		assertNull(noteMapper.findById(note.getId()));
 	}
 	
 	@Test
 	public void canDetectUpdateError() {
 		Note note2 = NoteTests.getTestNote_2();
-		Integer rowsAffected = noteMapper.update(note2.getId(), note2.getTitle(), note2.getDescription(), note2.getUserid());
+		Integer rowsAffected = noteMapper.update(note2);
 		assertEquals(0, rowsAffected);
 	}
 	

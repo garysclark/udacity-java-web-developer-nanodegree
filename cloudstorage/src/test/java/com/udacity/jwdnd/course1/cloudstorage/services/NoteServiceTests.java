@@ -124,7 +124,7 @@ public class NoteServiceTests {
 	@Test
 	public void canUpdateNote() {
 		Note note2 = NoteTests.getTestNote_2();
-		Mockito.when(noteMapper.update(note.getId(), note2.getTitle(), note2.getDescription(), note2.getUserid())).thenReturn(1);
+		Mockito.when(noteMapper.update(note)).thenReturn(1);
 		
 		note.setDescription(note2.getDescription());
 		note.setTitle(note2.getTitle());
@@ -138,7 +138,7 @@ public class NoteServiceTests {
 	@Test
 	public void canHandleUpdateNoteError() {
 		Note note2 = NoteTests.getTestNote_2();
-		Mockito.when(noteMapper.update(note.getId(), note2.getTitle(), note2.getDescription(), note2.getUserid())).thenReturn(0);
+		Mockito.when(noteMapper.update(note)).thenReturn(0);
 		
 		note.setDescription(note2.getDescription());
 		note.setTitle(note2.getTitle());

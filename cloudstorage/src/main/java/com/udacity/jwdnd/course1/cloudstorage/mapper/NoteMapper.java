@@ -22,7 +22,7 @@ public interface NoteMapper {
 	Note findById(Integer noteid);
 
 	@Update("UPDATE NOTES SET notetitle=#{notetitle}, notedescription=#{notedescription}, userid=#{userid} WHERE noteid = #{noteid}")
-	Integer update(Integer noteid, String notetitle, String notedescription, Integer userid);
+	Integer update(Note note);
 
 	@Select("SELECT * FROM NOTES WHERE userid = #{userid}")
 	List<Note> findByUserId(Integer userid);

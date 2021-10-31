@@ -102,4 +102,16 @@ public class CredentialMapperTests {
 		assertEquals(1, rowsDeleted);
 		assertNull(credentialMapper.findById(credential.getId()));
 	}
+	
+	@Test
+	public void canDetectUpdateError() {
+		Integer rowsAffected = credentialMapper.update(CredentialTests.getTestCredential_2());
+		assertEquals(0, rowsAffected);
+	}
+	
+	@Test
+	public void canDetectDeleteError() {
+		Integer rowsAffected = credentialMapper.delete(CredentialTests.getTestCredential_2());
+		assertEquals(0, rowsAffected);
+	}
 }

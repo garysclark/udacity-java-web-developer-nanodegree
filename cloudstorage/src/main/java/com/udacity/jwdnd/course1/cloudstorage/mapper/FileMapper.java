@@ -24,13 +24,13 @@ public interface FileMapper {
 	@Select("SELECT * FROM FILES WHERE fileId = #{id}")
 	File findById(Integer id);
 
+	@Select("SELECT * FROM FILES WHERE userid = #{userId} AND filename = #{filename}")
+	File findByFileName(Integer userId, String filename);
+
 	@Update("UPDATE FILES SET filename=#{name}, contenttype=#{contentType}, filesize=#{size}, userid=#{userId}, filedata=#{data} WHERE fileId = #{id}")
-	Integer update(Integer id, String name, String contentType, String size, Integer userId, byte[] data);
+	Integer update(File file);
 
 	@Delete("DELETE FROM FILES WHERE fileId = #{id}")
 	Integer delete(File file);
-
-	@Select("SELECT * FROM FILES WHERE userid = #{userId} AND filename = #{filename}")
-	File findByFileName(Integer userId, String filename);
 
 }

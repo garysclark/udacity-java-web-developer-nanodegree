@@ -24,37 +24,24 @@ import com.udacity.jwdnd.course1.cloudstorage.model.UserTests;
 @AutoConfigureTestDatabase
 public class FileMapperTests {
 
-	private static final String TEST_SUFFIX = "- EDIT";
-
 	@Autowired
 	private UserMapper userMapper;
 
 	@Autowired
 	private FileMapper fileMapper;
 
-	private User testUser1;
-	private User createdUser1;
+	private User user;
 
 	private File file;
 
 	private Integer rowNum;
 
-	private User testUser2;
-
-	private User createdUser2;
-
 	@BeforeEach
 	public void beforeEach() {
-		testUser1 = UserTests.getTestUser_1();
-		userMapper.create(testUser1);
-		createdUser1 = userMapper.findByUsername(testUser1.getUsername());
-
-		testUser2 = UserTests.getTestUser_2();
-		userMapper.create(testUser2);
-		createdUser2 = userMapper.findByUsername(testUser2.getUsername());
-
+		user = UserTests.getTestUser_1();
+		userMapper.create(user);
 		file = FileTests.getTestFile_1();
-		file.setUserId(createdUser1.getUserId());
+		file.setUserId(user.getUserId());
 		rowNum = fileMapper.create(file);
 	}
 
@@ -71,7 +58,7 @@ public class FileMapperTests {
 
 	@Test
 	public void canFindByUserId() {
-		List<File> files = fileMapper.findByUserId(createdUser1.getUserId());
+		List<File> files = fileMapper.findByUserId(user.getUserId());
 		assertEquals(1, files.size());
 		assertEquals(file, files.get(0));
 	}
@@ -90,19 +77,17 @@ public class FileMapperTests {
 	
 	@Test
 	public void canUpdateFile() {
-		file.setContentType(file.getContentType() + TEST_SUFFIX);
+		File file2 = FileTests.getTestFile_2();
+		file.setContentType(file2.getContentType());
+		file.setData(file2.getData());
+		file.setName(file2.getName());
+		file.setSize(file2.getSize());
 		
-		byte[] data = file.getData();
-		for(int i = 0; i < data.length; i++) {
-			data[i]++;
-		}
-		file.setData(data);
+		User user2 = UserTests.getTestUser_2();
+		userMapper.create(user2);
+		file.setUserId(user2.getUserId());
 		
-		file.setName(file.getName() +  TEST_SUFFIX);
-		file.setSize(file.getSize() + TEST_SUFFIX);
-		file.setUserId(createdUser2.getUserId());
-		
-		fileMapper.update(file.getId(), file.getName(), file.getContentType(), file.getSize(), file.getUserId(), file.getData());
+		fileMapper.update(file);
 		File storedFile = fileMapper.findById(file.getId());
 		assertEquals(file, storedFile);
 	}
@@ -116,15 +101,13 @@ public class FileMapperTests {
 	
 	@Test
 	public void canDetectUpdateError() {
-		File file2 = FileTests.getTestFile_2();
-		Integer rowsAffected = fileMapper.update(file2.getId(), file2.getName(), file2.getContentType(), file2.getSize(), file2.getUserId(), file2.getData());
+		Integer rowsAffected = fileMapper.update(FileTests.getTestFile_2());
 		assertEquals(0, rowsAffected);
 	}
 	
 	@Test
 	public void canDetectDeleteError() {
-		File file2 = FileTests.getTestFile_2();
-		Integer rowsAffected = fileMapper.delete(file2);
+		Integer rowsAffected = fileMapper.delete(FileTests.getTestFile_2());
 		assertEquals(0, rowsAffected);
 	}
 }
