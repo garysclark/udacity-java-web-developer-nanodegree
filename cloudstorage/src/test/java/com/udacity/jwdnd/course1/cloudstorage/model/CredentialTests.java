@@ -61,7 +61,11 @@ public class CredentialTests {
 		
 	}
 
-	private Credential getTestCredential_1() {
+	public static Credential getTestCredential_1() {
 		return new Credential(TEST_ID_1, TEST_URL_1, TEST_USERNAME_1, TEST_KEY_1, TEST_PASSWORD_1, TEST_USERID_1);
+	}
+
+	public static Credential getTestCredential_2() {
+		return new Credential(TEST_ID_2, TEST_URL_2, TEST_USERNAME_2, TEST_KEY_2, TEST_PASSWORD_2, TEST_USERID_2);
 	}
 }
