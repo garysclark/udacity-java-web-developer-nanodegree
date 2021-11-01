@@ -23,7 +23,7 @@ public interface UserMapper {
 	User findByUsername(String username);
 
 	@Update("UPDATE USERS SET firstName=#{firstName}, lastName=#{lastName}, password=#{password} WHERE userid = #{userid}")
-	Integer updateUser(Integer userid, String firstName, String lastName, String password);
+	Integer update(Integer userid, String firstName, String lastName, String password);
 
 	@Delete("DELETE FROM USERS WHERE userid = #{userId}")
 	Integer delete(User user);

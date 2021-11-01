@@ -60,7 +60,7 @@ public class UserMapperTests {
 	@Test
 	public void canUpdateUser() {
 		User user2 = UserTests.getTestUser_2();
-		userMapper.updateUser(user.getUserId(), user2.getFirstName(), user2.getLastName(), user2.getPassword());
+		userMapper.update(user.getUserId(), user2.getFirstName(), user2.getLastName(), user2.getPassword());
 		User updatedUser = userMapper.findById(user.getUserId());
 		assertEquals(user2.getFirstName(), updatedUser.getFirstName());
 		assertEquals(user2.getLastName(), updatedUser.getLastName());
@@ -77,7 +77,7 @@ public class UserMapperTests {
 	@Test
 	public void canDetectUpdateError() {
 		User user2 = UserTests.getTestUser_2();
-		Integer rowsAffected = userMapper.updateUser(user2.getUserId(), user2.getFirstName(), user2.getLastName(), user2.getPassword());
+		Integer rowsAffected = userMapper.update(user2.getUserId(), user2.getFirstName(), user2.getLastName(), user2.getPassword());
 		assertEquals(0, rowsAffected);
 	}
 	

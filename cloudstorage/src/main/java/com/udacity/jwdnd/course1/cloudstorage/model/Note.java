@@ -4,28 +4,28 @@ import java.util.Objects;
 
 public class Note {
 
-	private Integer noteid;
-	private String notetitle;
-	private String notedescription;
+	private Integer id;
+	private String title;
+	private String description;
 	private Integer userid;
 
-	public Note(Integer noteid, String notetitle, String notedescription, Integer userid) {
-		this.noteid = noteid;
-		this.notetitle = notetitle;
-		this.notedescription = notedescription;
+	public Note(Integer id, String title, String description, Integer userid) {
+		this.id = id;
+		this.title = title;
+		this.description = description;
 		this.userid = userid;
 	}
 
 	public Integer getId() {
-		return noteid;
+		return id;
 	}
 
 	public String getTitle() {
-		return notetitle;
+		return title;
 	}
 
 	public String getDescription() {
-		return notedescription;
+		return description;
 	}
 
 	public Integer getUserid() {
@@ -33,15 +33,15 @@ public class Note {
 	}
 
 	public void setId(Integer noteid) {
-		this.noteid = noteid;
+		this.id = noteid;
 	}
 
 	public void setTitle(String notetitle) {
-		this.notetitle = notetitle;
+		this.title = notetitle;
 	}
 
 	public void setDescription(String notedescription) {
-		this.notedescription = notedescription;
+		this.description = notedescription;
 	}
 
 	public void setUserid(Integer userid) {
@@ -50,7 +50,7 @@ public class Note {
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(notedescription, noteid, notetitle, userid);
+		return Objects.hash(description, id, title, userid);
 	}
 
 	@Override
@@ -62,8 +62,8 @@ public class Note {
 		if (getClass() != obj.getClass())
 			return false;
 		Note other = (Note) obj;
-		return Objects.equals(notedescription, other.notedescription) && Objects.equals(noteid, other.noteid)
-				&& Objects.equals(notetitle, other.notetitle) && Objects.equals(userid, other.userid);
+		return Objects.equals(description, other.description) && Objects.equals(id, other.id)
+				&& Objects.equals(title, other.title) && Objects.equals(userid, other.userid);
 	}
 
 }
