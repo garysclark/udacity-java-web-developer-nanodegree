@@ -10,16 +10,20 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
-@RequestMapping("/result")
+@RequestMapping(ResultController.RESULT_ENDPOINT)
 public class ResultController {
+
+	public static final String REDIRECT_RESULT_RESPONSE = "redirect:/result";
+	public static final String RESULT_ENDPOINT = "/result";
+	public static final String RESULT_RESPONSE = "result";
 
 	@GetMapping()
 	public String getContent(Model model, RedirectAttributes redirectAttributes, Authentication authentication) {
-		return "result";
+		return RESULT_RESPONSE;
 	}
 
 	@PostMapping
 	public String handleResultConfirmation(Model model, @ModelAttribute String activeTab, Authentication authentication) {
-		return "redirect:/home";
+		return HomeController.REDIRECT_HOME_RESPONSE;
 	}
 }

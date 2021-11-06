@@ -19,7 +19,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.udacity.jwdnd.course1.cloudstorage.dto.FileDTO;
 import com.udacity.jwdnd.course1.cloudstorage.model.File;
 import com.udacity.jwdnd.course1.cloudstorage.model.FileTests;
 import com.udacity.jwdnd.course1.cloudstorage.model.User;
@@ -63,12 +62,6 @@ public class FileControllerTests {
 	@Test
 	public void canCreateFileController() {
 		assertNotNull(fileController);
-	}
-
-	@Test
-	public void canGetDTO() {
-		FileDTO dto = fileController.getFileDTO();
-		assertNotNull(dto);
 	}
 
 	@Test
@@ -158,15 +151,15 @@ public class FileControllerTests {
 		List<String> keys = keyCaptor.getAllValues();
 		List<Object> values = valueCaptor.getAllValues();
 
-		assertEquals("success", keys.get(0));
+		assertEquals(CloudStorageController.SUCCESS_KEY, keys.get(0));
 		assertEquals(resultValue, values.get(0));
 
-		assertEquals("message", keys.get(1));
+		assertEquals(CloudStorageController.MESSAGE_KEY, keys.get(1));
 		assertEquals(messageValue, values.get(1));
 
-		assertEquals("activeTab", keys.get(2));
-		assertEquals("files", values.get(2));
+		assertEquals(CloudStorageController.ACTIVE_TAB_KEY, keys.get(2));
+		assertEquals(FileController.ACTIVE_TAB_FILES, values.get(2));
 
-		assertEquals(FileController.MAPPING_RESULT, response);
+		assertEquals(ResultController.REDIRECT_RESULT_RESPONSE, response);
 	}
 }

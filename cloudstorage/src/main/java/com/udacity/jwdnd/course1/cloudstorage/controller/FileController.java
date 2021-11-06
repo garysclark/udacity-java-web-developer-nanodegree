@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.udacity.jwdnd.course1.cloudstorage.dto.FileDTO;
 import com.udacity.jwdnd.course1.cloudstorage.model.File;
 import com.udacity.jwdnd.course1.cloudstorage.model.User;
 import com.udacity.jwdnd.course1.cloudstorage.services.FileService;
@@ -21,13 +20,18 @@ import com.udacity.jwdnd.course1.cloudstorage.services.UserService;
 @Controller
 public class FileController {
 
-	static final String MAPPING_RESULT = "redirect:/result";
-	static final String ADD_FILE_SUCCESS_MESSAGE = "You successfully added a file.";
-	static final String ADD_FILE_ERROR_MESSAGE = "There was an error adding the file.  Please try again.";
-	static final String ADD_NO_FILE_SELECTED_ERROR_MESSAGE = "No file selected. Please try again.";
-	static final String DELETE_FILE_SUCCESS_MESSAGE = "You successfully deleted a file.";
-	static final String DELETE_FILE_ERROR_MESSAGE = "There was an error deleting the file.  Please try again.";
-	static final String DUPLICATE_FILENAME_ERROR_MESSAGE = "This file has already been uploaded. Please try again.";
+	public static final String VIEW_FILES_ENDPOINT = "/files/view";
+	public static final String DELETE_FILES_ENDPOINT = "/files/delete";
+	public static final String FILES_ENDPOINT = "/files";
+	public static final String DUPLICATE_FILENAME_ERROR_MESSAGE = "This file has already been uploaded. Please try again.";
+	public static final String DELETE_FILE_ERROR_MESSAGE = "There was an error deleting the file.  Please try again.";
+	public static final String DELETE_FILE_SUCCESS_MESSAGE = "You successfully deleted a file.";
+	public static final String ADD_NO_FILE_SELECTED_ERROR_MESSAGE = "No file selected. Please try again.";
+	public static final String ADD_FILE_ERROR_MESSAGE = "There was an error adding the file.  Please try again.";
+	public static final String ADD_FILE_SUCCESS_MESSAGE = "You successfully added a file.";
+	public static final String FILES_DATA_KEY = "files";
+	public static final String ACTIVE_TAB_FILES = "files";
+	public static final String FILE_DTO_ATTRIBUTE = "fileDTO";
 
 	private UserService userService;
 	private FileService fileService;
@@ -37,17 +41,12 @@ public class FileController {
 		this.userService = userService;
 	}
 
-	@ModelAttribute("fileDTO")
-	public FileDTO getFileDTO() {
-		return new FileDTO();
-	}
-
-	@PostMapping("/files")
-	public String uploadFile(RedirectAttributes redirectAttributes, Authentication authentication, Model model, @ModelAttribute("fileDTO") MultipartFile file) {
+	@PostMapping(FILES_ENDPOINT)
+	public String uploadFile(RedirectAttributes redirectAttributes, Authentication authentication, Model model, @ModelAttribute(FILE_DTO_ATTRIBUTE) MultipartFile file) {
 
 		if(file.getOriginalFilename().equals("")) {
 			setupResult(false, ADD_NO_FILE_SELECTED_ERROR_MESSAGE, redirectAttributes);
-			return MAPPING_RESULT;
+			return ResultController.REDIRECT_RESULT_RESPONSE;
 		} 
 
 		String userName = authentication.getName();
@@ -55,7 +54,7 @@ public class FileController {
 
 		if(fileService.getFileByFileName(user.getUserId(), file.getOriginalFilename()) != null) {
 			setupResult(false, DUPLICATE_FILENAME_ERROR_MESSAGE, redirectAttributes);
-			return MAPPING_RESULT;
+			return ResultController.REDIRECT_RESULT_RESPONSE;
 		}
 		
 		int rowAdded = fileService.addFile(user.getUserId(), file);
@@ -66,10 +65,10 @@ public class FileController {
 			setupResult(false, ADD_FILE_ERROR_MESSAGE, redirectAttributes);
 		}
 
-		return MAPPING_RESULT;
+		return ResultController.REDIRECT_RESULT_RESPONSE;
 	}
 
-	@PostMapping("/files/delete")
+	@PostMapping(DELETE_FILES_ENDPOINT)
 	public String deleteFile(@ModelAttribute File file, RedirectAttributes redirectAttributes, Authentication authentication) {
 
 		int rowsDeleted = fileService.deleteFile(file);
@@ -80,10 +79,10 @@ public class FileController {
 			setupResult(false, DELETE_FILE_ERROR_MESSAGE, redirectAttributes);
 		}
 
-		return MAPPING_RESULT;
+		return ResultController.REDIRECT_RESULT_RESPONSE;
 	}
 
-	@GetMapping("/files/view")
+	@GetMapping(VIEW_FILES_ENDPOINT)
 	public ResponseEntity<byte[]> viewFile(RedirectAttributes redirectAttributes, Authentication authentication, Integer fileId) {
 		File file = fileService.getFileByFileId(fileId);
 		String filename = file.getName();
@@ -95,9 +94,9 @@ public class FileController {
 	}
 
 	private void setupResult(boolean isSuccess, String message, RedirectAttributes redirectAttributes) {
-		redirectAttributes.addFlashAttribute("success", isSuccess);
-		redirectAttributes.addFlashAttribute("message", message);
-		redirectAttributes.addFlashAttribute("activeTab", "files");
+		redirectAttributes.addFlashAttribute(CloudStorageController.SUCCESS_KEY, isSuccess);
+		redirectAttributes.addFlashAttribute(CloudStorageController.MESSAGE_KEY, message);
+		redirectAttributes.addFlashAttribute(CloudStorageController.ACTIVE_TAB_KEY, ACTIVE_TAB_FILES);
 	}
 
 }

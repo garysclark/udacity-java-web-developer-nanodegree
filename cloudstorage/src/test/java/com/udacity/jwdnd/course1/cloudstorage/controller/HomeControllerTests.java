@@ -81,18 +81,18 @@ public class HomeControllerTests {
 		List<String> keys = keyCaptor.getAllValues();
 		List<Object> values = valueCaptor.getAllValues();
 		
-		assertEquals("activeTab", keys.get(0));
-		assertEquals("files", values.get(0));
+		assertEquals(CloudStorageController.ACTIVE_TAB_KEY, keys.get(0));
+		assertEquals(FileController.ACTIVE_TAB_FILES, values.get(0));
 		
-		assertEquals("notes", keys.get(1));
+		assertEquals(NoteController.NOTES_DATA_KEY, keys.get(1));
 		assertEquals(notes, values.get(1));
 		
-		assertEquals("files", keys.get(2));
+		assertEquals(FileController.FILES_DATA_KEY, keys.get(2));
 		assertEquals(files, values.get(2));
 		
-		assertEquals("credentials", keys.get(3));
+		assertEquals(CredentialController.CREDENTIALS_DATA_KEY, keys.get(3));
 		assertEquals(credentials, values.get(3));
 		
-		assertEquals("home", response);
+		assertEquals(HomeController.HOME_RESPONSE, response);
 	}
 }

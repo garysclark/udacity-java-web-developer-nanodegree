@@ -103,15 +103,15 @@ public class CredentialControllerTests {
 		List<String> keys = keyCaptor.getAllValues();
 		List<Object> values = valueCaptor.getAllValues();
 
-		assertEquals("success", keys.get(0));
+		assertEquals(CloudStorageController.SUCCESS_KEY, keys.get(0));
 		assertEquals(resultValue, values.get(0));
 
-		assertEquals("message", keys.get(1));
+		assertEquals(CloudStorageController.MESSAGE_KEY, keys.get(1));
 		assertEquals(messageValue, values.get(1));
 
-		assertEquals("activeTab", keys.get(2));
-		assertEquals("credentials", values.get(2));
+		assertEquals(CloudStorageController.ACTIVE_TAB_KEY, keys.get(2));
+		assertEquals(CredentialController.ACTIVE_TAB_CREDENTIALS, values.get(2));
 
-		assertEquals(CredentialController.MAPPING_RESULT, response);
+		assertEquals(ResultController.REDIRECT_RESULT_RESPONSE, response);
 	}
 }

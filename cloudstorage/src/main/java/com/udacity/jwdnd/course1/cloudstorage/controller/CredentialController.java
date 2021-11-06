@@ -15,17 +15,21 @@ import com.udacity.jwdnd.course1.cloudstorage.services.UserService;
 @Controller
 public class CredentialController {
 
-	static final String MAPPING_RESULT = "redirect:/result";
-
-	static final String ADD_CREDENTIAL_SUCCESS_MESSAGE = "You successfully added a credential.";
-
-	static final String ADD_CREDENTIAL_ERROR_MESSAGE = "There was an error adding the credential.  Please try again.";
+	public static final String CREDENTIALS_ENDPOINT = "/credentials";
 
 	private CredentialService credentialService;
 
 	private UserService userService;
 
 	private EncryptionService encryptionService;
+
+	public static final String ADD_CREDENTIAL_ERROR_MESSAGE = "There was an error adding the credential.  Please try again.";
+
+	public static final String ADD_CREDENTIAL_SUCCESS_MESSAGE = "You successfully added a credential.";
+
+	public static final String CREDENTIALS_DATA_KEY = "credentials";
+
+	public static final String ACTIVE_TAB_CREDENTIALS = "credentials";
 	
 	public CredentialController(CredentialService credentialService, UserService userService, EncryptionService encryptionService) {
 		this.credentialService = credentialService;
@@ -33,7 +37,7 @@ public class CredentialController {
 		this.encryptionService = encryptionService;
 	}
 
-	@PostMapping("/credentials")
+	@PostMapping(CREDENTIALS_ENDPOINT)
 	public String createCredential(@ModelAttribute Credential credential, RedirectAttributes redirectAttributes,
 			Authentication authentication) {
 
@@ -47,18 +51,18 @@ public class CredentialController {
 		
 		int rowsAdded = credentialService.createCredential(credential);
 		if(rowsAdded > 0) {
-			setupResult(true, ADD_CREDENTIAL_SUCCESS_MESSAGE, redirectAttributes);
+			setupResult(true, CredentialController.ADD_CREDENTIAL_SUCCESS_MESSAGE, redirectAttributes);
 		} else {
-			setupResult(false, ADD_CREDENTIAL_ERROR_MESSAGE, redirectAttributes);
+			setupResult(false, CredentialController.ADD_CREDENTIAL_ERROR_MESSAGE, redirectAttributes);
 		}
 		
-		return MAPPING_RESULT;
+		return ResultController.REDIRECT_RESULT_RESPONSE;
 	}
 	
 	private void setupResult(boolean isSuccess, String message, RedirectAttributes redirectAttributes) {
-		redirectAttributes.addFlashAttribute("success", isSuccess);
-		redirectAttributes.addFlashAttribute("message", message);
-		redirectAttributes.addFlashAttribute("activeTab", "credentials");
+		redirectAttributes.addFlashAttribute(CloudStorageController.SUCCESS_KEY, isSuccess);
+		redirectAttributes.addFlashAttribute(CloudStorageController.MESSAGE_KEY, message);
+		redirectAttributes.addFlashAttribute(CloudStorageController.ACTIVE_TAB_KEY, CredentialController.ACTIVE_TAB_CREDENTIALS);
 	}
 
 }

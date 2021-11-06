@@ -13,14 +13,17 @@ import com.udacity.jwdnd.course1.cloudstorage.services.UserService;
 
 @Controller
 public class NoteController {
-	
-	static final String MAPPING_RESULT = "redirect:/result";
-	static final String DELETE_NOTE_ERROR_MESSAGE = "There was an error deleting the note.  Please try again.";
-	static final String DELETE_NOTE_SUCCESS_MESSAGE = "You successfully deleted a note.";
-	static final String UPDATE_NOTE_ERROR_MESSAGE = "There was an error updating the note.  Please try again.";
-	static final String UPDATE_NOTE_SUCCESS_MESSAGE = "You successfully updated a note.";
-	static final String ADD_NOTE_ERROR_MESSAGE = "There was an error adding the note.  Please try again.";
-	static final String ADD_NOTE_SUCCESS_MESSAGE = "You successfully added a note.";
+
+	public static final String DELETE_NOTES = "notes/delete";
+	public static final String NOTES_ENDPOINT = "/notes";
+	public static final String ADD_NOTE_SUCCESS_MESSAGE = "You successfully added a note.";
+	public static final String ADD_NOTE_ERROR_MESSAGE = "There was an error adding the note.  Please try again.";
+	public static final String UPDATE_NOTE_SUCCESS_MESSAGE = "You successfully updated a note.";
+	public static final String UPDATE_NOTE_ERROR_MESSAGE = "There was an error updating the note.  Please try again.";
+	public static final String DELETE_NOTE_SUCCESS_MESSAGE = "You successfully deleted a note.";
+	public static final String DELETE_NOTE_ERROR_MESSAGE = "There was an error deleting the note.  Please try again.";
+	public static final String NOTES_DATA_KEY = "notes";
+	public static final String ACTIVE_TAB_NOTES = "notes";
 
 	private UserService userService;
 	private NoteService noteService;
@@ -30,7 +33,7 @@ public class NoteController {
 		this.noteService = noteService;
 	}
 	
-	@PostMapping("/notes")
+	@PostMapping(NOTES_ENDPOINT)
 	public String createNote(@ModelAttribute Note note, RedirectAttributes redirectAttributes, Authentication authentication) {
 		User user = userService.getUser(authentication.getName());
 		
@@ -53,10 +56,10 @@ public class NoteController {
 			}
 		}
 		
-		return MAPPING_RESULT;
+		return ResultController.REDIRECT_RESULT_RESPONSE;
 	}
 	
-	@PostMapping("notes/delete")
+	@PostMapping(DELETE_NOTES)
 	public String deleteNote(@ModelAttribute Note note, RedirectAttributes redirectAttributes, Authentication authentication) {
 		int rowsDeleted = noteService.deleteNote(note);
 		
@@ -66,13 +69,13 @@ public class NoteController {
 			setupResult(false, DELETE_NOTE_ERROR_MESSAGE, redirectAttributes);
 		}
 		
-		return MAPPING_RESULT;
+		return ResultController.REDIRECT_RESULT_RESPONSE;
 	}
 	
 	private void setupResult(boolean isSuccess, String message, RedirectAttributes redirectAttributes) {
-		redirectAttributes.addFlashAttribute("success", isSuccess);
-		redirectAttributes.addFlashAttribute("message", message);
-		redirectAttributes.addFlashAttribute("activeTab", "notes");
+		redirectAttributes.addFlashAttribute(CloudStorageController.SUCCESS_KEY, isSuccess);
+		redirectAttributes.addFlashAttribute(CloudStorageController.MESSAGE_KEY, message);
+		redirectAttributes.addFlashAttribute(CloudStorageController.ACTIVE_TAB_KEY, ACTIVE_TAB_NOTES);
 	}
 
 }

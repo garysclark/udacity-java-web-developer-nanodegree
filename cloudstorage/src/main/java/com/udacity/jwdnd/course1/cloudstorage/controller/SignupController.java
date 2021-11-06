@@ -11,9 +11,15 @@ import com.udacity.jwdnd.course1.cloudstorage.model.User;
 import com.udacity.jwdnd.course1.cloudstorage.services.UserService;
 
 @Controller
-@RequestMapping("/signup")
+@RequestMapping(SignupController.SIGNUP_ENDPOINT)
 public class SignupController {
 	
+	private static final String SIGNUP_SUCCESS_KEY = "signupSuccess";
+	public static final String SIGNUP_ERROR_KEY = "signupError";
+	public static final String SIGNUP_ERROR_MESSAGE = "There was an error signing you up. Please try again.";
+	public static final String SIGNUP_ERROR_MESSAGE_USERNAME_ALREADY_EXISTS = "The username already exists";
+	public static final String SIGNUP_RESPONSE = "signup";
+	public static final String SIGNUP_ENDPOINT = "/signup";
 	private UserService userService;
 
 	public SignupController(UserService userService) {
@@ -22,7 +28,7 @@ public class SignupController {
 	
 	@GetMapping()
 	public String signupView() {
-		return "signup";
+		return SIGNUP_RESPONSE;
 	}
 
 	@PostMapping()
@@ -30,19 +36,19 @@ public class SignupController {
 		String signupError = null;
 		
 		if (!userService.isUserNameAvailable(user.getUsername())) {
-			signupError = "The username already exists";
+			signupError = SIGNUP_ERROR_MESSAGE_USERNAME_ALREADY_EXISTS;
 		} else {
 			if (userService.createUser(user) > 0) {
-				model.addAttribute("signupSuccess", true);
+				model.addAttribute(SIGNUP_SUCCESS_KEY, true);
 			} else {
-                signupError = "There was an error signing you up. Please try again.";
+                signupError = SIGNUP_ERROR_MESSAGE;
 			}
 		}
 		
 		if (signupError != null) {
-			model.addAttribute("signupError", signupError);
+			model.addAttribute(SIGNUP_ERROR_KEY, signupError);
 		}
 		
-		return "signup";
+		return SIGNUP_RESPONSE;
 	}
 }

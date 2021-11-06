@@ -5,12 +5,15 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-@RequestMapping("/login")
+@RequestMapping(LoginController.LOGIN_ENDPOINT)
 public class LoginController {
 	
+	static final String LOGIN_ENDPOINT = "/login";
+	public static final String LOGIN_RESPONSE = "login";
+
 	@GetMapping()
 	public String signupView() {
-		return "login";
+		return LOGIN_RESPONSE;
 	}
 
 }

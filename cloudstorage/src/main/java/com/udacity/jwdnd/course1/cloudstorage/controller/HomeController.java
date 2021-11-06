@@ -21,9 +21,13 @@ import com.udacity.jwdnd.course1.cloudstorage.services.UserService;
 
 
 @Controller
-@RequestMapping("/home")
+@RequestMapping(HomeController.HOME_ENDPOINT)
 public class HomeController {
 	
+	public static final String HOME_ENDPOINT = "/home";
+	public static final String HOME_RESPONSE = "home";
+	public static final String REDIRECT_HOME_RESPONSE = "redirect:/home";
+
 	private UserService userService;
 	private NoteService noteService;
 	private FileService fileService;
@@ -37,7 +41,7 @@ public class HomeController {
 		this.credentialService = credentialService;
 	}
 
-	@ModelAttribute("fileDTO")
+	@ModelAttribute(FileController.FILE_DTO_ATTRIBUTE)
 	public FileDTO getFileDTO() {
 		return new FileDTO();
 	}
@@ -45,29 +49,29 @@ public class HomeController {
 	@GetMapping()
 	public String getContent(Model model, Authentication authentication, String activeTab) {
 		if(activeTab == null) {
-			model.addAttribute("activeTab", "files");
+			model.addAttribute(CloudStorageController.ACTIVE_TAB_KEY, FileController.ACTIVE_TAB_FILES);
 		} else {
-			model.addAttribute("activeTab", activeTab);
+			model.addAttribute(CloudStorageController.ACTIVE_TAB_KEY, activeTab);
 		}
 
 		User user = userService.getUser(authentication.getName());
 
-		if(model.getAttribute("notes") == null) {
+		if(model.getAttribute(NoteController.NOTES_DATA_KEY) == null) {
 			List<Note> notes = noteService.getNotes(user.getUserId());
-			model.addAttribute("notes", notes);
+			model.addAttribute(NoteController.NOTES_DATA_KEY, notes);
 		}
 		
-		if(model.getAttribute("files") == null) {
+		if(model.getAttribute(FileController.FILES_DATA_KEY) == null) {
 			List<File> files = fileService.getFilesByUserId(user.getUserId());
-			model.addAttribute("files", files);
+			model.addAttribute(FileController.FILES_DATA_KEY, files);
 		}
 		
-		if(model.getAttribute("credentials") == null) {
+		if(model.getAttribute(CredentialController.CREDENTIALS_DATA_KEY) == null) {
 			List<Credential> credentials = credentialService.getCredentialsByUserId(user.getUserId());
-			model.addAttribute("credentials", credentials);
+			model.addAttribute(CredentialController.CREDENTIALS_DATA_KEY, credentials);
 		}
 
-		return "home";
+		return HOME_RESPONSE;
 	}
 
 }
