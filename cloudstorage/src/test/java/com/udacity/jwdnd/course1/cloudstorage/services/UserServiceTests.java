@@ -20,10 +20,14 @@ import com.udacity.jwdnd.course1.cloudstorage.model.UserTests;
 public class UserServiceTests {
 
 	private static final String TEST_ENCRYPTED_PASSWORD = "Encrypted Password";
+	private static final String TEST_KEY = "Test Key";
+
 	@Mock
 	private UserMapper userMapper;
 	@Mock
 	private HashService hashService;
+	@Mock
+	private EncryptionService encryptionService;
 	@Captor
 	private ArgumentCaptor<User> userCaptor;
 	@Captor
@@ -37,14 +41,15 @@ public class UserServiceTests {
 	@BeforeEach
 	public void beforeEach() {
 		MockitoAnnotations.initMocks(this);
-		userService = new UserService(userMapper, hashService);
+		userService = new UserService(userMapper, hashService, encryptionService);
 		user = UserTests.getTestUser_1();
 	}
 	
 	@Test
 	public void canCreateUser() {
 		Mockito.when(userMapper.create(Mockito.any(User.class))).thenReturn(1);
-		Mockito.when(hashService.getHashedValue(Mockito.anyString(), Mockito.anyString())).thenReturn(TEST_ENCRYPTED_PASSWORD);
+		Mockito.when(encryptionService.generateKey()).thenReturn(TEST_KEY);
+		Mockito.when(hashService.getHashedValue(user.getPassword(), TEST_KEY)).thenReturn(TEST_ENCRYPTED_PASSWORD);
 		
 		int rowsAffected = userService.createUser(user);
 		

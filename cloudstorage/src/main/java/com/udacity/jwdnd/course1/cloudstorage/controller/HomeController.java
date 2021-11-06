@@ -10,9 +10,11 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.udacity.jwdnd.course1.cloudstorage.dto.FileDTO;
+import com.udacity.jwdnd.course1.cloudstorage.model.Credential;
 import com.udacity.jwdnd.course1.cloudstorage.model.File;
 import com.udacity.jwdnd.course1.cloudstorage.model.Note;
 import com.udacity.jwdnd.course1.cloudstorage.model.User;
+import com.udacity.jwdnd.course1.cloudstorage.services.CredentialService;
 import com.udacity.jwdnd.course1.cloudstorage.services.FileService;
 import com.udacity.jwdnd.course1.cloudstorage.services.NoteService;
 import com.udacity.jwdnd.course1.cloudstorage.services.UserService;
@@ -25,11 +27,14 @@ public class HomeController {
 	private UserService userService;
 	private NoteService noteService;
 	private FileService fileService;
+	private CredentialService credentialService;
 
-	public HomeController(UserService userService, NoteService noteService, FileService fileService) {
+	public HomeController(UserService userService, NoteService noteService, 
+			FileService fileService, CredentialService credentialService) {
 		this.userService = userService;
 		this.noteService = noteService;
 		this.fileService = fileService;
+		this.credentialService = credentialService;
 	}
 
 	@ModelAttribute("fileDTO")
@@ -55,6 +60,11 @@ public class HomeController {
 		if(model.getAttribute("files") == null) {
 			List<File> files = fileService.getFilesByUserId(user.getUserId());
 			model.addAttribute("files", files);
+		}
+		
+		if(model.getAttribute("credentials") == null) {
+			List<Credential> credentials = credentialService.getCredentialsByUserId(user.getUserId());
+			model.addAttribute("credentials", credentials);
 		}
 
 		return "home";

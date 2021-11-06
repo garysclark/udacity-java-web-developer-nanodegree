@@ -16,10 +16,12 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.security.core.Authentication;
 import org.springframework.ui.Model;
 
+import com.udacity.jwdnd.course1.cloudstorage.model.Credential;
 import com.udacity.jwdnd.course1.cloudstorage.model.File;
 import com.udacity.jwdnd.course1.cloudstorage.model.Note;
 import com.udacity.jwdnd.course1.cloudstorage.model.User;
 import com.udacity.jwdnd.course1.cloudstorage.model.UserTests;
+import com.udacity.jwdnd.course1.cloudstorage.services.CredentialService;
 import com.udacity.jwdnd.course1.cloudstorage.services.FileService;
 import com.udacity.jwdnd.course1.cloudstorage.services.NoteService;
 import com.udacity.jwdnd.course1.cloudstorage.services.UserService;
@@ -33,6 +35,9 @@ public class HomeControllerTests {
 	@Mock
 	private FileService fileService;
 	@Mock
+	private CredentialService credentialService;
+
+	@Mock
 	private Model model;
 	@Mock
 	private Authentication authentication;
@@ -40,6 +45,8 @@ public class HomeControllerTests {
 	private List<Note> notes;
 	@Mock
 	private List<File> files;
+	@Mock
+	private List<Credential> credentials;
 
 	private HomeController homeController;
 
@@ -51,7 +58,7 @@ public class HomeControllerTests {
 	@BeforeEach
 	public void beforeEach() {
 		MockitoAnnotations.initMocks(this);
-		homeController = new HomeController(userService, noteService, fileService);
+		homeController = new HomeController(userService, noteService, fileService, credentialService);
 	}
 	
 	@Test
@@ -66,9 +73,11 @@ public class HomeControllerTests {
 		Mockito.when(authentication.getName()).thenReturn(user.getUsername());
 		Mockito.when(noteService.getNotes(user.getUserId())).thenReturn(notes);
 		Mockito.when(fileService.getFilesByUserId(user.getUserId())).thenReturn(files);		
+		Mockito.when(credentialService.getCredentialsByUserId(user.getUserId())).thenReturn(credentials);		
+
 		String response = homeController.getContent(model, authentication, null);
 		
-		Mockito.verify(model, times(3)).addAttribute(keyCaptor.capture(), valueCaptor.capture());
+		Mockito.verify(model, times(4)).addAttribute(keyCaptor.capture(), valueCaptor.capture());
 		List<String> keys = keyCaptor.getAllValues();
 		List<Object> values = valueCaptor.getAllValues();
 		
@@ -80,6 +89,9 @@ public class HomeControllerTests {
 		
 		assertEquals("files", keys.get(2));
 		assertEquals(files, values.get(2));
+		
+		assertEquals("credentials", keys.get(3));
+		assertEquals(credentials, values.get(3));
 		
 		assertEquals("home", response);
 	}

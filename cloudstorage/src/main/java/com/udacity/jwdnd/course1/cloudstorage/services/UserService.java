@@ -4,17 +4,18 @@ import org.springframework.stereotype.Service;
 
 import com.udacity.jwdnd.course1.cloudstorage.mapper.UserMapper;
 import com.udacity.jwdnd.course1.cloudstorage.model.User;
-import com.udacity.jwdnd.course1.cloudstorage.utilities.SaltUtility;
 
 @Service
 public class UserService {
 	
 	private UserMapper userMapper;
 	private HashService hashService;
+	private EncryptionService encryptionService;
 
-	public UserService(UserMapper userMapper, HashService hashService) {
+	public UserService(UserMapper userMapper, HashService hashService, EncryptionService encryptionService) {
 		this.userMapper = userMapper;
 		this.hashService = hashService;
+		this.encryptionService = encryptionService;
 	}
 
 	public boolean isUserNameAvailable(String username) {
@@ -22,7 +23,7 @@ public class UserService {
 	}
 
 	public Integer createUser(User user) {
-		String encodedSalt = SaltUtility.getEncodedSalt();
+		String encodedSalt = encryptionService.generateKey();
 		String hashedPassword = hashService.getHashedValue(user.getPassword(), encodedSalt);
 		return userMapper.create(new User(null, user.getUsername(), encodedSalt, 
 				hashedPassword, user.getFirstName(), user.getLastName()));
