@@ -1,6 +1,7 @@
 package com.udacity.jwdnd.course1.cloudstorage.controller;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.times;
 
@@ -57,28 +58,22 @@ public class CredentialControllerTests {
 		MockitoAnnotations.initMocks(this);
 		credentialController = new CredentialController(credentialService, userService, encryptionService);
 
-		credential = CredentialTests.getTestCredential_1();
-		credential.setId(null);
-		credential.setKey(null);
-		credential.setUserId(null);
-		
 		user = UserTests.getTestUser_1();
-		
+
 		Mockito.when(authentication.getName()).thenReturn(user.getUsername());
 		Mockito.when(userService.getUser(user.getUsername())).thenReturn(user);
-		Mockito.when(encryptionService.generateKey()).thenReturn(TEST_KEY);
-		Mockito.when(encryptionService.encryptValue(credential.getPassword(), TEST_KEY)).thenReturn(TEST_ENCRYPTED_PASSWORD);
 	}
-	
+
 	@Test
 	public void canCreateController() {
 		assertNotNull(credentialController);
 	}
-	
+
 	@Test
 	public void canCreateCredential() {
+		prepareForCreateTests();
 		Mockito.when(credentialService.createCredential(credential)).thenReturn(1);
-		
+
 		String response = credentialController.createCredential(credential, redirectAttributes, authentication);
 
 		assertEquals(TEST_KEY, credential.getKey());
@@ -87,15 +82,57 @@ public class CredentialControllerTests {
 		Mockito.verify(credentialService).createCredential(credential);
 		verifyWithResult(true, CredentialController.ADD_CREDENTIAL_SUCCESS_MESSAGE, response);
 	}
-	
+
 	@Test
 	public void canHandleCreateCredentialError() {
-		
+		prepareForCreateTests();
 		Mockito.when(credentialService.createCredential(credential)).thenReturn(0);
-		
+
 		String response = credentialController.createCredential(credential, redirectAttributes, authentication);
 
 		verifyWithResult(false, CredentialController.ADD_CREDENTIAL_ERROR_MESSAGE, response);
+	}
+
+	@Test
+	public void canUpdateCredential() {
+		prepareForUpdateTests();
+		Mockito.when(credentialService.updateCredential(credential)).thenReturn(1);
+
+		String unencryptedPassword = credential.getPassword();
+		assertNotEquals(TEST_ENCRYPTED_PASSWORD, unencryptedPassword);
+
+		String response = credentialController.createCredential(credential, redirectAttributes, authentication);
+
+		assertEquals(TEST_ENCRYPTED_PASSWORD, credential.getPassword());
+		Mockito.verify(encryptionService).encryptValue(unencryptedPassword, credential.getKey());
+		Mockito.verify(credentialService).updateCredential(credential);
+		verifyWithResult(true, CredentialController.UPDATE_CREDENTIAL_SUCCESS_MESSAGE, response);
+	}
+
+	@Test
+	public void canHandleUpdateCredentialError() {
+		prepareForUpdateTests();
+		Mockito.when(credentialService.updateCredential(credential)).thenReturn(0);
+
+		String response = credentialController.createCredential(credential, redirectAttributes, authentication);
+
+		verifyWithResult(false, CredentialController.UPDATE_CREDENTIAL_ERROR_MESSAGE, response);
+	}
+
+	private void prepareForUpdateTests() {
+		credential = CredentialTests.getTestCredential_1();
+		Mockito.when(credentialService.getCredentialById(credential.getId())).thenReturn(credential);
+		Mockito.when(encryptionService.encryptValue(credential.getPassword(), credential.getKey())).thenReturn(TEST_ENCRYPTED_PASSWORD);
+	}
+
+	private void prepareForCreateTests() {
+		credential = CredentialTests.getTestCredential_1();
+		credential.setId(null);
+		credential.setKey(null);
+		credential.setUserId(null);
+		Mockito.when(credentialService.getCredentialById(credential.getId())).thenReturn(null);
+		Mockito.when(encryptionService.generateKey()).thenReturn(TEST_KEY);
+		Mockito.when(encryptionService.encryptValue(credential.getPassword(), TEST_KEY)).thenReturn(TEST_ENCRYPTED_PASSWORD);
 	}
 
 	private void verifyWithResult(boolean resultValue, String messageValue, String response) {
@@ -114,4 +151,5 @@ public class CredentialControllerTests {
 
 		assertEquals(ResultController.REDIRECT_RESULT_RESPONSE, response);
 	}
+
 }

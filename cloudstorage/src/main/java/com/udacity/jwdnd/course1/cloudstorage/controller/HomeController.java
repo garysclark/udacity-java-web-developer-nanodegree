@@ -15,6 +15,7 @@ import com.udacity.jwdnd.course1.cloudstorage.model.File;
 import com.udacity.jwdnd.course1.cloudstorage.model.Note;
 import com.udacity.jwdnd.course1.cloudstorage.model.User;
 import com.udacity.jwdnd.course1.cloudstorage.services.CredentialService;
+import com.udacity.jwdnd.course1.cloudstorage.services.EncryptionService;
 import com.udacity.jwdnd.course1.cloudstorage.services.FileService;
 import com.udacity.jwdnd.course1.cloudstorage.services.NoteService;
 import com.udacity.jwdnd.course1.cloudstorage.services.UserService;
@@ -27,18 +28,21 @@ public class HomeController {
 	public static final String HOME_ENDPOINT = "/home";
 	public static final String HOME_RESPONSE = "home";
 	public static final String REDIRECT_HOME_RESPONSE = "redirect:/home";
+	public static final String ENCRYPTION_SERVICE_KEY = "encryptionService";
 
 	private UserService userService;
 	private NoteService noteService;
 	private FileService fileService;
 	private CredentialService credentialService;
+	private EncryptionService encryptionService;
 
 	public HomeController(UserService userService, NoteService noteService, 
-			FileService fileService, CredentialService credentialService) {
+			FileService fileService, CredentialService credentialService, EncryptionService encryptionService) {
 		this.userService = userService;
 		this.noteService = noteService;
 		this.fileService = fileService;
 		this.credentialService = credentialService;
+		this.encryptionService = encryptionService;
 	}
 
 	@ModelAttribute(FileController.FILE_DTO_ATTRIBUTE)
@@ -71,6 +75,8 @@ public class HomeController {
 			model.addAttribute(CredentialController.CREDENTIALS_DATA_KEY, credentials);
 		}
 
+		model.addAttribute(ENCRYPTION_SERVICE_KEY, encryptionService);
+		
 		return HOME_RESPONSE;
 	}
 

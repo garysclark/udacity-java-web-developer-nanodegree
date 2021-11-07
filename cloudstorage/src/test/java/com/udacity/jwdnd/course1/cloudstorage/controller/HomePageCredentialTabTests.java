@@ -33,6 +33,12 @@ public class HomePageCredentialTabTests {
 
 	private static final String TEST_PASSWORD = "testpassword";
 
+	private static final String TEST_URL_2 = "http://testurl2.com";
+
+	private static final String TEST_USERNAME_2 = "testusername2";
+
+	private static final String TEST_PASSWORD_2 = "testpassword2";
+
 	private static ChromeDriver driver;
 
 	@LocalServerPort
@@ -71,6 +77,8 @@ public class HomePageCredentialTabTests {
 		userService.createUser(user);
 		loginPage.login(user.getUsername(),user.getPassword());
 		credentialsTab.selectTab();
+		credentialsTab.addCredential(TEST_URL, TEST_USERNAME, TEST_PASSWORD);
+		handleSuccessResult();
 	}
 	
 	@Test
@@ -80,10 +88,14 @@ public class HomePageCredentialTabTests {
 	
 	@Test
 	public void canAddCredential() {
-		credentialsTab.addCredential(TEST_URL, TEST_USERNAME, TEST_PASSWORD);
-		handleSuccessResult();
 		List<Credential> credentials = credentialsTab.getCredentials();
 		assertEquals(1, credentials.size());
+	}
+	
+	@Test
+	public void canEditCredential() {
+		credentialsTab.editCredential(0, TEST_URL_2, TEST_USERNAME_2, TEST_PASSWORD_2);
+		handleSuccessResult();
 	}
 
 	private void handleSuccessResult() {

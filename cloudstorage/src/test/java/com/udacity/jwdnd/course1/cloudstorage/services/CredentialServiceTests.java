@@ -25,11 +25,13 @@ public class CredentialServiceTests {
 	private List<Credential> credentials;
 
 	private CredentialService credentialService;
+	private Credential credential;
 
 	@BeforeEach
 	public void beforeEach() {
 		MockitoAnnotations.initMocks(this);
 		credentialService = new CredentialService(credentialMapper);
+		credential = CredentialTests.getTestCredential_1();
 	}
 	
 	@Test
@@ -39,7 +41,6 @@ public class CredentialServiceTests {
 	
 	@Test
 	public void canCreateCredential() {
-		Credential credential = CredentialTests.getTestCredential_1();
 		Mockito.when(credentialMapper.create(credential)).thenReturn(1);
 		
 		int rowsAdded = credentialService.createCredential(credential);
@@ -55,5 +56,24 @@ public class CredentialServiceTests {
 		List<Credential> foundCredentials = credentialService.getCredentialsByUserId(user.getUserId());
 		
 		assertEquals(credentials, foundCredentials);
+	}
+	
+	@Test
+	public void canGetCredentialById() {
+		Mockito.when(credentialMapper.findById(credential.getId())).thenReturn(credential);
+		
+		Credential foundCredential = credentialService.getCredentialById(credential.getId());
+		
+		assertEquals(credential, foundCredential);
+	}
+	
+	@Test
+	public void canUpdateCredential() {
+		Mockito.when(credentialMapper.update(credential)).thenReturn(1);
+		
+		int rowsUpdated = credentialService.updateCredential(credential);
+		
+		assertEquals(1, rowsUpdated);
+
 	}
 }

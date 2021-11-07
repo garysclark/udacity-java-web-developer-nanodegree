@@ -22,6 +22,7 @@ import com.udacity.jwdnd.course1.cloudstorage.model.Note;
 import com.udacity.jwdnd.course1.cloudstorage.model.User;
 import com.udacity.jwdnd.course1.cloudstorage.model.UserTests;
 import com.udacity.jwdnd.course1.cloudstorage.services.CredentialService;
+import com.udacity.jwdnd.course1.cloudstorage.services.EncryptionService;
 import com.udacity.jwdnd.course1.cloudstorage.services.FileService;
 import com.udacity.jwdnd.course1.cloudstorage.services.NoteService;
 import com.udacity.jwdnd.course1.cloudstorage.services.UserService;
@@ -36,6 +37,8 @@ public class HomeControllerTests {
 	private FileService fileService;
 	@Mock
 	private CredentialService credentialService;
+	@Mock
+	private EncryptionService encryptionService;
 
 	@Mock
 	private Model model;
@@ -58,7 +61,7 @@ public class HomeControllerTests {
 	@BeforeEach
 	public void beforeEach() {
 		MockitoAnnotations.initMocks(this);
-		homeController = new HomeController(userService, noteService, fileService, credentialService);
+		homeController = new HomeController(userService, noteService, fileService, credentialService, encryptionService);
 	}
 	
 	@Test
@@ -77,7 +80,7 @@ public class HomeControllerTests {
 
 		String response = homeController.getContent(model, authentication, null);
 		
-		Mockito.verify(model, times(4)).addAttribute(keyCaptor.capture(), valueCaptor.capture());
+		Mockito.verify(model, times(5)).addAttribute(keyCaptor.capture(), valueCaptor.capture());
 		List<String> keys = keyCaptor.getAllValues();
 		List<Object> values = valueCaptor.getAllValues();
 		
@@ -92,6 +95,9 @@ public class HomeControllerTests {
 		
 		assertEquals(CredentialController.CREDENTIALS_DATA_KEY, keys.get(3));
 		assertEquals(credentials, values.get(3));
+		
+		assertEquals(HomeController.ENCRYPTION_SERVICE_KEY, keys.get(4));
+		assertEquals(encryptionService, values.get(4));
 		
 		assertEquals(HomeController.HOME_RESPONSE, response);
 	}

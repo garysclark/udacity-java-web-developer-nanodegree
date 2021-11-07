@@ -67,9 +67,9 @@ public class HomePageCredentialsTab {
 		ArrayList<Credential> credentials = new ArrayList<>();
 		List<WebElement> elements = credentialTable.findElements(By.tagName("tbody"));
 		for(WebElement trElement:elements) {
-			String url = trElement.findElement(By.id("credential-url")).getText();
-			String username = trElement.findElement(By.id("credential-username")).getText();
-			String password = trElement.findElement(By.id("credential-password")).getText();
+			String url = trElement.findElement(By.id("table-credential-url")).getText();
+			String username = trElement.findElement(By.id("table-credential-username")).getText();
+			String password = trElement.findElement(By.id("table-credential-password")).getText();
 			Credential credential = new Credential(null, url, username, null, password, null);
 			credentials.add(credential);
 		}
@@ -78,6 +78,18 @@ public class HomePageCredentialsTab {
 
 	public void waitForCredentialsTab() {
 		wait.until(ExpectedConditions.elementToBeClickable(addCredentialButton));
+	}
+
+	public void editCredential(int i, String url, String username, String password) {
+		List<WebElement> elements = credentialTable.findElements(By.id("edit-credetial-button"));
+		elements.get(i).click();
+		credentialUrl.clear();
+		credentialUrl.sendKeys(url);
+		credentialUsername.clear();
+		credentialUsername.sendKeys(username);
+		credentialPassword.clear();
+		credentialPassword.sendKeys(password);
+		saveChangesButton.click();
 	}
 
 }

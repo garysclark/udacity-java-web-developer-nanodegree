@@ -30,7 +30,11 @@ public class CredentialController {
 	public static final String CREDENTIALS_DATA_KEY = "credentials";
 
 	public static final String ACTIVE_TAB_CREDENTIALS = "credentials";
-	
+
+	public static final String UPDATE_CREDENTIAL_SUCCESS_MESSAGE = "You successfully updated a credential.";
+
+	public static final String UPDATE_CREDENTIAL_ERROR_MESSAGE = "There was an error updating the credential.  Please try again.";
+
 	public CredentialController(CredentialService credentialService, UserService userService, EncryptionService encryptionService) {
 		this.credentialService = credentialService;
 		this.userService = userService;
@@ -41,24 +45,37 @@ public class CredentialController {
 	public String createCredential(@ModelAttribute Credential credential, RedirectAttributes redirectAttributes,
 			Authentication authentication) {
 
-		User user = userService.getUser(authentication.getName());
-		
-		String encryptionKey = encryptionService.generateKey();
-		String encryptedPassword = encryptionService.encryptValue(credential.getPassword(), encryptionKey);
-		credential.setKey(encryptionKey);
-		credential.setPassword(encryptedPassword);
-		credential.setUserId(user.getUserId());
-		
-		int rowsAdded = credentialService.createCredential(credential);
-		if(rowsAdded > 0) {
-			setupResult(true, CredentialController.ADD_CREDENTIAL_SUCCESS_MESSAGE, redirectAttributes);
+		if(credentialService.getCredentialById(credential.getId()) == null) {
+
+			User user = userService.getUser(authentication.getName());
+
+			String encryptionKey = encryptionService.generateKey();
+			String encryptedPassword = encryptionService.encryptValue(credential.getPassword(), encryptionKey);
+			credential.setKey(encryptionKey);
+			credential.setPassword(encryptedPassword);
+			credential.setUserId(user.getUserId());
+
+			int rowsAdded = credentialService.createCredential(credential);
+			if(rowsAdded > 0) {
+				setupResult(true, CredentialController.ADD_CREDENTIAL_SUCCESS_MESSAGE, redirectAttributes);
+			} else {
+				setupResult(false, CredentialController.ADD_CREDENTIAL_ERROR_MESSAGE, redirectAttributes);
+			}
 		} else {
-			setupResult(false, CredentialController.ADD_CREDENTIAL_ERROR_MESSAGE, redirectAttributes);
+			String encryptedPassword = encryptionService.encryptValue(credential.getPassword(), credential.getKey());
+			credential.setPassword(encryptedPassword);
+
+			int rowsUpdated = credentialService.updateCredential(credential);
+			if(rowsUpdated > 0) {
+				setupResult(true, CredentialController.UPDATE_CREDENTIAL_SUCCESS_MESSAGE, redirectAttributes);
+			} else {
+				setupResult(false, CredentialController.UPDATE_CREDENTIAL_ERROR_MESSAGE, redirectAttributes);
+			}
 		}
-		
+
 		return ResultController.REDIRECT_RESULT_RESPONSE;
 	}
-	
+
 	private void setupResult(boolean isSuccess, String message, RedirectAttributes redirectAttributes) {
 		redirectAttributes.addFlashAttribute(CloudStorageController.SUCCESS_KEY, isSuccess);
 		redirectAttributes.addFlashAttribute(CloudStorageController.MESSAGE_KEY, message);

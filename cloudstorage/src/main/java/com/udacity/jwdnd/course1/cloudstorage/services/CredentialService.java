@@ -24,4 +24,12 @@ public class CredentialService {
 		return credentialMapper.findByUserId(userId);
 	}
 
+	public Credential getCredentialById(Integer id) {
+		return credentialMapper.findById(id);
+	}
+
+	public Integer updateCredential(Credential credential) {
+		return credentialMapper.update(credential);
+	}
+
 }
