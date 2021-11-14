@@ -33,47 +33,56 @@ public class CredentialServiceTests {
 		credentialService = new CredentialService(credentialMapper);
 		credential = CredentialTests.getTestCredential_1();
 	}
-	
+
 	@Test
 	public void canCreateService() {
 		assertNotNull(credentialService);
 	}
-	
+
 	@Test
 	public void canCreateCredential() {
 		Mockito.when(credentialMapper.create(credential)).thenReturn(1);
-		
+
 		int rowsAdded = credentialService.createCredential(credential);
-		
+
 		assertEquals(1, rowsAdded);
 	}
-	
+
 	@Test
 	public void canGetCredentialsByUserId() {
 		User user = UserTests.getTestUser_1();
 		Mockito.when(credentialMapper.findByUserId(user.getUserId())).thenReturn(credentials);
-		
+
 		List<Credential> foundCredentials = credentialService.getCredentialsByUserId(user.getUserId());
-		
+
 		assertEquals(credentials, foundCredentials);
 	}
-	
+
 	@Test
 	public void canGetCredentialById() {
 		Mockito.when(credentialMapper.findById(credential.getId())).thenReturn(credential);
-		
+
 		Credential foundCredential = credentialService.getCredentialById(credential.getId());
-		
+
 		assertEquals(credential, foundCredential);
 	}
-	
+
 	@Test
 	public void canUpdateCredential() {
 		Mockito.when(credentialMapper.update(credential)).thenReturn(1);
-		
+
 		int rowsUpdated = credentialService.updateCredential(credential);
-		
+
 		assertEquals(1, rowsUpdated);
 
+	}
+
+	@Test
+	public void canDeleteCredential() {
+		Mockito.when(credentialMapper.delete(credential)).thenReturn(1);
+
+		int rowsDeleted = credentialService.deleteCredential(credential);
+
+		assertEquals(1, rowsDeleted);
 	}
 }

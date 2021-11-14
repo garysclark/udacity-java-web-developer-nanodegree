@@ -40,6 +40,9 @@ public class HomePageCredentialsTab {
 	@FindBy (id = "credentialTable")
 	private WebElement credentialTable;
 
+	@FindBy (id = "delete-credential-confirm-button")
+	private WebElement deleteConfirmButton;
+
 	public HomePageCredentialsTab(ChromeDriver driver) {
 		PageFactory.initElements(driver, this);
 		jse = (JavascriptExecutor)driver;
@@ -81,7 +84,7 @@ public class HomePageCredentialsTab {
 	}
 
 	public void editCredential(int i, String url, String username, String password) {
-		List<WebElement> elements = credentialTable.findElements(By.id("edit-credetial-button"));
+		List<WebElement> elements = credentialTable.findElements(By.id("edit-credential-button"));
 		elements.get(i).click();
 		credentialUrl.clear();
 		credentialUrl.sendKeys(url);
@@ -90,6 +93,12 @@ public class HomePageCredentialsTab {
 		credentialPassword.clear();
 		credentialPassword.sendKeys(password);
 		saveChangesButton.click();
+	}
+
+	public void deleteCredential(int i) {
+		List<WebElement> elements = credentialTable.findElements(By.id("delete-credential-button"));
+		elements.get(i).click();
+		deleteConfirmButton.click();
 	}
 
 }

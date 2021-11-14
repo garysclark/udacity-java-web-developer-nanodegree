@@ -17,6 +17,8 @@ public class CredentialController {
 
 	public static final String CREDENTIALS_ENDPOINT = "/credentials";
 
+	public static final String CREDENTIALS_DELETE_ENDPOINT = "/credentials/delete";
+
 	private CredentialService credentialService;
 
 	private UserService userService;
@@ -34,6 +36,11 @@ public class CredentialController {
 	public static final String UPDATE_CREDENTIAL_SUCCESS_MESSAGE = "You successfully updated a credential.";
 
 	public static final String UPDATE_CREDENTIAL_ERROR_MESSAGE = "There was an error updating the credential.  Please try again.";
+
+	public static final String DELETE_CREDENTIAL_SUCCESS_MESSAGE = "You successfully deleted a credential.";
+
+	public static final String DELETE_CREDENTIAL_ERROR_MESSAGE = "There was an error deleting the credential.  Please try again.";
+
 
 	public CredentialController(CredentialService credentialService, UserService userService, EncryptionService encryptionService) {
 		this.credentialService = credentialService;
@@ -73,6 +80,20 @@ public class CredentialController {
 			}
 		}
 
+		return ResultController.REDIRECT_RESULT_RESPONSE;
+	}
+	
+	@PostMapping(CREDENTIALS_DELETE_ENDPOINT)
+	public String deleteCredential(@ModelAttribute Credential credential, RedirectAttributes redirectAttributes,
+			Authentication authentication) {
+		
+		int rowsDeleted = credentialService.deleteCredential(credential);
+		if(rowsDeleted > 0) {
+			setupResult(true, DELETE_CREDENTIAL_SUCCESS_MESSAGE, redirectAttributes);
+		} else {
+			setupResult(false, DELETE_CREDENTIAL_ERROR_MESSAGE, redirectAttributes);
+		}
+		
 		return ResultController.REDIRECT_RESULT_RESPONSE;
 	}
 

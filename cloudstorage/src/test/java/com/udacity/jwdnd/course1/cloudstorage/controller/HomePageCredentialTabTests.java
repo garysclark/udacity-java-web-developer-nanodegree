@@ -1,6 +1,7 @@
 package com.udacity.jwdnd.course1.cloudstorage.controller;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.List;
@@ -90,12 +91,30 @@ public class HomePageCredentialTabTests {
 	public void canAddCredential() {
 		List<Credential> credentials = credentialsTab.getCredentials();
 		assertEquals(1, credentials.size());
+		Credential credential = credentials.get(0);
+		assertEquals(TEST_URL, credential.getUrl());
+		assertEquals(TEST_USERNAME, credential.getUsername());
+		assertNotNull(credential.getPassword());
 	}
 	
 	@Test
 	public void canEditCredential() {
 		credentialsTab.editCredential(0, TEST_URL_2, TEST_USERNAME_2, TEST_PASSWORD_2);
 		handleSuccessResult();
+		List<Credential> credentials = credentialsTab.getCredentials();
+		assertEquals(1, credentials.size());
+		Credential credential = credentials.get(0);
+		assertEquals(TEST_URL_2, credential.getUrl());
+		assertEquals(TEST_USERNAME_2, credential.getUsername());
+		assertNotNull(credential.getPassword());
+	}
+	
+	@Test
+	public void canDeleteCredential() {
+		credentialsTab.deleteCredential(0);
+		handleSuccessResult();
+		List<Credential> credentials = credentialsTab.getCredentials();
+		assertEquals(0, credentials.size());
 	}
 
 	private void handleSuccessResult() {

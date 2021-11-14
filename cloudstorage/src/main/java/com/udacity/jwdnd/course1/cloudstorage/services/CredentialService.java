@@ -32,4 +32,8 @@ public class CredentialService {
 		return credentialMapper.update(credential);
 	}
 
+	public Integer deleteCredential(Credential credential) {
+		return credentialMapper.delete(credential);
+	}
+
 }

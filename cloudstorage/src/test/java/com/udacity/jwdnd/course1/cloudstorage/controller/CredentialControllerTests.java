@@ -71,7 +71,7 @@ public class CredentialControllerTests {
 
 	@Test
 	public void canCreateCredential() {
-		prepareForCreateTests();
+		prepareForNewCredentialTests();
 		Mockito.when(credentialService.createCredential(credential)).thenReturn(1);
 
 		String response = credentialController.createCredential(credential, redirectAttributes, authentication);
@@ -85,7 +85,7 @@ public class CredentialControllerTests {
 
 	@Test
 	public void canHandleCreateCredentialError() {
-		prepareForCreateTests();
+		prepareForNewCredentialTests();
 		Mockito.when(credentialService.createCredential(credential)).thenReturn(0);
 
 		String response = credentialController.createCredential(credential, redirectAttributes, authentication);
@@ -95,7 +95,7 @@ public class CredentialControllerTests {
 
 	@Test
 	public void canUpdateCredential() {
-		prepareForUpdateTests();
+		prepareForExistingCredentialTests();
 		Mockito.when(credentialService.updateCredential(credential)).thenReturn(1);
 
 		String unencryptedPassword = credential.getPassword();
@@ -111,21 +111,41 @@ public class CredentialControllerTests {
 
 	@Test
 	public void canHandleUpdateCredentialError() {
-		prepareForUpdateTests();
+		prepareForExistingCredentialTests();
 		Mockito.when(credentialService.updateCredential(credential)).thenReturn(0);
 
 		String response = credentialController.createCredential(credential, redirectAttributes, authentication);
 
 		verifyWithResult(false, CredentialController.UPDATE_CREDENTIAL_ERROR_MESSAGE, response);
 	}
+	
+	@Test
+	public void canDeleteCredential() {
+		prepareForExistingCredentialTests();
+		Mockito.when(credentialService.deleteCredential(credential)).thenReturn(1);
+		String response = credentialController.deleteCredential(credential, redirectAttributes, authentication);
+		
+		Mockito.verify(credentialService).deleteCredential(credential);
+		verifyWithResult(true, CredentialController.DELETE_CREDENTIAL_SUCCESS_MESSAGE, response);
+	}
+	
+	@Test
+	public void canHandleDeleteCredentialError() {
+		prepareForExistingCredentialTests();
+		Mockito.when(credentialService.deleteCredential(credential)).thenReturn(0);
 
-	private void prepareForUpdateTests() {
+		String response = credentialController.deleteCredential(credential, redirectAttributes, authentication);
+
+		verifyWithResult(false, CredentialController.DELETE_CREDENTIAL_ERROR_MESSAGE, response);
+	}
+
+	private void prepareForExistingCredentialTests() {
 		credential = CredentialTests.getTestCredential_1();
 		Mockito.when(credentialService.getCredentialById(credential.getId())).thenReturn(credential);
 		Mockito.when(encryptionService.encryptValue(credential.getPassword(), credential.getKey())).thenReturn(TEST_ENCRYPTED_PASSWORD);
 	}
 
-	private void prepareForCreateTests() {
+	private void prepareForNewCredentialTests() {
 		credential = CredentialTests.getTestCredential_1();
 		credential.setId(null);
 		credential.setKey(null);
