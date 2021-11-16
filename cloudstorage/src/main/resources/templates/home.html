@@ -79,7 +79,8 @@
 						+ Add a New Credential</button>
 
 					<div th:insert="fragments/credentials-list :: credentials-list"></div>
-					<div th:insert="fragments/credential-delete-modal :: credential-delete-modal"></div>
+					<!-- div th:insert="fragments/credential-delete-modal :: credential-delete-modal"></div -->
+					<div th:insert="fragments/delete-modal :: delete-modal"></div>
 
 					<div class="modal fade" id="credentialModal" tabindex="-1"
 						role="dialog" aria-labelledby="credentialModalLabel"
@@ -144,6 +145,13 @@
 			$('#note-description').val(noteDescription ? noteDescription : '');
 			$('#user-id').val(userId ? userId : '');
 			$('#noteModal').modal('show');
+		}
+
+		// For opening the note modal
+		function showDeleteModal(type, id) {
+			$('#issueType').val(type ? type : '');
+			$('#delete-id').val(id ? id : '');
+			$('#deleteModal').modal('show');
 		}
 
 		// For opening the note modal
