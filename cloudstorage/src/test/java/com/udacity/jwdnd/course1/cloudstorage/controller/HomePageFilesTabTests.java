@@ -5,6 +5,12 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.attribute.BasicFileAttributes;
+import java.nio.file.attribute.FileTime;
+import java.time.Instant;
 import java.util.List;
 
 import org.junit.jupiter.api.AfterAll;
@@ -124,7 +130,7 @@ public class HomePageFilesTabTests {
 	}
 
 	@Test
-	public void verifyFileListPersists() throws IOException {
+	public void canVerifyFileListPersists() throws IOException {
 		uploadValidFile(TEST_RELATIVE_PATH + TEST_FILENAME_1);
 		notesTab.logout();
 		loginPage.waitForLoginPage();
@@ -148,6 +154,34 @@ public class HomePageFilesTabTests {
 		filesTab.deleteFile(0);
 		handleSuccessResult(FileController.DELETE_FILE_SUCCESS_MESSAGE);
 		assertEquals(1, filesTab.getFileNames().size());
+	}
+	
+	@Test
+	public void canViewFile() throws IOException {
+		uploadValidFile(TEST_RELATIVE_PATH + TEST_FILENAME_1);
+		filesTab.viewFile(0);
+		String downloadedFileName = filesTab.getFileNames().get(0);
+		assertTrue(isFilePresentInDownloadDirectory(downloadedFileName));
+	}
+
+	private boolean isFilePresentInDownloadDirectory(String downloadedFileName) throws IOException {
+		int extensionStart = downloadedFileName.lastIndexOf(".");
+		String baseFileName = downloadedFileName.substring(0, extensionStart);
+		String myHomePath = System.getProperty("user.home");
+		File folder = new File(myHomePath + "/Downloads");
+		for (final File fileEntry : folder.listFiles()) {
+			if (!fileEntry.isDirectory()) {
+				Path path = Paths.get(fileEntry.getCanonicalPath());
+				BasicFileAttributes attributes = Files.readAttributes(path, BasicFileAttributes.class);
+				if(fileEntry.getName().contains(baseFileName)) {
+					if(attributes.creationTime().compareTo(FileTime.from(Instant.now().minusSeconds(1))) > 0) {
+						return true;
+					}
+				}
+			}
+		}	
+		
+		return false;
 	}
 	
 }

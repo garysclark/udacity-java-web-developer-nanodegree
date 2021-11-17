@@ -81,4 +81,9 @@ public class HomePageFilesTab {
 		return elements.get(fileNumber);
 	}
 
+	public void viewFile(int i) {
+		List<WebElement> elements = fileTable.findElements(By.id("view-file-button"));
+		elements.get(i).click();
+	}
+
 }
