@@ -28,6 +28,7 @@ import com.udacity.jwdnd.course1.cloudstorage.services.UserService;
 
 public class FileControllerTests {
 
+	private static final String TEST_FILE_NAME = "File Name";
 	@Mock
 	private RedirectAttributes redirectAttributes;
 	@Mock
@@ -66,7 +67,7 @@ public class FileControllerTests {
 
 	@Test
 	public void canUploadFile() {
-		Mockito.when(multipartFile.getOriginalFilename()).thenReturn("File Name");
+		Mockito.when(multipartFile.getOriginalFilename()).thenReturn(TEST_FILE_NAME);
 		Mockito.when(fileService.addFile(user.getUserId(), multipartFile)).thenReturn(1);
 
 		String response = fileController.uploadFile(redirectAttributes, authentication, model, multipartFile);
@@ -76,12 +77,22 @@ public class FileControllerTests {
 
 	@Test
 	public void canHandleAddFileError() {
-		Mockito.when(multipartFile.getOriginalFilename()).thenReturn("File Name");
+		Mockito.when(multipartFile.getOriginalFilename()).thenReturn(TEST_FILE_NAME);
 		Mockito.when(fileService.addFile(user.getUserId(), multipartFile)).thenReturn(-1);
 
 		String response = fileController.uploadFile(redirectAttributes, authentication, model, multipartFile);
 
 		verifyAddFileWithResult(false, FileController.ADD_FILE_ERROR_MESSAGE, response);
+	}
+
+	@Test
+	public void canHandleFileTooLargeError() {
+		Mockito.when(multipartFile.getOriginalFilename()).thenReturn(TEST_FILE_NAME);
+		Mockito.when(multipartFile.getSize()).thenReturn(FileController.MAX_FILE_SIZE + 1);
+
+		String response = fileController.uploadFile(redirectAttributes, authentication, model, multipartFile);
+
+		verifyResultAndAttributes(false, FileController.ADD_FILE_TOO_LARGE_ERROR_MESSAGE, response);
 	}
 
 	@Test
@@ -91,11 +102,6 @@ public class FileControllerTests {
 		String response = fileController.uploadFile(redirectAttributes, authentication, model, multipartFile);
 
 		verifyResultAndAttributes(false, FileController.ADD_NO_FILE_SELECTED_ERROR_MESSAGE, response);
-	}
-
-	private void verifyAddFileWithResult(boolean resultValue, String messageValue, String response) {
-		Mockito.verify(fileService).addFile(user.getUserId(), multipartFile);
-		verifyResultAndAttributes(resultValue, messageValue, response);
 	}
 
 	@Test
@@ -133,12 +139,17 @@ public class FileControllerTests {
 	@Test
 	public void canHandleDuplicateFilenameError() {
 		File file = FileTests.getTestFile_1();
-		Mockito.when(multipartFile.getOriginalFilename()).thenReturn("File Name");
+		Mockito.when(multipartFile.getOriginalFilename()).thenReturn(TEST_FILE_NAME);
 		Mockito.when(fileService.getFileByFileName(user.getUserId(), file.getName())).thenReturn(file);
 
 		String response = fileController.uploadFile(redirectAttributes, authentication, model, multipartFile);
 
 		verifyResultAndAttributes(false, FileController.DUPLICATE_FILENAME_ERROR_MESSAGE, response);
+	}
+
+	private void verifyAddFileWithResult(boolean resultValue, String messageValue, String response) {
+		Mockito.verify(fileService).addFile(user.getUserId(), multipartFile);
+		verifyResultAndAttributes(resultValue, messageValue, response);
 	}
 
 	private void verifyDeleteFileWithResult(boolean resultValue, String messageValue, String response, File file) {
