@@ -40,7 +40,7 @@ public class HomePageCredentialsTab {
 	@FindBy (id = "credentialTable")
 	private WebElement credentialTable;
 
-	@FindBy (id = "delete-credential-confirm-button")
+	@FindBy (id = "delete-credentials-confirm-button")
 	private WebElement deleteConfirmButton;
 
 	public HomePageCredentialsTab(ChromeDriver driver) {

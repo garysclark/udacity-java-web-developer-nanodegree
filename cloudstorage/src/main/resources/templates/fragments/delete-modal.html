@@ -2,31 +2,31 @@
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:th="https://www.thymeleaf.org">
 <body>
-	<div th:fragment="delete-modal(itemType,baseEndPoint)" class="modal fade" id="deleteModal"
+	<div th:fragment="delete-modal(modalTitle,modalMessage,endpoint)" class="modal fade" th:id="${'deleteModal-' + endpoint}"
 		tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel"
 		aria-hidden="true">
 		<div class="modal-dialog" role="document">
 			<div class="modal-content">
 				<div class="modal-header">
-					<h5 class="modal-title" id="deleteModalLabel" th:text="'Delete ' + ${itemType}">Delete Issue</h5>
-					<label id=type></label>
+					<h5 class="modal-title" id="deleteModalLabel" th:text="${modalTitle}"></h5>
 					<button type="button" class="close" data-dismiss="modal"
 						aria-label="Close">
 						<span aria-hidden="true">&times;</span>
 					</button>
 				</div>
 				<div class="modal-body">
-					<form action="#" th:action="@{/{path}/delete(path=${baseEndPoint})}"
+					<form action="#" th:action="@{{endpoint}/delete(endpoint=${endpoint})}"
 						th:method="DELETE">
-						<input type="hidden" name="id" id="delete-id">
-						<button type="submit" id="deleteSubmit" class="d-none"></button>
+						<span th:text="${modalMessage}"></span>
+						<input type="hidden" name="id" th:id="${'delete-' + endpoint + '-id'}">
+						<button type="submit" th:id="${'deleteSubmit-' + endpoint}" class="d-none"></button>
 					</form>
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-secondary"
 						data-dismiss="modal">Close</button>
-					<button id="delete-confirm-button" type="button"
-						class="btn btn-primary" onclick="$('#deleteSubmit').click();">Delete</button>
+					<button th:id="${'delete-' + endpoint + '-confirm-button'}" type="button"
+						class="btn btn-primary" th:attr="onclick=|actionDelete('${'deleteSubmit-' + endpoint}')|">Delete</button>
 				</div>
 			</div>
 		</div>

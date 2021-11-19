@@ -41,8 +41,8 @@ public class HomePageNotesTab {
 	@FindBy(id = "userTable")
 	private WebElement notesTable;
 
-	@FindBy(id = "delete-note-confirm-button")
-	private WebElement deleteNoteConfirmButton;
+	@FindBy(id = "delete-notes-confirm-button")
+	private WebElement deleteConfirmButton;
 
 	@FindBy(id = "logout-btn")
 	private WebElement logoutButton;
@@ -91,7 +91,7 @@ public class HomePageNotesTab {
 	public void deleteNote(int noteNumber) {
 		WebElement deleteButton = getDeleteButtonForNote(noteNumber);
 		deleteButton.click();
-		deleteNoteConfirmButton.click();
+		deleteConfirmButton.click();
 	}
 
 	private WebElement getDeleteButtonForNote(int noteNumber) {

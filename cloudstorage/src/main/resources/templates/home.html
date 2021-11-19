@@ -60,7 +60,9 @@
 					</form>
 
 					<div th:insert="fragments/files-list :: files-list"></div>
-					<div th:insert="fragments/file-delete-modal :: file-delete-modal"></div>
+					<div
+						th:insert="fragments/delete-modal :: delete-modal(modalTitle='Delete File', 
+					modalMessage='Do you want to delete file?', endpoint='files')"></div>
 
 				</div>
 				<div class="tab-pane fade"
@@ -72,7 +74,9 @@
 
 					<div th:insert="fragments/notes-list :: notes-list"></div>
 					<div th:insert="fragments/note-modal :: note-modal"></div>
-					<div th:insert="fragments/note-delete-modal :: note-delete-modal"></div>
+					<div
+						th:insert="fragments/delete-modal :: delete-modal(modalTitle='Delete Note', 
+					modalMessage='Do you want to delete note?', endpoint='notes')"></div>
 
 				</div>
 				<div class="tab-pane fade"
@@ -86,7 +90,8 @@
 					<div th:insert="fragments/credentials-list :: credentials-list"></div>
 					<div th:insert="fragments/credential-modal :: credential-modal"></div>
 					<div
-						th:insert="fragments/credential-delete-modal :: credential-delete-modal"></div>
+						th:insert="fragments/delete-modal :: delete-modal(modalTitle='Delete Credential', 
+					modalMessage='Do you want to delete credential?', endpoint='credentials')"></div>
 
 				</div>
 			</div>
@@ -109,27 +114,13 @@
 		}
 
 		// For opening the note modal
-		function showDeleteModal(id) {
-			$('#delete-id').val(id ? id : '');
-			$('#deleteModal').modal('show');
+		function showDeleteModal(id, type) {
+			$('#delete-' + type + '-id').val(id ? id : '');
+			$('#deleteModal-' + type).modal('show');
 		}
 
-		// For opening the note modal
-		function showDeleteNoteModal(noteId) {
-			$('#delete-note-id').val(noteId ? noteId : '');
-			$('#noteDeleteModal').modal('show');
-		}
-
-		// For opening the note modal
-		function showDeleteFileModal(fileId) {
-			$('#delete-file-id').val(fileId ? fileId : '');
-			$('#fileDeleteModal').modal('show');
-		}
-
-		// For opening the note modal
-		function showDeleteCredentialModal(credentialId) {
-			$('#delete-credential-id').val(credentialId ? credentialId : '');
-			$('#credentialDeleteModal').modal('show');
+		function actionDelete(deleteAction) {
+			$('#' + deleteAction).click();
 		}
 
 		// For opening the credentials modal

@@ -30,8 +30,8 @@ public class HomePageFilesTab {
 	@FindBy (id = "fileTable")
 	private WebElement fileTable;
 
-	@FindBy(id = "delete-file-confirm-button")
-	private WebElement deleteFileConfirmButton;
+	@FindBy(id = "delete-files-confirm-button")
+	private WebElement deleteConfirmButton;
 
 	public HomePageFilesTab(ChromeDriver driver) {
 		PageFactory.initElements(driver, this);
@@ -73,7 +73,7 @@ public class HomePageFilesTab {
 	public void deleteFile(int fileNumber) {
 		WebElement deleteButton = getDeleteButtonForFile(fileNumber);
 		deleteButton.click();
-		deleteFileConfirmButton.click();
+		deleteConfirmButton.click();
 	}
 
 	private WebElement getDeleteButtonForFile(int fileNumber) {
