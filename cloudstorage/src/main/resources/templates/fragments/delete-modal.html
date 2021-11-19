@@ -2,13 +2,13 @@
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:th="https://www.thymeleaf.org">
 <body>
-	<div th:fragment="delete-modal" class="modal fade" id="deleteModal"
+	<div th:fragment="delete-modal(itemType,baseEndPoint)" class="modal fade" id="deleteModal"
 		tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel"
 		aria-hidden="true">
 		<div class="modal-dialog" role="document">
 			<div class="modal-content">
 				<div class="modal-header">
-					<h5 class="modal-title" id="deleteModalLabel" th:text="'Delete ' + ${issueType}">Delete Issue</h5>
+					<h5 class="modal-title" id="deleteModalLabel" th:text="'Delete ' + ${itemType}">Delete Issue</h5>
 					<label id=type></label>
 					<button type="button" class="close" data-dismiss="modal"
 						aria-label="Close">
@@ -16,7 +16,7 @@
 					</button>
 				</div>
 				<div class="modal-body">
-					<form action="#" th:action="@{'/${issueType}/delete'}"
+					<form action="#" th:action="@{/{path}/delete(path=${baseEndPoint})}"
 						th:method="DELETE">
 						<input type="hidden" name="id" id="delete-id">
 						<button type="submit" id="deleteSubmit" class="d-none"></button>

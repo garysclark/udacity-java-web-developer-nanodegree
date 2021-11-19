@@ -15,15 +15,13 @@
 				<tr>
 					<td>
 						<button type="button" class="btn btn-success"
-							id="edit-note-button" th:note-title="${note.getTitle()}"
-							th:note-description="${note.getDescription()}"
-							th:note-id="${note.getId()}"
-							th:user-id="${note.getUserid()}"
-							onclick="showNoteModal(this.getAttribute('note-id'),this.getAttribute('note-title'),this.getAttribute('note-description'),this.getAttribute('user-id'))">Edit
+							id="edit-note-button"
+							th:onclick="showNoteModal([[${note.getId()}]],[[${note.getTitle()}]],
+							[[${note.getDescription()}]],[[${note.getUserid()}]])">Edit
 						</button>
 						<button type="button" class="btn btn-danger"
-							id="delete-note-button" th:note-id="${note.getId()}"
-							onclick="showDeleteNoteModal(this.getAttribute('note-id'))">Delete
+							id="delete-note-button"
+							th:onclick="showDeleteNoteModal([[${note.getId()}]])">Delete
 						</button>
 					</td>
 					<th id="table-noteTitle" th:text="${note.getTitle()}"

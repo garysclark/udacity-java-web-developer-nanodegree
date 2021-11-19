@@ -41,9 +41,6 @@ public class HomePageNotesTab {
 	@FindBy(id = "userTable")
 	private WebElement notesTable;
 
-	@FindBy(id = "delete-note-button")
-	private WebElement deleteNoteButton;
-
 	@FindBy(id = "delete-note-confirm-button")
 	private WebElement deleteNoteConfirmButton;
 
