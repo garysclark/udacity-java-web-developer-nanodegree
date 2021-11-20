@@ -118,4 +118,8 @@ public class HomePageNotesTab {
 		wait.until(ExpectedConditions.elementToBeClickable(addNoteButton));
 	}
 
+	public void waitForHomePage() {
+		wait.until(ExpectedConditions.elementToBeClickable(logoutButton));
+	}
+
 }
