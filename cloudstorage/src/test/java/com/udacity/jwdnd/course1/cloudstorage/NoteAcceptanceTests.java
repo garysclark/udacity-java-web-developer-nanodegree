@@ -1,7 +1,7 @@
-package com.udacity.jwdnd.course1.cloudstorage.controller;
+package com.udacity.jwdnd.course1.cloudstorage;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 import java.util.List;
 
@@ -17,7 +17,11 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.test.annotation.DirtiesContext;
 
+import com.udacity.jwdnd.course1.cloudstorage.controller.HomePageNotesTab;
+import com.udacity.jwdnd.course1.cloudstorage.controller.LoginPage;
+import com.udacity.jwdnd.course1.cloudstorage.controller.ResultsPage;
 import com.udacity.jwdnd.course1.cloudstorage.model.Note;
+import com.udacity.jwdnd.course1.cloudstorage.model.NoteTests;
 import com.udacity.jwdnd.course1.cloudstorage.model.User;
 import com.udacity.jwdnd.course1.cloudstorage.model.UserTests;
 import com.udacity.jwdnd.course1.cloudstorage.services.UserService;
@@ -27,15 +31,17 @@ import io.github.bonigarcia.wdm.WebDriverManager;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 @AutoConfigureTestDatabase
-public class HomePageNotesTabTests {
+public class NoteAcceptanceTests {
 
-	private static final String TEST_NOTE_TITLE = "Test Note Title";
+	private static final String TEST_NOTE_TITLE = NoteTests.TEST_NOTE_TITLE;
 
-	private static final String TEST_NOTE_DESCRIPTION = "Test note description.";
+	private static final String TEST_NOTE_DESCRIPTION = NoteTests.TEST_NOTE_DESCRIPTION;
 
-	private static final String TEST_EDITED_NOTE_TITLE = "Edited Note Title";
+	private static final String TEST_EDITED_NOTE_TITLE = NoteTests.TEST_EDITED_NOTE_TITLE;
 
-	private static final String TEST_EDITED_NOTE_DESCRIPTION = "Edited Note Description";
+	private static final String TEST_EDITED_NOTE_DESCRIPTION = NoteTests.TEST_EDITED_NOTE_DESCRIPTION;
+
+	private static WebDriver driver;
 
 	@LocalServerPort
 	private Integer port;
@@ -43,15 +49,13 @@ public class HomePageNotesTabTests {
 	@Autowired
 	private UserService userService;
 
-	private HomePageNotesTab notesTab;
-
 	private LoginPage loginPage;
 
-	private User user;
+	private HomePageNotesTab notesTab;
 
 	private ResultsPage resultsPage;
 
-	private static WebDriver driver;
+	private User user;
 
 	@BeforeAll
 	static public void beforeAll() {
@@ -72,46 +76,45 @@ public class HomePageNotesTabTests {
 		resultsPage = new ResultsPage(driver);
 		user = UserTests.getTestUser_1();
 		userService.createUser(user);
-		loginPage.login(user.getUsername(),user.getPassword());
+		loginPage.login(user.getUsername(), user.getPassword());
 
 		notesTab.selectNotesTab();
 		notesTab.createNote(TEST_NOTE_TITLE, TEST_NOTE_DESCRIPTION);
 		handleSuccessResult();
 	}
 
-	private void handleSuccessResult() {
-		resultsPage.waitForSuccessResultPage();
-		resultsPage.selectSuccessContinueLink();
-		notesTab.waitForNotesTab();
-	}
-
-	@Test
-	public void canAccessHomePage() {
-		assertTrue(notesTab.isPageReady());
-
-	}
-
-	@Test
-	public void canSelectNotesTab() {
-		assertTrue(notesTab.isAddNoteButtonVisible());
-	}
-
 	@Test
 	public void canCreateNote() {
 		List<Note> notes = notesTab.getNotes();
 		assertEquals(1, notes.size());
-		assertEquals(TEST_NOTE_TITLE, notes.get(0).getTitle());
-		assertEquals(TEST_NOTE_DESCRIPTION, notes.get(0).getDescription());
+		Note note = notes.get(0);
+		assertEquals(TEST_NOTE_TITLE, note.getTitle());
+		assertEquals(TEST_NOTE_DESCRIPTION, note.getDescription());
+	}
+
+	@Test
+	public void canEditNote() {
+		notesTab.editNote(0, TEST_EDITED_NOTE_TITLE, TEST_EDITED_NOTE_DESCRIPTION);
+		handleSuccessResult();
+		List<Note> notes = notesTab.getNotes();
+		Note note = notes.get(0);
+		assertEquals(TEST_EDITED_NOTE_TITLE, note.getTitle());
+		assertEquals(TEST_EDITED_NOTE_DESCRIPTION, note.getDescription());
 	}
 
 	@Test
 	public void canDeleteNote() {
-		notesTab.createNote(TEST_NOTE_TITLE, TEST_NOTE_DESCRIPTION);
+		notesTab.createNote(TEST_EDITED_NOTE_TITLE, TEST_EDITED_NOTE_DESCRIPTION);
 		handleSuccessResult();
-		assertEquals(2, notesTab.getNotes().size());
+		List<Note> notes = notesTab.getNotes();
+		assertEquals(2, notes.size());
 		notesTab.deleteNote(1);
 		handleSuccessResult();
-		assertEquals(1, notesTab.getNotes().size());
+		notes = notesTab.getNotes();
+		assertEquals(1, notes.size());
+		Note note = notes.get(0);
+		assertNotEquals(TEST_EDITED_NOTE_TITLE, note.getTitle());
+		assertNotEquals(TEST_EDITED_NOTE_DESCRIPTION, note.getDescription());
 	}
 
 	@Test
@@ -123,12 +126,9 @@ public class HomePageNotesTabTests {
 		assertEquals(1, notesTab.getNotes().size());
 	}
 
-	@Test
-	public void canEditNote() {
-		notesTab.editNote(0, TEST_EDITED_NOTE_TITLE, TEST_EDITED_NOTE_DESCRIPTION);
-		handleSuccessResult();
-		List<Note> notes = notesTab.getNotes();
-		assertEquals(TEST_EDITED_NOTE_TITLE, notes.get(0).getTitle());
-		assertEquals(TEST_EDITED_NOTE_DESCRIPTION, notes.get(0).getDescription());
+	private void handleSuccessResult() {
+		resultsPage.waitForSuccessResultPage();
+		resultsPage.selectSuccessContinueLink();
+		notesTab.waitForNotesTab();
 	}
 }

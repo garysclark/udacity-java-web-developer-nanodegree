@@ -56,7 +56,7 @@ public class LoginPage {
 		submitButton.click();
 	}
 
-	public void selectSetupLink() {
+	public void selectSignupLink() {
 		signupPageLink.click();
 	}
 

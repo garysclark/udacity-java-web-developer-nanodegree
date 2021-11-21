@@ -1,10 +1,12 @@
 package com.udacity.jwdnd.course1.cloudstorage;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -15,6 +17,7 @@ import org.springframework.test.annotation.DirtiesContext;
 
 import com.udacity.jwdnd.course1.cloudstorage.controller.HomePageNotesTab;
 import com.udacity.jwdnd.course1.cloudstorage.controller.LoginPage;
+import com.udacity.jwdnd.course1.cloudstorage.controller.SignupController;
 import com.udacity.jwdnd.course1.cloudstorage.controller.SignupPage;
 import com.udacity.jwdnd.course1.cloudstorage.model.User;
 import com.udacity.jwdnd.course1.cloudstorage.model.UserTests;
@@ -24,7 +27,7 @@ import io.github.bonigarcia.wdm.WebDriverManager;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 @AutoConfigureTestDatabase
-public class SignupAndLoginFlowTests {
+public class SignupAndLoginAcceptanceTests {
 
 	private static WebDriver driver;
 
@@ -48,11 +51,16 @@ public class SignupAndLoginFlowTests {
 		driver.quit();
 	}
 
+	@BeforeEach
+	public void beforeEach() {
+		homePage = new HomePageNotesTab(driver);
+		loginPage = new LoginPage(driver);
+		signupPage = new SignupPage(driver);
+	}
+	
 	@Test
 	public void verifyHomePageNotAccessibleWOLogin() {
 		driver.get("http://localhost:" + port + "/home");
-		homePage = new HomePageNotesTab(driver);
-		loginPage = new LoginPage(driver);
 		assertFalse(homePage.isPageReady());
 		assertTrue(loginPage.isPageReady());
 	}
@@ -60,7 +68,6 @@ public class SignupAndLoginFlowTests {
 	@Test
 	public void canSignupLoginLogoutUser() {
 		driver.get("http://localhost:" + port + "/signup");
-		signupPage = new SignupPage(driver);
 		assertTrue(signupPage.isPageReady());
 
 		User user = UserTests.getTestUser_1();
@@ -83,5 +90,40 @@ public class SignupAndLoginFlowTests {
 		assertTrue(loginPage.isPageReady());
 		driver.get("http://localhost:" + port + "/home");
 		assertTrue(loginPage.isPageReady());
+	}
+	
+	@Test
+	public void canSelectSignupLink() {
+		driver.get("http://localhost:" + port + "/login");
+		loginPage.selectSignupLink();
+		assertTrue(signupPage.isPageReady());
+	}
+	
+	@Test
+	public void canSelectLoginLink() {
+		driver.get("http://localhost:" + port + "/signup");
+		signupPage.selectLoginPageLink();
+		assertTrue(loginPage.isPageReady());
+	}
+
+	// Error Handling
+	@Test
+	public void canDetectInvalidUser() {
+		driver.get("http://localhost:" + port + "/login");
+		User user = UserTests.getTestUser_1();
+		loginPage.login(user.getUsername(),user.getPassword());
+		loginPage.waitForLoginPage();
+		assertTrue(loginPage.isErrorMessageVisible());
+	}
+	
+	@Test
+	public void canPreventDuplicateUsername() {
+		driver.get("http://localhost:" + port + "/signup");
+		User user = UserTests.getTestUser_1();
+		signupPage.signupUser(user.getFirstName(),user.getLastName(),user.getUsername(),user.getPassword());
+		signupPage.waitForSuccessMessage();
+		signupPage.signupUser(user.getFirstName(),user.getLastName(),user.getUsername(),user.getPassword());
+		assertTrue(signupPage.isErrorMessageVisible());
+		assertEquals(SignupController.SIGNUP_ERROR_MESSAGE_USERNAME_ALREADY_EXISTS, signupPage.getErrorMessage());
 	}
 }

@@ -23,6 +23,9 @@ public class FileTests {
 	private static final byte[] TEST_FILE_DATA_2 = {44,33,22,11};
 
 	private File file;
+	public static final String TEST_FILENAME_2 = "application.properties";
+	public static final String TEST_FILENAME_1 = "schema.sql";
+	public static final String TEST_RELATIVE_PATH = "src/main/resources/";
 
 	@BeforeEach
 	public void beforeEach() {
