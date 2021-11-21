@@ -18,6 +18,10 @@ public class NoteTests {
 	private static final Integer TEST_USERID_2 = 11;
 
 	private Note note;
+	public static final String TEST_EDITED_NOTE_DESCRIPTION = "Edited Note Description";
+	public static final String TEST_EDITED_NOTE_TITLE = "Edited Note Title";
+	public static final String TEST_NOTE_DESCRIPTION = "Test note description.";
+	public static final String TEST_NOTE_TITLE = "Test Note Title";
 
 	@BeforeEach
 	public void beforeEach() {

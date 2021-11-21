@@ -9,16 +9,16 @@ import org.junit.jupiter.api.Test;
 public class CredentialTests {
 
 	private static final Integer TEST_ID_1 = 99;
-	private static final String TEST_URL_1 = "http://testurl1.com";
-	private static final String TEST_USERNAME_1 = "testuser1";
+	public static final String TEST_URL_1 = "http://testurl1.com";
+	public static final String TEST_USERNAME_1 = "testuser1";
 	private static final String TEST_KEY_1 = "key 1";
-	private static final String TEST_PASSWORD_1 = "password 1";
+	public static final String TEST_PASSWORD_1 = "password 1";
 	private static final Integer TEST_USERID_1 = 199;
 	private static final Integer TEST_ID_2 = 100;
-	private static final String TEST_URL_2 = "http://testurl2.com";
-	private static final String TEST_USERNAME_2 = "testuser2";
+	public static final String TEST_URL_2 = "http://testurl2.com";
+	public static final String TEST_USERNAME_2 = "testuser2";
 	private static final String TEST_KEY_2 = "key 2";
-	private static final String TEST_PASSWORD_2 = "password 2";
+	public static final String TEST_PASSWORD_2 = "password 2";
 	private static final Integer TEST_USERID_2 = 200;
 	private Credential credential;
 

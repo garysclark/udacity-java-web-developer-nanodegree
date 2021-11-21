@@ -5,8 +5,8 @@ import java.util.List;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -43,7 +43,7 @@ public class HomePageCredentialsTab {
 	@FindBy (id = "delete-credentials-confirm-button")
 	private WebElement deleteConfirmButton;
 
-	public HomePageCredentialsTab(ChromeDriver driver) {
+	public HomePageCredentialsTab(WebDriver driver) {
 		PageFactory.initElements(driver, this);
 		jse = (JavascriptExecutor)driver;
 		wait = new WaitUtility(driver, 5);
@@ -58,7 +58,7 @@ public class HomePageCredentialsTab {
 		return addCredentialButton.isDisplayed();
 	}
 
-	public void addCredential(String url, String username, String password) {
+	public void createCredential(String url, String username, String password) {
 		addCredentialButton.click();
 		credentialUrl.sendKeys(url);
 		credentialUsername.sendKeys(username);

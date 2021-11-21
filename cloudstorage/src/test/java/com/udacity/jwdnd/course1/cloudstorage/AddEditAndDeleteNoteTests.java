@@ -21,6 +21,7 @@ import com.udacity.jwdnd.course1.cloudstorage.controller.HomePageNotesTab;
 import com.udacity.jwdnd.course1.cloudstorage.controller.LoginPage;
 import com.udacity.jwdnd.course1.cloudstorage.controller.ResultsPage;
 import com.udacity.jwdnd.course1.cloudstorage.model.Note;
+import com.udacity.jwdnd.course1.cloudstorage.model.NoteTests;
 import com.udacity.jwdnd.course1.cloudstorage.model.User;
 import com.udacity.jwdnd.course1.cloudstorage.model.UserTests;
 import com.udacity.jwdnd.course1.cloudstorage.services.UserService;
@@ -32,13 +33,13 @@ import io.github.bonigarcia.wdm.WebDriverManager;
 @AutoConfigureTestDatabase
 public class AddEditAndDeleteNoteTests {
 
-	private static final String TEST_NOTE_TITLE = "Test Note Title";
+	private static final String TEST_NOTE_TITLE = NoteTests.TEST_NOTE_TITLE;
 
-	private static final String TEST_NOTE_DESCRIPTION = "Test note description.";
+	private static final String TEST_NOTE_DESCRIPTION = NoteTests.TEST_NOTE_DESCRIPTION;
 
-	private static final String TEST_EDITED_NOTE_TITLE = "Edited Note Title";
+	private static final String TEST_EDITED_NOTE_TITLE = NoteTests.TEST_EDITED_NOTE_TITLE;
 
-	private static final String TEST_EDITED_NOTE_DESCRIPTION = "Edited Note Description";
+	private static final String TEST_EDITED_NOTE_DESCRIPTION = NoteTests.TEST_EDITED_NOTE_DESCRIPTION;
 
 	private static WebDriver driver;
 
@@ -47,25 +48,24 @@ public class AddEditAndDeleteNoteTests {
 
 	@Autowired
 	private UserService userService;
-	
+
 	private LoginPage loginPage;
 
 	private HomePageNotesTab notesTab;
 
 	private ResultsPage resultsPage;
 
-
 	@BeforeAll
 	static public void beforeAll() {
 		WebDriverManager.chromedriver().setup();
 		driver = new ChromeDriver();
 	}
-	
+
 	@AfterAll
 	static public void afterAll() {
 		driver.quit();
 	}
-	
+
 	@BeforeEach
 	public void beforeEach() {
 		driver.get("http://localhost:" + port + "/home");
@@ -74,7 +74,7 @@ public class AddEditAndDeleteNoteTests {
 		resultsPage = new ResultsPage(driver);
 		User user = UserTests.getTestUser_1();
 		userService.createUser(user);
-		loginPage.login(user.getUsername(),user.getPassword());
+		loginPage.login(user.getUsername(), user.getPassword());
 
 		notesTab.selectNotesTab();
 		notesTab.createNote(TEST_NOTE_TITLE, TEST_NOTE_DESCRIPTION);
@@ -88,14 +88,14 @@ public class AddEditAndDeleteNoteTests {
 	}
 
 	@Test
-	public void canCreateNoteAndVerifyDetailsAreVisible() {
+	public void canCreateNote() {
 		List<Note> notes = notesTab.getNotes();
 		assertEquals(1, notes.size());
 		Note note = notes.get(0);
 		assertEquals(TEST_NOTE_TITLE, note.getTitle());
 		assertEquals(TEST_NOTE_DESCRIPTION, note.getDescription());
 	}
-	
+
 	@Test
 	public void canEditNote() {
 		notesTab.editNote(0, TEST_EDITED_NOTE_TITLE, TEST_EDITED_NOTE_DESCRIPTION);
@@ -105,7 +105,7 @@ public class AddEditAndDeleteNoteTests {
 		assertEquals(TEST_EDITED_NOTE_TITLE, note.getTitle());
 		assertEquals(TEST_EDITED_NOTE_DESCRIPTION, note.getDescription());
 	}
-	
+
 	@Test
 	public void canDeleteNote() {
 		notesTab.createNote(TEST_EDITED_NOTE_TITLE, TEST_EDITED_NOTE_DESCRIPTION);
