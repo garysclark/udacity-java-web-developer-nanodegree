@@ -76,7 +76,7 @@
 					<div th:insert="fragments/note-modal :: note-modal"></div>
 					<div
 						th:insert="fragments/delete-modal :: delete-modal(modalTitle='Delete Note', 
-					modalMessage='Do you want to delete note?', endpoint='notes')"></div>
+					modalMessage='Do you want to delete note?', endpoint='note')"></div>
 
 				</div>
 				<div class="tab-pane fade"
@@ -91,7 +91,7 @@
 					<div th:insert="fragments/credential-modal :: credential-modal"></div>
 					<div
 						th:insert="fragments/delete-modal :: delete-modal(modalTitle='Delete Credential', 
-					modalMessage='Do you want to delete credential?', endpoint='credentials')"></div>
+					modalMessage='Do you want to delete credential?', endpoint='credential')"></div>
 
 				</div>
 			</div>
@@ -103,13 +103,22 @@
 	<script th:src="@{/js/bootstrap.min.js}"></script>
 
 	<!--For opening the note modal-->
-	<script type="text/javascript">
+	<script th:inline="javascript">
 		// For opening the note modal
-		function showNoteModal(noteId, noteTitle, noteDescription, userId) {
-			$('#note-id').val(noteId ? noteId : '');
-			$('#note-title').val(noteTitle ? noteTitle : '');
-			$('#note-description').val(noteDescription ? noteDescription : '');
-			$('#user-id').val(userId ? userId : '');
+		function showNoteModal(id, title, description, userid) {
+			
+			if(id === undefined) {
+				let action = /*[[@{/note/create}]]*/ '/note/create';
+				$('#noteModalForm').attr("action", action);
+			} else {
+				let action = /*[[@{/note/update}]]*/ '/note/update';
+				$('#noteModalForm').attr("action", action);
+			}
+			
+			$('#note-id').val(id ? id : '');
+			$('#note-title').val(title ? title : '');
+			$('#note-description').val(description ? description : '');
+			$('#user-id').val(userid ? userid : '');
 			$('#noteModal').modal('show');
 		}
 
@@ -125,6 +134,15 @@
 
 		// For opening the credentials modal
 		function showCredentialModal(id, url, username, password, userid, key) {
+			
+			if(id === undefined) {
+				let action = /*[[@{/credential/create}]]*/ '/credential/create';
+				$('#credentialModalForm').attr("action", action);
+			} else {
+				let action = /*[[@{/credential/update}]]*/ '/credential/update';
+				$('#credentialModalForm').attr("action", action);
+			}
+			
 			$('#credential-id').val(id ? id : '');
 			$('#credential-url').val(url ? url : '');
 			$('#credential-username').val(username ? username : '');

@@ -15,9 +15,11 @@ import com.udacity.jwdnd.course1.cloudstorage.services.UserService;
 @Controller
 public class CredentialController {
 
-	public static final String CREDENTIALS_ENDPOINT = "/credentials";
+	public static final String CREATE_CREDENTIAL_ENDPOINT = "/credential/create";
 
-	public static final String CREDENTIALS_DELETE_ENDPOINT = "/credentials/delete";
+	public static final String DELETE_CREDENTIAL_ENDPOINT = "/credential/delete";
+
+	public static final String UPDATE_CREDENTIAL_ENDPOINT = "/credential/update";
 
 	private CredentialService credentialService;
 
@@ -25,9 +27,9 @@ public class CredentialController {
 
 	private EncryptionService encryptionService;
 
-	public static final String ADD_CREDENTIAL_ERROR_MESSAGE = "There was an error adding the credential.  Please try again.";
+	public static final String CREATE_CREDENTIAL_ERROR_MESSAGE = "There was an error adding the credential.  Please try again.";
 
-	public static final String ADD_CREDENTIAL_SUCCESS_MESSAGE = "You successfully added a credential.";
+	public static final String CREATE_CREDENTIAL_SUCCESS_MESSAGE = "You successfully added a credential.";
 
 	public static final String CREDENTIALS_DATA_KEY = "credentials";
 
@@ -48,52 +50,59 @@ public class CredentialController {
 		this.encryptionService = encryptionService;
 	}
 
-	@PostMapping(CREDENTIALS_ENDPOINT)
+	@PostMapping(CREATE_CREDENTIAL_ENDPOINT)
 	public String createCredential(@ModelAttribute Credential credential, RedirectAttributes redirectAttributes,
 			Authentication authentication) {
 
-		if(credentialService.getCredentialById(credential.getId()) == null) {
+		User user = userService.getUser(authentication.getName());
 
-			User user = userService.getUser(authentication.getName());
+		String encryptionKey = encryptionService.generateKey();
+		String encryptedPassword = encryptionService.encryptValue(credential.getPassword(), encryptionKey);
 
-			String encryptionKey = encryptionService.generateKey();
-			String encryptedPassword = encryptionService.encryptValue(credential.getPassword(), encryptionKey);
-			credential.setKey(encryptionKey);
-			credential.setPassword(encryptedPassword);
-			credential.setUserId(user.getUserId());
+		credential.setKey(encryptionKey);
+		credential.setPassword(encryptedPassword);
+		credential.setUserId(user.getUserId());
 
-			int rowsAdded = credentialService.createCredential(credential);
-			if(rowsAdded > 0) {
-				setupResult(true, CredentialController.ADD_CREDENTIAL_SUCCESS_MESSAGE, redirectAttributes);
-			} else {
-				setupResult(false, CredentialController.ADD_CREDENTIAL_ERROR_MESSAGE, redirectAttributes);
-			}
+		int rowsAdded = credentialService.createCredential(credential);
+		
+		if(rowsAdded > 0) {
+			setupResult(true, CredentialController.CREATE_CREDENTIAL_SUCCESS_MESSAGE, redirectAttributes);
 		} else {
-			String encryptedPassword = encryptionService.encryptValue(credential.getPassword(), credential.getKey());
-			credential.setPassword(encryptedPassword);
-
-			int rowsUpdated = credentialService.updateCredential(credential);
-			if(rowsUpdated > 0) {
-				setupResult(true, CredentialController.UPDATE_CREDENTIAL_SUCCESS_MESSAGE, redirectAttributes);
-			} else {
-				setupResult(false, CredentialController.UPDATE_CREDENTIAL_ERROR_MESSAGE, redirectAttributes);
-			}
+			setupResult(false, CredentialController.CREATE_CREDENTIAL_ERROR_MESSAGE, redirectAttributes);
 		}
 
 		return ResultController.REDIRECT_RESULT_RESPONSE;
 	}
-	
-	@PostMapping(CREDENTIALS_DELETE_ENDPOINT)
+
+	@PostMapping(UPDATE_CREDENTIAL_ENDPOINT)
+	public String updateCredential(@ModelAttribute Credential credential, RedirectAttributes redirectAttributes,
+			Authentication authentication) {
+
+		String encryptedPassword = encryptionService.encryptValue(credential.getPassword(), credential.getKey());
+		credential.setPassword(encryptedPassword);
+
+		int rowsUpdated = credentialService.updateCredential(credential);
+		
+		if(rowsUpdated > 0) {
+			setupResult(true, CredentialController.UPDATE_CREDENTIAL_SUCCESS_MESSAGE, redirectAttributes);
+		} else {
+			setupResult(false, CredentialController.UPDATE_CREDENTIAL_ERROR_MESSAGE, redirectAttributes);
+		}
+
+		return ResultController.REDIRECT_RESULT_RESPONSE;
+	}
+
+	@PostMapping(DELETE_CREDENTIAL_ENDPOINT)
 	public String deleteCredential(@ModelAttribute Credential credential, RedirectAttributes redirectAttributes,
 			Authentication authentication) {
-		
+
 		int rowsDeleted = credentialService.deleteCredential(credential);
 		if(rowsDeleted > 0) {
 			setupResult(true, DELETE_CREDENTIAL_SUCCESS_MESSAGE, redirectAttributes);
 		} else {
 			setupResult(false, DELETE_CREDENTIAL_ERROR_MESSAGE, redirectAttributes);
 		}
-		
+
 		return ResultController.REDIRECT_RESULT_RESPONSE;
 	}
 

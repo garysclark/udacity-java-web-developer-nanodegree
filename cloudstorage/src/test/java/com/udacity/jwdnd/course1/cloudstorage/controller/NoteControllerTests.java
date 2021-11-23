@@ -84,7 +84,7 @@ public class NoteControllerTests {
 		Mockito.when(noteService.findNote(note.getId())).thenReturn(note);
 		Mockito.when(noteService.updateNote(note)).thenReturn(1);
 		
-		String response = noteController.createNote(note, redirectAttributes, authentication);
+		String response = noteController.updateNote(note, redirectAttributes, authentication);
 		
 		Mockito.verify(noteService).updateNote(note);
 		verifyWithResult(true, NoteController.UPDATE_NOTE_SUCCESS_MESSAGE, response);
@@ -95,7 +95,7 @@ public class NoteControllerTests {
 		Mockito.when(noteService.findNote(note.getId())).thenReturn(note);
 		Mockito.when(noteService.updateNote(note)).thenReturn(0);
 		
-		String response = noteController.createNote(note, redirectAttributes, authentication);
+		String response = noteController.updateNote(note, redirectAttributes, authentication);
 		
 		Mockito.verify(noteService).updateNote(note);
 		verifyWithResult(false, NoteController.UPDATE_NOTE_ERROR_MESSAGE, response);

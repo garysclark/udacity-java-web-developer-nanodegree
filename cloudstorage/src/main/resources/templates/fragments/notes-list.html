@@ -21,7 +21,7 @@
 						</button>
 						<button type="button" class="btn btn-danger"
 							id="delete-note-button"
-							th:onclick="showDeleteModal([[${note.getId()}]],'notes')">Delete
+							th:onclick="showDeleteModal([[${note.getId()}]],'note')">Delete
 						</button>
 					</td>
 					<th id="table-noteTitle" th:text="${note.getTitle()}"

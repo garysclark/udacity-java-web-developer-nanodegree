@@ -80,7 +80,7 @@ public class CredentialControllerTests {
 		assertEquals(TEST_ENCRYPTED_PASSWORD, credential.getPassword());
 		assertEquals(user.getUserId(), credential.getUserId());
 		Mockito.verify(credentialService).createCredential(credential);
-		verifyWithResult(true, CredentialController.ADD_CREDENTIAL_SUCCESS_MESSAGE, response);
+		verifyWithResult(true, CredentialController.CREATE_CREDENTIAL_SUCCESS_MESSAGE, response);
 	}
 
 	@Test
@@ -90,7 +90,7 @@ public class CredentialControllerTests {
 
 		String response = credentialController.createCredential(credential, redirectAttributes, authentication);
 
-		verifyWithResult(false, CredentialController.ADD_CREDENTIAL_ERROR_MESSAGE, response);
+		verifyWithResult(false, CredentialController.CREATE_CREDENTIAL_ERROR_MESSAGE, response);
 	}
 
 	@Test
@@ -101,7 +101,7 @@ public class CredentialControllerTests {
 		String unencryptedPassword = credential.getPassword();
 		assertNotEquals(TEST_ENCRYPTED_PASSWORD, unencryptedPassword);
 
-		String response = credentialController.createCredential(credential, redirectAttributes, authentication);
+		String response = credentialController.updateCredential(credential, redirectAttributes, authentication);
 
 		assertEquals(TEST_ENCRYPTED_PASSWORD, credential.getPassword());
 		Mockito.verify(encryptionService).encryptValue(unencryptedPassword, credential.getKey());
@@ -114,7 +114,7 @@ public class CredentialControllerTests {
 		prepareForExistingCredentialTests();
 		Mockito.when(credentialService.updateCredential(credential)).thenReturn(0);
 
-		String response = credentialController.createCredential(credential, redirectAttributes, authentication);
+		String response = credentialController.updateCredential(credential, redirectAttributes, authentication);
 
 		verifyWithResult(false, CredentialController.UPDATE_CREDENTIAL_ERROR_MESSAGE, response);
 	}
