@@ -20,20 +20,20 @@ import com.udacity.jwdnd.course1.cloudstorage.services.UserService;
 @Controller
 public class FileController {
 
-	public static final String VIEW_FILES_ENDPOINT = "/files/view";
-	public static final String DELETE_FILES_ENDPOINT = "/files/delete";
-	public static final String FILES_ENDPOINT = "/files";
-	public static final String DUPLICATE_FILENAME_ERROR_MESSAGE = "This file has already been uploaded. Please try again.";
+	public static final String VIEW_FILES_ENDPOINT = "/file/view";
+	public static final String DELETE_FILES_ENDPOINT = "/file/delete";
+	public static final String UPLOAD_FILE_ENDPOINT = "/file/upload";
+	public static final String UPLOAD_FILE_DUPLICATE_FILENAME_ERROR_MESSAGE = "This file has already been uploaded. Please try again.";
 	public static final String DELETE_FILE_ERROR_MESSAGE = "There was an error deleting the file.  Please try again.";
 	public static final String DELETE_FILE_SUCCESS_MESSAGE = "You successfully deleted a file.";
-	public static final String ADD_NO_FILE_SELECTED_ERROR_MESSAGE = "No file selected. Please try again.";
-	public static final String ADD_FILE_ERROR_MESSAGE = "There was an error adding the file.  Please try again.";
-	public static final String ADD_FILE_SUCCESS_MESSAGE = "You successfully added a file.";
+	public static final String UPLOAD_FILE_NO_FILE_SELECTED_ERROR_MESSAGE = "No file selected. Please try again.";
+	public static final String UPLOAD_FILE_ERROR_MESSAGE = "There was an error adding the file.  Please try again.";
+	public static final String UPLOAD_FILE_SUCCESS_MESSAGE = "You successfully added a file.";
 	public static final String FILES_DATA_KEY = "files";
 	public static final String ACTIVE_TAB_FILES = "files";
 	public static final String FILE_DTO_ATTRIBUTE = "fileDTO";
 	public static final Long MAX_FILE_SIZE = (long) 1E+6;
-	public static final String ADD_FILE_TOO_LARGE_ERROR_MESSAGE = "The file you selected is larger than " + MAX_FILE_SIZE + " bytes. Please select another file.";
+	public static final String UPLOAD_FILE_FILE_TOO_LARGE_ERROR_MESSAGE = "The file you selected is larger than " + MAX_FILE_SIZE + " bytes. Please select another file.";
 
 	private UserService userService;
 	private FileService fileService;
@@ -43,16 +43,16 @@ public class FileController {
 		this.userService = userService;
 	}
 
-	@PostMapping(FILES_ENDPOINT)
+	@PostMapping(UPLOAD_FILE_ENDPOINT)
 	public String uploadFile(RedirectAttributes redirectAttributes, Authentication authentication, Model model, @ModelAttribute(FILE_DTO_ATTRIBUTE) MultipartFile file) {
 
 		if(file.getOriginalFilename().equals("")) {
-			setupResult(false, ADD_NO_FILE_SELECTED_ERROR_MESSAGE, redirectAttributes);
+			setupResult(false, UPLOAD_FILE_NO_FILE_SELECTED_ERROR_MESSAGE, redirectAttributes);
 			return ResultController.REDIRECT_RESULT_RESPONSE;
 		} 
 
 		if(file.getSize() > MAX_FILE_SIZE) {
-			setupResult(false, ADD_FILE_TOO_LARGE_ERROR_MESSAGE, redirectAttributes);
+			setupResult(false, UPLOAD_FILE_FILE_TOO_LARGE_ERROR_MESSAGE, redirectAttributes);
 			return ResultController.REDIRECT_RESULT_RESPONSE;
 		} 
 
@@ -60,16 +60,16 @@ public class FileController {
 		User user = userService.getUser(userName);
 
 		if(fileService.getFileByFileName(user.getUserId(), file.getOriginalFilename()) != null) {
-			setupResult(false, DUPLICATE_FILENAME_ERROR_MESSAGE, redirectAttributes);
+			setupResult(false, UPLOAD_FILE_DUPLICATE_FILENAME_ERROR_MESSAGE, redirectAttributes);
 			return ResultController.REDIRECT_RESULT_RESPONSE;
 		}
 		
 		int rowAdded = fileService.addFile(user.getUserId(), file);
 
 		if(rowAdded > 0) {
-			setupResult(true, ADD_FILE_SUCCESS_MESSAGE, redirectAttributes);
+			setupResult(true, UPLOAD_FILE_SUCCESS_MESSAGE, redirectAttributes);
 		} else {
-			setupResult(false, ADD_FILE_ERROR_MESSAGE, redirectAttributes);
+			setupResult(false, UPLOAD_FILE_ERROR_MESSAGE, redirectAttributes);
 		}
 
 		return ResultController.REDIRECT_RESULT_RESPONSE;

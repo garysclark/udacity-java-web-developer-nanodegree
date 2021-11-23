@@ -121,13 +121,13 @@ public class FileAcceptanceTests {
 	public void canHandleDuplicatFilenameError() throws IOException {
 		uploadValidFile(TEST_RELATIVE_PATH + TEST_FILENAME_1);
 		uploadFile(TEST_RELATIVE_PATH + TEST_FILENAME_1);
-		handleErrorResult(FileController.DUPLICATE_FILENAME_ERROR_MESSAGE);
+		handleErrorResult(FileController.UPLOAD_FILE_DUPLICATE_FILENAME_ERROR_MESSAGE);
 	}
 	
 	@Test
 	public void canHandleNoFileSelectedError() throws IOException {
 		filesTab.selectUpload();
-		handleErrorResult(FileController.ADD_NO_FILE_SELECTED_ERROR_MESSAGE);
+		handleErrorResult(FileController.UPLOAD_FILE_NO_FILE_SELECTED_ERROR_MESSAGE);
 	}
 
 	private void uploadFile(String filePath) throws IOException {
@@ -138,7 +138,7 @@ public class FileAcceptanceTests {
 	
 	private void uploadValidFile(String filePath) throws IOException {
 		uploadFile(filePath);
-		handleSuccessResult(FileController.ADD_FILE_SUCCESS_MESSAGE);
+		handleSuccessResult(FileController.UPLOAD_FILE_SUCCESS_MESSAGE);
 	}
 
 	private void handleErrorResult(String message) {

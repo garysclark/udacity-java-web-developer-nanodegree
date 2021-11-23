@@ -72,7 +72,7 @@ public class FileControllerTests {
 
 		String response = fileController.uploadFile(redirectAttributes, authentication, model, multipartFile);
 
-		verifyAddFileWithResult(true, FileController.ADD_FILE_SUCCESS_MESSAGE, response);
+		verifyAddFileWithResult(true, FileController.UPLOAD_FILE_SUCCESS_MESSAGE, response);
 	}
 
 	@Test
@@ -82,7 +82,7 @@ public class FileControllerTests {
 
 		String response = fileController.uploadFile(redirectAttributes, authentication, model, multipartFile);
 
-		verifyAddFileWithResult(false, FileController.ADD_FILE_ERROR_MESSAGE, response);
+		verifyAddFileWithResult(false, FileController.UPLOAD_FILE_ERROR_MESSAGE, response);
 	}
 
 	@Test
@@ -92,7 +92,7 @@ public class FileControllerTests {
 
 		String response = fileController.uploadFile(redirectAttributes, authentication, model, multipartFile);
 
-		verifyResultAndAttributes(false, FileController.ADD_FILE_TOO_LARGE_ERROR_MESSAGE, response);
+		verifyResultAndAttributes(false, FileController.UPLOAD_FILE_FILE_TOO_LARGE_ERROR_MESSAGE, response);
 	}
 
 	@Test
@@ -101,7 +101,7 @@ public class FileControllerTests {
 
 		String response = fileController.uploadFile(redirectAttributes, authentication, model, multipartFile);
 
-		verifyResultAndAttributes(false, FileController.ADD_NO_FILE_SELECTED_ERROR_MESSAGE, response);
+		verifyResultAndAttributes(false, FileController.UPLOAD_FILE_NO_FILE_SELECTED_ERROR_MESSAGE, response);
 	}
 
 	@Test
@@ -144,7 +144,7 @@ public class FileControllerTests {
 
 		String response = fileController.uploadFile(redirectAttributes, authentication, model, multipartFile);
 
-		verifyResultAndAttributes(false, FileController.DUPLICATE_FILENAME_ERROR_MESSAGE, response);
+		verifyResultAndAttributes(false, FileController.UPLOAD_FILE_DUPLICATE_FILENAME_ERROR_MESSAGE, response);
 	}
 
 	private void verifyAddFileWithResult(boolean resultValue, String messageValue, String response) {

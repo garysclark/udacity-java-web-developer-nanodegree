@@ -42,7 +42,7 @@
 					th:classappend="${#strings.equals(activeTab, 'files')?'show active':''}"
 					id="nav-files" role="tabpanel" aria-labelledby="nav-files-tab">
 					<form action="#" enctype="multipart/form-data"
-						th:action="@{/files}" th:object="${fileDTO}" method="POST">
+						th:action="@{/file/upload}" th:object="${fileDTO}" method="POST">
 						<div class="container">
 							<div class="row" style="margin: 1em;">
 								<div class="col-sm-2">
@@ -62,7 +62,7 @@
 					<div th:insert="fragments/files-list :: files-list"></div>
 					<div
 						th:insert="fragments/delete-modal :: delete-modal(modalTitle='Delete File', 
-					modalMessage='Do you want to delete file?', endpoint='files')"></div>
+					modalMessage='Do you want to delete file?', endpoint='file')"></div>
 
 				</div>
 				<div class="tab-pane fade"

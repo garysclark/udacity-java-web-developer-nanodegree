@@ -30,7 +30,7 @@ public class HomePageFilesTab {
 	@FindBy (id = "fileTable")
 	private WebElement fileTable;
 
-	@FindBy(id = "delete-files-confirm-button")
+	@FindBy(id = "delete-file-confirm-button")
 	private WebElement deleteConfirmButton;
 
 	public HomePageFilesTab(WebDriver driver) {
