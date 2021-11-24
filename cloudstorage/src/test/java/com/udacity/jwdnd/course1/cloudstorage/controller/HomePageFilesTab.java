@@ -73,6 +73,7 @@ public class HomePageFilesTab {
 	public void deleteFile(int fileNumber) {
 		WebElement deleteButton = getDeleteButtonForFile(fileNumber);
 		deleteButton.click();
+		wait.until(ExpectedConditions.elementToBeClickable(deleteConfirmButton));
 		deleteConfirmButton.click();
 	}
 

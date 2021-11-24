@@ -60,6 +60,7 @@ public class HomePageCredentialsTab {
 
 	public void createCredential(String url, String username, String password) {
 		addCredentialButton.click();
+		wait.until(ExpectedConditions.elementToBeClickable(saveChangesButton));
 		credentialUrl.sendKeys(url);
 		credentialUsername.sendKeys(username);
 		credentialPassword.sendKeys(password);
@@ -86,6 +87,7 @@ public class HomePageCredentialsTab {
 	public void editCredential(int i, String url, String username, String password) {
 		List<WebElement> elements = credentialTable.findElements(By.id("edit-credential-button"));
 		elements.get(i).click();
+		wait.until(ExpectedConditions.elementToBeClickable(saveChangesButton));
 		credentialUrl.clear();
 		credentialUrl.sendKeys(url);
 		credentialUsername.clear();
@@ -98,6 +100,7 @@ public class HomePageCredentialsTab {
 	public void deleteCredential(int i) {
 		List<WebElement> elements = credentialTable.findElements(By.id("delete-credential-button"));
 		elements.get(i).click();
+		wait.until(ExpectedConditions.elementToBeClickable(deleteConfirmButton));
 		deleteConfirmButton.click();
 	}
 

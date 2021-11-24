@@ -162,11 +162,11 @@ public class FileAcceptanceTests {
 		File folder = new File(myHomePath + "/Downloads");
 		for (final File fileEntry : folder.listFiles()) {
 			if (!fileEntry.isDirectory()) {
-				Path path = Paths.get(fileEntry.getCanonicalPath());
-				BasicFileAttributes attributes = Files.readAttributes(path, BasicFileAttributes.class);
 				if(fileEntry.getName().contains(baseFileName)) {
+					Path path = Paths.get(fileEntry.getAbsolutePath());
+					BasicFileAttributes attributes = Files.readAttributes(path, BasicFileAttributes.class);
 					if(attributes.creationTime().compareTo(FileTime.from(Instant.now().minusSeconds(1))) > 0) {
-						return fileEntry.getCanonicalFile();
+						return fileEntry.getAbsoluteFile();
 					}
 				}
 			}
