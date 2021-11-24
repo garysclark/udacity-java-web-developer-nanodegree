@@ -46,7 +46,7 @@ public class HomePageNotesTab {
 
 	@FindBy(id = "logout-btn")
 	private WebElement logoutButton;
-	
+
 	@FindBy (id = "noteDeleteModalLabel")
 	private WebElement deleteModalLabel;
 
@@ -71,6 +71,7 @@ public class HomePageNotesTab {
 
 	public void createNote(String title, String description) {
 		addNoteButton.click();
+		wait.until(ExpectedConditions.elementToBeClickable(saveChangesButton));
 		noteTitle.sendKeys(title);
 		noteDescription.sendKeys(description);
 		saveChangesButton.click();
@@ -91,6 +92,7 @@ public class HomePageNotesTab {
 	public void deleteNote(int noteNumber) {
 		WebElement deleteButton = getDeleteButtonForNote(noteNumber);
 		deleteButton.click();
+		wait.until(ExpectedConditions.elementToBeClickable(deleteConfirmButton));
 		deleteConfirmButton.click();
 	}
 
@@ -107,6 +109,7 @@ public class HomePageNotesTab {
 		List<WebElement> elements = notesTable.findElements(By.tagName("tbody"));
 		WebElement rowElement = elements.get(noteIndex);
 		rowElement.findElement(By.id("edit-note-button")).click();
+		wait.until(ExpectedConditions.elementToBeClickable(saveChangesButton));
 		noteTitle.clear();
 		noteTitle.sendKeys(title);
 		noteDescription.clear();
