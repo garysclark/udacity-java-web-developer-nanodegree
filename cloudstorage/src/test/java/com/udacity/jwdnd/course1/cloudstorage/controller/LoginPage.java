@@ -13,6 +13,9 @@ public class LoginPage {
 	@FindBy(className = "display-5")
 	private WebElement pageTitle;
 
+	@FindBy(id = "success-msg")
+	private WebElement successMessage;
+
 	@FindBy(id = "error-msg")
 	private WebElement errorMessage;
 
@@ -62,6 +65,10 @@ public class LoginPage {
 
 	public void waitForLoginPage() {
 		wait.until(ExpectedConditions.visibilityOf(pageTitle));
+	}
+
+	public boolean isSuccessMessageVisible() {
+		return successMessage.getAttribute("innerHTML") != null;
 	}
 
 }

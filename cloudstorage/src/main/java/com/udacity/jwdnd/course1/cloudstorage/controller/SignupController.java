@@ -20,6 +20,7 @@ public class SignupController {
 	public static final String SIGNUP_ERROR_MESSAGE_USERNAME_ALREADY_EXISTS = "The username already exists";
 	public static final String SIGNUP_RESPONSE = "signup";
 	public static final String SIGNUP_ENDPOINT = "/signup";
+	private static final String LOGIN_RESPONSE = "login";
 	private UserService userService;
 
 	public SignupController(UserService userService) {
@@ -40,6 +41,7 @@ public class SignupController {
 		} else {
 			if (userService.createUser(user) > 0) {
 				model.addAttribute(SIGNUP_SUCCESS_KEY, true);
+				return LOGIN_RESPONSE;
 			} else {
                 signupError = SIGNUP_ERROR_MESSAGE;
 			}

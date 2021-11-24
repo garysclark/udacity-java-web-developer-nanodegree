@@ -13,9 +13,6 @@ public class SignupPage {
 	@FindBy(className = "display-5")
 	private WebElement pageTitle;
 
-	@FindBy(id = "success-msg")
-	private WebElement successMessage;
-
 	@FindBy(id = "error-msg")
 	private WebElement errorMessage;
 
@@ -51,10 +48,6 @@ public class SignupPage {
 		return pageTitle.getAttribute("innerHTML").equals("Sign Up");
 	}
 
-	public boolean isSuccessMessageVisible() {
-		return successMessage.getAttribute("innerHTML") != null;
-	}
-
 	public boolean isErrorMessageVisible() {
 		return errorMessage.getAttribute("innerHTML") != null;
 	}
@@ -71,16 +64,16 @@ public class SignupPage {
 		backToLoginLink.click();
 	}
 
-	public void waitForSuccessMessage() {
-		wait.until(ExpectedConditions.visibilityOf(successMessage));
-	}
-
 	public void selectSuccessLoginLink() {
 		signupLoginLink.click();
 	}
 
 	public String getErrorMessage() {
 		return errorMessage.getAttribute("innerHTML");
+	}
+
+	public void waitForSignupPage() {
+		wait.until(ExpectedConditions.visibilityOf(pageTitle));
 	}
 
 }

@@ -72,15 +72,9 @@ public class SignupAndLoginAcceptanceTests {
 
 		User user = UserTests.getTestUser_1();
 		signupPage.signupUser(user.getFirstName(),user.getLastName(),user.getUsername(),user.getPassword());
-		signupPage.waitForSuccessMessage();
-		assertTrue(signupPage.isSuccessMessageVisible());
-		
-		loginPage = new LoginPage(driver);
-		signupPage.selectLoginPageLink();
 		loginPage.waitForLoginPage();
-		assertTrue(loginPage.isPageReady());
-
-		homePage = new HomePageNotesTab(driver);
+		assertTrue(loginPage.isSuccessMessageVisible());
+		
 		loginPage.login(user.getUsername(), user.getPassword());
 		homePage.waitForHomePage();
 		assertTrue(homePage.isPageReady());
@@ -121,7 +115,9 @@ public class SignupAndLoginAcceptanceTests {
 		driver.get("http://localhost:" + port + "/signup");
 		User user = UserTests.getTestUser_1();
 		signupPage.signupUser(user.getFirstName(),user.getLastName(),user.getUsername(),user.getPassword());
-		signupPage.waitForSuccessMessage();
+		loginPage.waitForLoginPage();
+		loginPage.selectSignupLink();
+		signupPage.waitForSignupPage();
 		signupPage.signupUser(user.getFirstName(),user.getLastName(),user.getUsername(),user.getPassword());
 		assertTrue(signupPage.isErrorMessageVisible());
 		assertEquals(SignupController.SIGNUP_ERROR_MESSAGE_USERNAME_ALREADY_EXISTS, signupPage.getErrorMessage());
