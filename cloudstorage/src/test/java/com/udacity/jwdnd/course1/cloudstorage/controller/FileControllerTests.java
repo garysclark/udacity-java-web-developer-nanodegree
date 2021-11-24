@@ -86,16 +86,6 @@ public class FileControllerTests {
 	}
 
 	@Test
-	public void canHandleFileTooLargeError() {
-		Mockito.when(multipartFile.getOriginalFilename()).thenReturn(TEST_FILE_NAME);
-		Mockito.when(multipartFile.getSize()).thenReturn(FileController.MAX_FILE_SIZE + 1);
-
-		String response = fileController.uploadFile(redirectAttributes, authentication, model, multipartFile);
-
-		verifyResultAndAttributes(false, FileController.UPLOAD_FILE_FILE_TOO_LARGE_ERROR_MESSAGE, response);
-	}
-
-	@Test
 	public void canHandleNoFileSelectedError() {
 		Mockito.when(multipartFile.getOriginalFilename()).thenReturn("");
 

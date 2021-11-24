@@ -32,8 +32,7 @@ public class FileController {
 	public static final String FILES_DATA_KEY = "files";
 	public static final String ACTIVE_TAB_FILES = "files";
 	public static final String FILE_DTO_ATTRIBUTE = "fileDTO";
-	public static final Long MAX_FILE_SIZE = (long) 1E+6;
-	public static final String UPLOAD_FILE_FILE_TOO_LARGE_ERROR_MESSAGE = "The file you selected is larger than " + MAX_FILE_SIZE + " bytes. Please select another file.";
+	public static final String UPLOAD_FILE_FILE_TOO_LARGE_ERROR_MESSAGE = "The file you selected is larger than the maximum configured file size. Please select another file.";
 
 	private UserService userService;
 	private FileService fileService;
@@ -48,11 +47,6 @@ public class FileController {
 
 		if(file.getOriginalFilename().equals("")) {
 			setupResult(false, UPLOAD_FILE_NO_FILE_SELECTED_ERROR_MESSAGE, redirectAttributes);
-			return ResultController.REDIRECT_RESULT_RESPONSE;
-		} 
-
-		if(file.getSize() > MAX_FILE_SIZE) {
-			setupResult(false, UPLOAD_FILE_FILE_TOO_LARGE_ERROR_MESSAGE, redirectAttributes);
 			return ResultController.REDIRECT_RESULT_RESPONSE;
 		} 
 
