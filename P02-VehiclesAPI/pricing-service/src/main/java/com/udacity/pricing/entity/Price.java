@@ -1,6 +1,7 @@
 package com.udacity.pricing.entity;
 
 import java.math.BigDecimal;
+import java.util.Objects;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -69,5 +70,23 @@ public class Price {
 
 	public void setId(Long id) {
 		this.id = id;
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(currency, id, price, vehicleid);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Price other = (Price) obj;
+		return Objects.equals(currency, other.currency) && Objects.equals(id, other.id)
+				&& Objects.equals(price, other.price) && Objects.equals(vehicleid, other.vehicleid);
 	}
 }
