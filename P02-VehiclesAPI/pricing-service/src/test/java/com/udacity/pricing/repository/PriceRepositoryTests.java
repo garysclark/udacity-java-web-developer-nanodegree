@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.context.ActiveProfiles;
 
 import com.udacity.pricing.entity.Price;
 import com.udacity.pricing.entity.PriceTests;
@@ -20,6 +21,7 @@ import com.udacity.pricing.entity.PriceTests;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 @AutoConfigureTestDatabase
+@ActiveProfiles("test")
 public class PriceRepositoryTests {
 
 	private static final int TEST_SQL_ROW = 0;
