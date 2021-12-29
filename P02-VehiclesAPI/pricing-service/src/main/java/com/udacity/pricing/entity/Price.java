@@ -8,25 +8,16 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
-import org.hibernate.annotations.GenericGenerator;
-
 /**
  * Represents the price of a given vehicle, including currency.
  */
 @Entity
 public class Price {
 	@Id
-	@GeneratedValue(
-			strategy= GenerationType.AUTO, 
-			generator="native"
-			)
-	@GenericGenerator(
-			name = "native", 
-			strategy = "native"
-			)
-
+	@GeneratedValue(strategy= GenerationType.IDENTITY) 
 	private Long id;
-    private String currency;
+
+	private String currency;
     private BigDecimal price;
     private Long vehicleid;
 

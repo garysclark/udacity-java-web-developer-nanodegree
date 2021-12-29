@@ -29,4 +29,11 @@ public class ManufacturerRepositoryTests {
 		Optional<Manufacturer> optionalManufacturer = manufacturerRepository.findById(1);
 		assertTrue(optionalManufacturer.isPresent());
 	}
+	
+	@Test
+	public void canCrudManufacturer() {
+		Manufacturer manufacturer = ManufacturerTests.getTestManufacturer_1();
+		Manufacturer savedManufacturer = manufacturerRepository.save(manufacturer);
+		assertNotNull(savedManufacturer);
+	}
 }
