@@ -1,5 +1,7 @@
 package com.udacity.vehicles.domain.manufacturer;
 
+import java.util.Objects;
+
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
@@ -27,4 +29,21 @@ public class Manufacturer {
     public String getName() {
         return name;
     }
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(code, name);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Manufacturer other = (Manufacturer) obj;
+		return Objects.equals(code, other.code) && Objects.equals(name, other.name);
+	}
 }

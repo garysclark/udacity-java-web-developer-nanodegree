@@ -68,40 +68,32 @@ public class CarRepositoryTests {
 	}
 	
 	@Test
-	public void canCrudCar() {
-		Car testCar = CarTests.getTestCar_1();
-
-		testCar.setId(null);
-		
-		Car savedCar = carRepository.save(testCar);
-		assertNotNull(savedCar);
-	}
-	
-	@Test
 	public void canFindCars() {
 		List<Car> cars = carRepository.findAll();
 		assertEquals(2,cars.size());
 	}
 	
 	@Test
-	public void canUpdateCar() {
-		List<Car> cars = carRepository.findAll();
-		assertEquals(2,cars.size());
-		Car car = cars.get(0);
-		car.setCondition(Condition.USED);
-		Car updatedCar = carRepository.save(car);
-		assertNotNull(updatedCar);
-	}
-	
-	@Test
-	public void canCopyCar() {
-		List<Car> cars = carRepository.findAll();
-		assertEquals(2,cars.size());
-		Car car = cars.get(0);
-		car.setId(99l);
-		Car copiedCar = carRepository.save(car);
-		assertNotNull(copiedCar);
-		cars = carRepository.findAll();
-		assertEquals(3,cars.size());
+	public void canCrudCar() {
+		Car testCar = CarTests.getTestCar_1();
+		// Create
+		Car savedCar = carRepository.save(testCar);
+		assertNotNull(savedCar);
+		assertTrue(CarTests.isPersistedAttributesEqual(testCar, savedCar));
+		// Read
+		Optional<Car> optionalCar = carRepository.findById(savedCar.getId());
+		assertTrue(optionalCar.isPresent());
+		assertEquals(savedCar, optionalCar.get());
+		// Update
+		Car testCar2 = CarTests.getTestCar_2();
+		CarTests.copyPersistedAttributes(testCar2, savedCar);
+		Car updatedCar = carRepository.save(savedCar);
+		assertTrue(CarTests.isPersistedAttributesEqual(savedCar, updatedCar));
+		assertEquals(savedCar.getId(), updatedCar.getId());
+		assertEquals(savedCar.getCreatedAt(), updatedCar.getCreatedAt());
+		// Delete
+		carRepository.delete(updatedCar);
+		optionalCar = carRepository.findById(updatedCar.getId());
+		assertTrue(optionalCar.isEmpty());
 	}
 }

@@ -1,6 +1,9 @@
 package com.udacity.vehicles.domain.car;
 
 import com.udacity.vehicles.domain.manufacturer.Manufacturer;
+
+import java.util.Objects;
+
 import javax.persistence.Embeddable;
 import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotBlank;
@@ -116,4 +119,27 @@ public class Details {
     public void setExternalColor(String externalColor) {
         this.externalColor = externalColor;
     }
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(body, engine, externalColor, fuelType, manufacturer, mileage, model, modelYear,
+				numberOfDoors, productionYear);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Details other = (Details) obj;
+		return Objects.equals(body, other.body) && Objects.equals(engine, other.engine)
+				&& Objects.equals(externalColor, other.externalColor) && Objects.equals(fuelType, other.fuelType)
+				&& Objects.equals(manufacturer, other.manufacturer) && Objects.equals(mileage, other.mileage)
+				&& Objects.equals(model, other.model) && Objects.equals(modelYear, other.modelYear)
+				&& Objects.equals(numberOfDoors, other.numberOfDoors)
+				&& Objects.equals(productionYear, other.productionYear);
+	}
 }

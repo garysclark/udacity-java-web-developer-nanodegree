@@ -33,4 +33,14 @@ public class LocationTests {
 		return location;
 	}
 
+	public static boolean isPersistedAttributesEqual(Location location1, Location location2) {
+		return (location1.getLat().equals(location2.getLat()) &&
+				location1.getLon().equals(location2.getLon()));
+	}
+
+	public static void copyPersistedAttributes(Location srcLocation, Location destLocation) {
+		destLocation.setLat(srcLocation.getLat());
+		destLocation.setLon(srcLocation.getLon());
+	}
+
 }

@@ -39,4 +39,17 @@ public class CarTests {
 		return car;
 	}
 
+	public static boolean isPersistedAttributesEqual(Car car1, Car car2) {
+		return (car1.getCondition() == car2.getCondition() &&
+				car1.getDetails().equals(car2.getDetails()) &&
+				LocationTests.isPersistedAttributesEqual(car1.getLocation(), car2.getLocation())
+				);
+	}
+
+	public static void copyPersistedAttributes(Car carSrc, Car carDest) {
+		carDest.setCondition(carSrc.getCondition());
+		carDest.setDetails(carSrc.getDetails());
+		LocationTests.copyPersistedAttributes(carSrc.getLocation(),carDest.getLocation());
+	}
+
 }

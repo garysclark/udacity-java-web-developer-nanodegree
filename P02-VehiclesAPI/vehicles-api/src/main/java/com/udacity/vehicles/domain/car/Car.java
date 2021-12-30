@@ -3,6 +3,8 @@ package com.udacity.vehicles.domain.car;
 import com.udacity.vehicles.domain.Condition;
 import com.udacity.vehicles.domain.Location;
 import java.time.LocalDateTime;
+import java.util.Objects;
+
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
@@ -105,4 +107,24 @@ public class Car {
     public void setPrice(String price) {
         this.price = price;
     }
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(condition, createdAt, details, id, location, modifiedAt, price);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Car other = (Car) obj;
+		return condition == other.condition && Objects.equals(createdAt, other.createdAt)
+				&& Objects.equals(details, other.details) && Objects.equals(id, other.id)
+				&& Objects.equals(location, other.location) && Objects.equals(modifiedAt, other.modifiedAt)
+				&& Objects.equals(price, other.price);
+	}
 }
