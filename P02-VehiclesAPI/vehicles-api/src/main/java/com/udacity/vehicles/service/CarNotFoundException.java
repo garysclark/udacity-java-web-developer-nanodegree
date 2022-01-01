@@ -10,6 +10,8 @@ public class CarNotFoundException extends RuntimeException {
 	 * 
 	 */
 	private static final long serialVersionUID = -1041220383152339297L;
+	
+	public static final String ERROR_INVALID_CAR_ID = "Invalid Car Id : ";
 
 	public CarNotFoundException() {
     }

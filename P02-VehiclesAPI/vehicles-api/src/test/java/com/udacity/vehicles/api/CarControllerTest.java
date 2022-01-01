@@ -5,6 +5,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -150,12 +151,7 @@ public class CarControllerTest {
 	 */
 	@Test
 	public void deleteCar() throws Exception {
-		/**
-		 * TODO: Add a test to check whether a vehicle is appropriately deleted
-		 *   when the `delete` method is called from the Car Controller. This
-		 *   should utilize the car from `getCar()` below.
-		 */
-		given(carService.findById(car.getId())).willThrow(CarNotFoundException.class);
+		given(carService.findById(car.getId())).willThrow(new CarNotFoundException(CarNotFoundException.ERROR_INVALID_CAR_ID + car.getId()));
 
 		mvc.perform(
 				delete(new URI("/cars/1"))
@@ -167,7 +163,8 @@ public class CarControllerTest {
 				get(new URI("/cars/1"))
 				.contentType(MediaType.APPLICATION_JSON_UTF8)
 				.accept(MediaType.APPLICATION_JSON_UTF8))
-		.andExpect(status().isNotFound());
+		.andExpect(status().isNotFound())
+		.andExpect(content().string(CarNotFoundException.ERROR_INVALID_CAR_ID + car.getId()));
 	}
 
 	/**

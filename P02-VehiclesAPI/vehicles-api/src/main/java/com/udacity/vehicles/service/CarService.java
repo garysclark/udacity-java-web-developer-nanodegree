@@ -18,7 +18,6 @@ import org.springframework.stereotype.Service;
 @Service
 public class CarService {
 
-    private static final String INVALID_CAR_ID_MESSAGE = "Invalid Car Id : ";
 	private final CarRepository repository;
 	private final MapsClient mapsClient;
 	private final PriceClient priceClient;
@@ -93,7 +92,7 @@ public class CarService {
     	Optional<Car> optionalCar = repository.findById(id);
     	
     	if(optionalCar.isEmpty()) {
-    		throw new CarNotFoundException(INVALID_CAR_ID_MESSAGE + id);
+    		throw new CarNotFoundException(CarNotFoundException.ERROR_INVALID_CAR_ID + id);
     	}
     	
     	return optionalCar.get();
