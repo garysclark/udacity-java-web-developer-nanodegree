@@ -6,6 +6,10 @@ import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
 
 import com.udacity.vehicles.domain.car.Car;
 import com.udacity.vehicles.service.CarService;
+
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
+
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
