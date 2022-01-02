@@ -21,8 +21,11 @@ import com.udacity.vehicles.domain.car.CarRepositoryTests;
 @AutoConfigureTestDatabase
 public class CarServiceIntegrationTests {
 
-	private static final Long TEST_CAR_ID = 1l;
-private static final Long TEST_INVALID_CAR_ID = 99l;
+	private static final Long TEST_CAR_ID = CarRepositoryTests.TEST_CAR_ID;
+	private static final Long TEST_INVALID_CAR_ID = 99l;
+	private static final int TEST_CAR_NUM_RECORDS = CarRepositoryTests.TEST_CAR_NUM_RECORDS;
+	public static final String TEST_CAR_PRICE = "Rubles 887725543.89";
+
 	@Autowired
 	private CarService carService;
 
@@ -30,31 +33,32 @@ private static final Long TEST_INVALID_CAR_ID = 99l;
 	public void canAccessService() {
 		assertNotNull(carService);
 	}
-	
+
 	@Test
 	public void canGetAllCars() {
 		List<Car> cars = carService.list();
 		assertNotNull(cars);
-		assertEquals(CarRepositoryTests.TEST_DB_NUM_RECORDS, cars.size());
+		assertEquals(TEST_CAR_NUM_RECORDS, cars.size());
 		Car car = cars.get(0);
 		CarRepositoryTests.validateRepoContent(car);
 		validateServiceContent(car);
 	}
-	
+
 	@Test
 	public void canFindCarById() {
 		Car car = carService.findById(TEST_CAR_ID);
 		assertEquals(TEST_CAR_ID, car.getId());
 		CarRepositoryTests.validateRepoContent(car);
 		validateServiceContent(car);
+		assertEquals(TEST_CAR_PRICE, car.getPrice());
 	}
-	
+
 	@Test
 	public void canHandleCarNotFoundError() {
 		assertThrows(CarNotFoundException.class, 
 				()->{carService.findById(TEST_INVALID_CAR_ID);});
 	}
-	
+
 	@Test
 	public void canDeleteCar() {
 		carService.delete(TEST_CAR_ID);
@@ -67,8 +71,8 @@ private static final Long TEST_INVALID_CAR_ID = 99l;
 		assertThrows(CarNotFoundException.class, 
 				()->{carService.delete(TEST_INVALID_CAR_ID);});
 	}
-	
-	private void validateServiceContent(Car car) {
+
+	public static void validateServiceContent(Car car) {
 		assertNotNull(car.getLocation().getAddress());
 		assertNotNull(car.getLocation().getCity());
 		assertNotNull(car.getLocation().getState());

@@ -21,22 +21,27 @@ import com.udacity.vehicles.domain.Condition;
 @AutoConfigureTestDatabase
 public class CarRepositoryTests {
 
-	private static final Long TEST_DB_ID = 1l;
-	private static final LocalDateTime TEST_DB_CREATED_AT = LocalDateTime.parse("2007-12-03T10:15:30");
-	private static final LocalDateTime TEST_DB_MODIFIED_AT = LocalDateTime.parse("2008-12-03T10:15:30");
-	private static final Condition TEST_DB_CONDITION = Condition.NEW;
-	private static final Double TEST_DB_LATTITUDE = 90.0;
-	private static final Double TEST_DB_LONGITUDE = 74.0;
-	private static final String TEST_DB_BODY = "coupe";
-	private static final String TEST_DB_MODEL = "corvette";
-	private static final Integer TEST_DB_NUMBER_OF_DOORS = 2;
-	private static final String TEST_DB_FUEL_TYPE = "91 Octane Gasoline";
-	private static final String TEST_DB_ENGINE = "350 HP Fuel Injected";
-	private static final Integer TEST_DB_MILEAGE = 634;
-	private static final Integer TEST_DB_MODEL_YEAR = 2018;
-	private static final Integer TEST_DB_PRODUCTION_YEAR = 2020;
-	private static final String TEST_DB_EXTERNAL_COLOR = "Fire Engine Red";
-	public static final int TEST_DB_NUM_RECORDS = 2;
+	public static final Long TEST_CAR_ID = 1l;
+	public static final int TEST_CAR_NUM_RECORDS = 2;
+	public static final Condition TEST_UPDATED_CAR_CONDITION = Condition.USED;
+	public static final Integer TEST_UPDATED_CAR_MILEAGE = 63400;
+	public static final Integer TEST_UPDATED_CAR_MODEL_YEAR = 1990;
+	public static final Integer TEST_UPDATED_CAR_PRODUCTION_YEAR = 1991;
+
+	private static final LocalDateTime TEST_CAR_CREATED_AT = LocalDateTime.parse("2007-12-03T10:15:30");
+	private static final LocalDateTime TEST_CAR_MODIFIED_AT = LocalDateTime.parse("2008-12-03T10:15:30");
+	private static final Condition TEST_CAR_CONDITION = Condition.NEW;
+	private static final Double TEST_CAR_LATTITUDE = 90.0;
+	private static final Double TEST_CAR_LONGITUDE = 74.0;
+	private static final String TEST_CAR_BODY = "coupe";
+	private static final String TEST_CAR_MODEL = "corvette";
+	private static final Integer TEST_CAR_NUMBER_OF_DOORS = 2;
+	private static final String TEST_CAR_FUEL_TYPE = "91 Octane Gasoline";
+	private static final String TEST_CAR_ENGINE = "350 HP Fuel Injected";
+	private static final Integer TEST_CAR_MILEAGE = 634;
+	private static final Integer TEST_CAR_MODEL_YEAR = 2018;
+	private static final Integer TEST_CAR_PRODUCTION_YEAR = 2020;
+	private static final String TEST_CAR_EXTERNAL_COLOR = "Fire Engine Red";
 
 	@Autowired
 	private CarRepository carRepository;
@@ -48,7 +53,7 @@ public class CarRepositoryTests {
 	
 	@Test
 	public void canFindCarById() {
-		Optional<Car> optionalCar = carRepository.findById(TEST_DB_ID);
+		Optional<Car> optionalCar = carRepository.findById(TEST_CAR_ID);
 		assertTrue(optionalCar.isPresent());
 		Car car = optionalCar.get();
 		validateRepoContent(car);
@@ -57,7 +62,7 @@ public class CarRepositoryTests {
 	@Test
 	public void canFindCars() {
 		List<Car> cars = carRepository.findAll();
-		assertEquals(TEST_DB_NUM_RECORDS,cars.size());
+		assertEquals(TEST_CAR_NUM_RECORDS,cars.size());
 	}
 	
 	@Test
@@ -85,20 +90,20 @@ public class CarRepositoryTests {
 	}
 
 	public static void validateRepoContent(Car car) {
-		assertEquals(TEST_DB_ID, car.getId());
-		assertEquals(TEST_DB_CREATED_AT, car.getCreatedAt());
-		assertEquals(TEST_DB_MODIFIED_AT, car.getModifiedAt());
-		assertEquals(TEST_DB_CONDITION, car.getCondition());
-		assertEquals(TEST_DB_LATTITUDE, car.getLocation().getLat());
-		assertEquals(TEST_DB_LONGITUDE, car.getLocation().getLon());
-		assertEquals(TEST_DB_BODY, car.getDetails().getBody());
-		assertEquals(TEST_DB_MODEL, car.getDetails().getModel());
-		assertEquals(TEST_DB_NUMBER_OF_DOORS, car.getDetails().getNumberOfDoors());
-		assertEquals(TEST_DB_FUEL_TYPE, car.getDetails().getFuelType());
-		assertEquals(TEST_DB_ENGINE, car.getDetails().getEngine());
-		assertEquals(TEST_DB_MILEAGE, car.getDetails().getMileage());
-		assertEquals(TEST_DB_MODEL_YEAR, car.getDetails().getModelYear());
-		assertEquals(TEST_DB_PRODUCTION_YEAR, car.getDetails().getProductionYear());
-		assertEquals(TEST_DB_EXTERNAL_COLOR, car.getDetails().getExternalColor());
+		assertEquals(TEST_CAR_ID, car.getId());
+		assertEquals(TEST_CAR_CREATED_AT, car.getCreatedAt());
+		assertEquals(TEST_CAR_MODIFIED_AT, car.getModifiedAt());
+		assertEquals(TEST_CAR_CONDITION, car.getCondition());
+		assertEquals(TEST_CAR_LATTITUDE, car.getLocation().getLat());
+		assertEquals(TEST_CAR_LONGITUDE, car.getLocation().getLon());
+		assertEquals(TEST_CAR_BODY, car.getDetails().getBody());
+		assertEquals(TEST_CAR_MODEL, car.getDetails().getModel());
+		assertEquals(TEST_CAR_NUMBER_OF_DOORS, car.getDetails().getNumberOfDoors());
+		assertEquals(TEST_CAR_FUEL_TYPE, car.getDetails().getFuelType());
+		assertEquals(TEST_CAR_ENGINE, car.getDetails().getEngine());
+		assertEquals(TEST_CAR_MILEAGE, car.getDetails().getMileage());
+		assertEquals(TEST_CAR_MODEL_YEAR, car.getDetails().getModelYear());
+		assertEquals(TEST_CAR_PRODUCTION_YEAR, car.getDetails().getProductionYear());
+		assertEquals(TEST_CAR_EXTERNAL_COLOR, car.getDetails().getExternalColor());
 	}
 }
