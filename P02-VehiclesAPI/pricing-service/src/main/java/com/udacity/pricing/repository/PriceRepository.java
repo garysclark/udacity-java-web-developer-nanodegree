@@ -7,5 +7,5 @@ import com.udacity.pricing.entity.Price;
 
 
 public interface PriceRepository extends CrudRepository<Price, Long> {
-	Price findByVehicleid(@Param("vehicleid") Long vehicleid);
+	Price findByVehicleId(@Param("vehicleId") Long vehicleId);
 }

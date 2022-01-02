@@ -11,7 +11,6 @@ import java.util.Collection;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.web.server.LocalServerPort;
@@ -23,7 +22,6 @@ import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.web.servlet.MockMvc;
 
 import com.udacity.pricing.entity.Price;
 import com.udacity.pricing.repository.PriceRepositoryTests;
@@ -32,14 +30,14 @@ import com.udacity.pricing.repository.PriceRepositoryTests;
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 @AutoConfigureTestDatabase
 @ActiveProfiles("test")
-@AutoConfigureMockMvc
 public class PricingServiceIntegrationTests {
 
 	private static final Integer TEST_DB_PRICE_COUNT = PriceRepositoryTests.TEST_DB_PRICE_COUNT;
 	private static final String TEST_DB_CURRENCY = PriceRepositoryTests.TEST_DB_CURRENCY;
 	private static final BigDecimal TEST_DB_PRICE = PriceRepositoryTests.TEST_DB_PRICE;
 	private static final Long TEST_DB_VEHICLE_ID = PriceRepositoryTests.TEST_DB_VEHICLE_ID;
-	MockMvc mvc;
+	public static final Long TEST_DB_ID = PriceRepositoryTests.TEST_DB_ID;
+
 	@LocalServerPort
 	private int port;
 
@@ -64,7 +62,7 @@ public class PricingServiceIntegrationTests {
 	@Test
 	public void canGetPrice() {
 		ResponseEntity<Price> response =
-				this.restTemplate.getForEntity("http://localhost:" + port + "/prices/1", Price.class);
+				this.restTemplate.getForEntity("http://localhost:" + port + "/prices/" + TEST_DB_ID, Price.class);
 		assertEquals(HttpStatus.OK, response.getStatusCode());
 		Price price = response.getBody();
 		assertEquals(TEST_DB_CURRENCY, price.getCurrency());
@@ -75,7 +73,7 @@ public class PricingServiceIntegrationTests {
 	@Test
 	public void canGetPriceByVehicleId() {
 		ResponseEntity<Price> response =
-				this.restTemplate.getForEntity("http://localhost:" + port + "/prices/search/findByVehicleid?vehicleid=" + TEST_DB_VEHICLE_ID, Price.class);
+				this.restTemplate.getForEntity("http://localhost:" + port + "/prices/search/findByVehicleId?vehicleId=" + TEST_DB_VEHICLE_ID, Price.class);
 		assertEquals(HttpStatus.OK, response.getStatusCode());
 		Price price = response.getBody();
 		assertEquals(TEST_DB_CURRENCY, price.getCurrency());

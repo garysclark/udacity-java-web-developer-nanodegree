@@ -19,7 +19,7 @@ public class Price {
 
 	private String currency;
     private BigDecimal price;
-    private Long vehicleid;
+    private Long vehicleId;
 
     public Price() {
     }
@@ -28,7 +28,7 @@ public class Price {
     	this.id = id;
         this.currency = currency;
         this.price = price;
-        this.vehicleid = vehicleId;
+        this.vehicleId = vehicleId;
     }
 
     public String getCurrency() {
@@ -48,11 +48,11 @@ public class Price {
     }
 
     public Long getVehicleId() {
-        return vehicleid;
+        return vehicleId;
     }
 
     public void setVehicleId(Long vehicleId) {
-        this.vehicleid = vehicleId;
+        this.vehicleId = vehicleId;
     }
 
 	public Long getId() {
@@ -65,7 +65,7 @@ public class Price {
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(currency, id, price, vehicleid);
+		return Objects.hash(currency, id, price, vehicleId);
 	}
 
 	@Override
@@ -78,6 +78,6 @@ public class Price {
 			return false;
 		Price other = (Price) obj;
 		return Objects.equals(currency, other.currency) && Objects.equals(id, other.id)
-				&& Objects.equals(price, other.price) && Objects.equals(vehicleid, other.vehicleid);
+				&& Objects.equals(price, other.price) && Objects.equals(vehicleId, other.vehicleId);
 	}
 }

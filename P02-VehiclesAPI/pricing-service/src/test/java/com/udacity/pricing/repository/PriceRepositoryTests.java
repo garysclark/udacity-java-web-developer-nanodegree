@@ -77,7 +77,7 @@ public class PriceRepositoryTests {
 
 	@Test
 	public void canFindByVehicleId() {
-		Price price = priceRepository.findByVehicleid(TEST_DB_VEHICLE_ID);
+		Price price = priceRepository.findByVehicleId(TEST_DB_VEHICLE_ID);
 		assertNotNull(price);
 		validatePrice(price);
 	}
