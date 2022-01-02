@@ -1,0 +1,17 @@
+{"properties": [
+  {
+    "name": "spring.jpa.defer-datasource-initialization",
+    "type": "java.lang.String",
+    "description": "A description for 'spring.jpa.defer-datasource-initialization'"
+  },
+  {
+    "name": "maps.endpoint",
+    "type": "java.lang.String",
+    "description": "A description for 'maps.endpoint'"
+  },
+  {
+    "name": "pricing.endpoint",
+    "type": "java.lang.String",
+    "description": "A description for 'pricing.endpoint'"
+  }
+]}
