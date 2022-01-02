@@ -86,8 +86,8 @@ public class CarControllerTest {
 		ResultActions resultActions = mvc.perform(
 				post(new URI("/cars"))
 				.content(json.write(car).getJson())
-				.contentType(MediaType.APPLICATION_JSON_UTF8)
-				.accept(MediaType.APPLICATION_JSON_UTF8))
+				.contentType(MediaType.APPLICATION_JSON)
+				.accept(MediaType.APPLICATION_JSON))
 		.andExpect(status().isCreated());
 		
 		validateCarResult(resultActions, car, TEST_JSON_PREFIX_SINGLE_RECORD);
@@ -104,8 +104,8 @@ public class CarControllerTest {
 		ResultActions resultActions = mvc.perform(
 				put(new URI("/cars/1"))
 				.content(json.write(updatedCar).getJson())
-				.contentType(MediaType.APPLICATION_JSON_UTF8)
-				.accept(MediaType.APPLICATION_JSON_UTF8))
+				.contentType(MediaType.APPLICATION_JSON)
+				.accept(MediaType.APPLICATION_JSON))
 		.andExpect(status().isOk());
 		
 		validateCarResult(resultActions, updatedCar, TEST_JSON_PREFIX_SINGLE_RECORD);
@@ -121,8 +121,8 @@ public class CarControllerTest {
 
 		ResultActions resultActions = mvc.perform(
 				get(new URI("/cars"))
-				.contentType(MediaType.APPLICATION_JSON_UTF8)
-				.accept(MediaType.APPLICATION_JSON_UTF8))
+				.contentType(MediaType.APPLICATION_JSON)
+				.accept(MediaType.APPLICATION_JSON))
 		.andExpect(status().isOk());
 		
 		validateCarResult(resultActions, car, TEST_JSON_PREFIX_EMBEDDED_ARRAY_RECORD);
@@ -138,8 +138,8 @@ public class CarControllerTest {
 
 		ResultActions resultActions = mvc.perform(
 				get(new URI("/cars/1"))
-				.contentType(MediaType.APPLICATION_JSON_UTF8)
-				.accept(MediaType.APPLICATION_JSON_UTF8))
+				.contentType(MediaType.APPLICATION_JSON)
+				.accept(MediaType.APPLICATION_JSON))
 		.andExpect(status().isOk());
 		
 		validateCarResult(resultActions, car, TEST_JSON_PREFIX_SINGLE_RECORD);
@@ -155,14 +155,14 @@ public class CarControllerTest {
 
 		mvc.perform(
 				delete(new URI("/cars/1"))
-				.contentType(MediaType.APPLICATION_JSON_UTF8)
-				.accept(MediaType.APPLICATION_JSON_UTF8))
+				.contentType(MediaType.APPLICATION_JSON)
+				.accept(MediaType.APPLICATION_JSON))
 		.andExpect(status().isOk());
 
 		mvc.perform(
 				get(new URI("/cars/1"))
-				.contentType(MediaType.APPLICATION_JSON_UTF8)
-				.accept(MediaType.APPLICATION_JSON_UTF8))
+				.contentType(MediaType.APPLICATION_JSON)
+				.accept(MediaType.APPLICATION_JSON))
 		.andExpect(status().isNotFound())
 		.andExpect(content().string(CarNotFoundException.ERROR_INVALID_CAR_ID + car.getId()));
 	}
