@@ -24,11 +24,12 @@ import com.udacity.pricing.entity.PriceTests;
 @ActiveProfiles("test")
 public class PriceRepositoryTests {
 
-	private static final int TEST_SQL_ROW = 0;
-	private static final int TEST_SQL_VEHICLE_ID = 21;
-	private static final BigDecimal TEST_SQL_PRICE = new BigDecimal("9999.99");
-	private static final String TEST_SQL_CURRENCY = "US Dollars";
-	private static final Long TEST_SQL_ID = 1L;
+	public static final int TEST_DB_PRICE_COUNT = 5;
+	public static final int TEST_DB_ROW = 0;
+	public static final Long TEST_DB_VEHICLE_ID = 21L;
+	public static final BigDecimal TEST_DB_PRICE = new BigDecimal("9999.99");
+	public static final String TEST_DB_CURRENCY = "US Dollars";
+	public static final Long TEST_DB_ID = 1L;
 
 	@Autowired
 	private PriceRepository priceRepository;
@@ -67,13 +68,25 @@ public class PriceRepositoryTests {
 	@Test
 	public void canFindPrices() {
 		List<Price> prices = (List<Price>) priceRepository.findAll();
-		assertEquals(5,prices.size());
+		assertEquals(TEST_DB_PRICE_COUNT,prices.size());
 		
 		// validate SQL initialization values
-		Price foundPrice = prices.get(TEST_SQL_ROW);
-		assertEquals(TEST_SQL_ID, foundPrice.getId());
-		assertEquals(TEST_SQL_CURRENCY, foundPrice.getCurrency());
-		assertEquals(TEST_SQL_PRICE, foundPrice.getPrice());
-		assertEquals(TEST_SQL_VEHICLE_ID, foundPrice.getVehicleId());
+		Price foundPrice = prices.get(TEST_DB_ROW);
+		validatePrice(foundPrice);
 	}
+
+	@Test
+	public void canFindByVehicleId() {
+		Price price = priceRepository.findByVehicleid(TEST_DB_VEHICLE_ID);
+		assertNotNull(price);
+		validatePrice(price);
+	}
+	
+	private void validatePrice(Price price) {
+		assertEquals(TEST_DB_ID, price.getId());
+		assertEquals(TEST_DB_CURRENCY, price.getCurrency());
+		assertEquals(TEST_DB_PRICE, price.getPrice());
+		assertEquals(TEST_DB_VEHICLE_ID, price.getVehicleId());
+	}
+	
 }

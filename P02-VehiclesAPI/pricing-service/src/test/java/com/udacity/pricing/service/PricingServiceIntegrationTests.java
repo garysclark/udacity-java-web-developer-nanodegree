@@ -26,6 +26,7 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 
 import com.udacity.pricing.entity.Price;
+import com.udacity.pricing.repository.PriceRepositoryTests;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
@@ -33,37 +34,52 @@ import com.udacity.pricing.entity.Price;
 @ActiveProfiles("test")
 @AutoConfigureMockMvc
 public class PricingServiceIntegrationTests {
-	
-	private static final Integer TEST_DB_PRICE_COUNT = 5;
-	private static final String TEST_DB_CURRENCY = "US Dollars";
-	private static final BigDecimal TEST_DB_PRICE = new BigDecimal("9999.99");
-	private static final Long TEST_DB_VEHICLE_ID = 21l;
+
+	private static final Integer TEST_DB_PRICE_COUNT = PriceRepositoryTests.TEST_DB_PRICE_COUNT;
+	private static final String TEST_DB_CURRENCY = PriceRepositoryTests.TEST_DB_CURRENCY;
+	private static final BigDecimal TEST_DB_PRICE = PriceRepositoryTests.TEST_DB_PRICE;
+	private static final Long TEST_DB_VEHICLE_ID = PriceRepositoryTests.TEST_DB_VEHICLE_ID;
 	MockMvc mvc;
 	@LocalServerPort
 	private int port;
-	
+
 	@Autowired
 	private TestRestTemplate restTemplate;
-	
+
 	@Test
 	public void canGetAllPrices() throws URISyntaxException {
 		ParameterizedTypeReference<PagedModel<Price>> responseType = new ParameterizedTypeReference<PagedModel<Price>>() {};
 		RequestEntity<PagedModel<Price>> requestEntity = new RequestEntity<>(HttpMethod.GET, new URI("http://localhost:" + port + "/prices"));
 		ResponseEntity <PagedModel<Price>> response = restTemplate.exchange(requestEntity,responseType);
 		assertNotNull(response);
-	    PagedModel<Price> resources = response.getBody();
-	    Collection<Price> prices = resources.getContent();
-	    assertEquals(TEST_DB_PRICE_COUNT, prices.size());
-	    Price price = prices.iterator().next();
-	    assertEquals(TEST_DB_CURRENCY, price.getCurrency());
-	    assertEquals(TEST_DB_PRICE, price.getPrice());
-	    assertEquals(TEST_DB_VEHICLE_ID, price.getVehicleId());
+		PagedModel<Price> resources = response.getBody();
+		Collection<Price> prices = resources.getContent();
+		assertEquals(TEST_DB_PRICE_COUNT, prices.size());
+		Price price = prices.iterator().next();
+		assertEquals(TEST_DB_CURRENCY, price.getCurrency());
+		assertEquals(TEST_DB_PRICE, price.getPrice());
+		assertEquals(TEST_DB_VEHICLE_ID, price.getVehicleId());
+	}
+
+	@Test
+	public void canGetPrice() {
+		ResponseEntity<Price> response =
+				this.restTemplate.getForEntity("http://localhost:" + port + "/prices/1", Price.class);
+		assertEquals(HttpStatus.OK, response.getStatusCode());
+		Price price = response.getBody();
+		assertEquals(TEST_DB_CURRENCY, price.getCurrency());
+		assertEquals(TEST_DB_PRICE, price.getPrice());
+		assertEquals(TEST_DB_VEHICLE_ID, price.getVehicleId());
 	}
 	
 	@Test
-	public void canGetPrice() {
-			ResponseEntity<Price> response =
-					this.restTemplate.getForEntity("http://localhost:" + port + "/prices/1", Price.class);
-			assertEquals(HttpStatus.OK, response.getStatusCode());
+	public void canGetPriceByVehicleId() {
+		ResponseEntity<Price> response =
+				this.restTemplate.getForEntity("http://localhost:" + port + "/prices/search/findByVehicleid?vehicleid=" + TEST_DB_VEHICLE_ID, Price.class);
+		assertEquals(HttpStatus.OK, response.getStatusCode());
+		Price price = response.getBody();
+		assertEquals(TEST_DB_CURRENCY, price.getCurrency());
+		assertEquals(TEST_DB_PRICE, price.getPrice());
+		assertEquals(TEST_DB_VEHICLE_ID, price.getVehicleId());
 	}
 }
