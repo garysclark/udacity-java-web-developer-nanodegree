@@ -60,9 +60,12 @@ public class CarService {
      */
     public Car save(Car car) {
         if (car.getId() != null) {
-        	if(repository.findById(car.getId()).isEmpty()) {
+        	Optional<Car> optionalCar = repository.findById(car.getId());
+        	if(optionalCar.isEmpty()) {
         		throw new CarNotFoundException(CarNotFoundException.ERROR_INVALID_CAR_ID + car.getId());
         	}
+        	// preserve creation date from existing car, all other attributes will be set based on input Car
+        	car.setCreatedAt(optionalCar.get().getCreatedAt());
         }
 
         Car savedCar = repository.save(car);
