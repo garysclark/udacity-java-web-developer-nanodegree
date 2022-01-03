@@ -65,7 +65,10 @@ public class CarService {
         	}
         }
 
-        return repository.save(car);
+        Car savedCar = repository.save(car);
+        addSupportingContent(savedCar);
+        
+        return repository.save(savedCar);
     }
 
     /**
