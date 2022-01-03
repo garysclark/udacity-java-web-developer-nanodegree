@@ -75,7 +75,8 @@ public class CarRepositoryTests {
 		// Read
 		Optional<Car> optionalCar = carRepository.findById(savedCar.getId());
 		assertTrue(optionalCar.isPresent());
-		assertEquals(savedCar, optionalCar.get());
+		Car foundCar = optionalCar.get();
+		assertEquals(savedCar, foundCar);
 		// Update
 		Car testCar2 = CarTests.getTestCar_2();
 		CarTests.copyPersistedAttributes(testCar2, savedCar);
