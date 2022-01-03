@@ -2,6 +2,8 @@ package com.udacity.vehicles.domain.car;
 
 import com.udacity.vehicles.domain.Condition;
 import com.udacity.vehicles.domain.Location;
+
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
@@ -122,9 +124,17 @@ public class Car {
 		if (getClass() != obj.getClass())
 			return false;
 		Car other = (Car) obj;
-		return condition == other.condition && Objects.equals(createdAt, other.createdAt)
+		return condition == other.condition && isDateTimeEqual(createdAt, other.createdAt)
 				&& Objects.equals(details, other.details) && Objects.equals(id, other.id)
-				&& Objects.equals(location, other.location) && Objects.equals(modifiedAt, other.modifiedAt)
+				&& Objects.equals(location, other.location) && isDateTimeEqual(modifiedAt, other.modifiedAt)
 				&& Objects.equals(price, other.price);
+	}
+
+	private boolean isDateTimeEqual(LocalDateTime dateTime1, LocalDateTime dateTime2) {
+		if(dateTime1 == null && dateTime2 == null) {
+			return true;
+		}
+		Duration duration = Duration.between(dateTime1, dateTime2);
+		return (duration.toMillis() < 1l);
 	}
 }
