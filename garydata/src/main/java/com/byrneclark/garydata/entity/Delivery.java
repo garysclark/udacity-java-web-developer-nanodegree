@@ -2,6 +2,7 @@ package com.byrneclark.garydata.entity;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -85,5 +86,24 @@ public class Delivery {
 
 	public void setPlants(List<Plant> plants) {
 		this.plants = plants;
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(address, deliveryTime, id, isComplete, name, plants);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Delivery other = (Delivery) obj;
+		return Objects.equals(address, other.address) && Objects.equals(deliveryTime, other.deliveryTime)
+				&& Objects.equals(id, other.id) && Objects.equals(isComplete, other.isComplete)
+				&& Objects.equals(name, other.name) && Objects.equals(plants, other.plants);
 	}
 }

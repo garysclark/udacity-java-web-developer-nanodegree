@@ -1,6 +1,7 @@
 package com.byrneclark.garydata.entity;
 
 import java.math.BigDecimal;
+import java.util.Objects;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -73,6 +74,24 @@ public class Plant {
 
 	public Delivery getDelivery() {
 		return delivery;
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(delivery, id, name, price);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Plant other = (Plant) obj;
+		return Objects.equals(delivery, other.delivery) && Objects.equals(id, other.id)
+				&& Objects.equals(name, other.name) && Objects.equals(price, other.price);
 	}
 
 }

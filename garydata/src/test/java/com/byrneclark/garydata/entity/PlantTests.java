@@ -31,4 +31,8 @@ public class PlantTests {
 		assertEquals(TEST_DELIVERY, plant.getDelivery());
 	}
 
+	public static Plant getTestPlant_1() {
+		return new Plant(TEST_ID, TEST_NAME, TEST_PRICE);
+	}
+
 }

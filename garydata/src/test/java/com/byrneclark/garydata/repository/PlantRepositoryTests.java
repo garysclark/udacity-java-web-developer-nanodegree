@@ -1,8 +1,8 @@
 package com.byrneclark.garydata.repository;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -20,6 +20,7 @@ import com.byrneclark.garydata.entity.Plant;
 @AutoConfigureTestDatabase
 public class PlantRepositoryTests {
 
+	private static final String TEST_PLANT_NAME = "lily";
 	private static final int TEST_NUM_PLANTS = 3;
 	private static final BigDecimal TEST_MAX_PRICE = new BigDecimal("9.99");
 	@Autowired
@@ -62,6 +63,12 @@ public class PlantRepositoryTests {
 		List<Plant> plants = plantRepository.priceLessThan(TEST_MAX_PRICE);
 		assertNotNull(plants);
 		assertEquals(1, plants.size());
-		assertEquals("lily", plants.get(0).getName());
+		assertEquals(TEST_PLANT_NAME, plants.get(0).getName());
+	}
+	
+	@Test
+	public void canFindPlantByName() {
+		Plant plant = plantRepository.findPlantByName(TEST_PLANT_NAME);
+		assertNotNull(plant);
 	}
 }

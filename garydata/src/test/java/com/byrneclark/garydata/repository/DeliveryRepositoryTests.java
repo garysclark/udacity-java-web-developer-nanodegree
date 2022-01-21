@@ -1,9 +1,5 @@
 package com.byrneclark.garydata.repository;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +11,10 @@ import org.springframework.transaction.annotation.Transactional;
 import com.byrneclark.garydata.entity.Delivery;
 import com.byrneclark.garydata.entity.DeliveryTests;
 import com.byrneclark.garydata.entity.RecipientAndPrice;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 import java.util.List;
 
