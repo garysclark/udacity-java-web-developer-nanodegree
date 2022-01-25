@@ -2,3 +2,4 @@ insert into Delivery (id, name, address_full, deliveryTime, isComplete)values(1,
 insert into Plant (id, name, price, delivery_id)values(1,'magnolia', 9.99, 1);
 insert into Plant (id, name, price, delivery_id)values(2,'rose', 12.59, 1);
 insert into Plant (id, name, price, delivery_id)values(3,'lily', 5.99, 1);
+insert into Candy (id, name, price)values(1,'Gummy Bears',3.50)
