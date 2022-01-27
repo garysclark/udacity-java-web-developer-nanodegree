@@ -20,6 +20,9 @@ import org.hibernate.annotations.Type;
 @NamedQuery(
 		name = "Delivery.findByName",
 		query = "select d from Delivery d where d.name = :name")
+@NamedQuery(
+		name = "Delivery.findAll",
+		query = "select d from Delivery d")
 @Entity
 public class Delivery {
 	

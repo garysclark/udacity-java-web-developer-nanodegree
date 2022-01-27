@@ -60,4 +60,9 @@ public class DeliveryRepository {
 		return recipientAndPrice;
 	}
 
+	public List<Delivery> findAllDeliveries() {
+		TypedQuery<Delivery> query = entityManager.createNamedQuery("Delivery.findAll", Delivery.class);
+		return query.getResultList();
+	}
+
 }
