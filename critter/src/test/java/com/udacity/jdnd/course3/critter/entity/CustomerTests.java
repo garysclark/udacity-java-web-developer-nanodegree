@@ -47,7 +47,7 @@ public class CustomerTests {
 		assertEquals(customer1, customer2);
 	}
 	
-	private Customer getTestCustomer() {
+	public static Customer getTestCustomer() {
 		return new Customer(TEST_ID,TEST_NAME,TEST_PHONE_NUMBER,TEST_NOTES,TEST_PETS);
 	}
 
