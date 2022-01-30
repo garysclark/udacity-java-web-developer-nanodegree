@@ -53,7 +53,6 @@ public class CritterFunctionalTest {
 		Assertions.assertTrue(retrievedCustomer.getId() > 0);
 	}
 
-	@Disabled
 	@Test
 	public void testCreateEmployee(){
 		EmployeeDTO employeeDTO = createEmployeeDTO();

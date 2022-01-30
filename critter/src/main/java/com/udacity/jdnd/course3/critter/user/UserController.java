@@ -5,7 +5,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import com.udacity.jdnd.course3.critter.entity.Customer;
+import com.udacity.jdnd.course3.critter.entity.Employee;
 import com.udacity.jdnd.course3.critter.service.CustomerService;
+import com.udacity.jdnd.course3.critter.service.EmployeeService;
 
 import java.time.DayOfWeek;
 import java.util.ArrayList;
@@ -23,12 +25,14 @@ import java.util.Set;
 public class UserController {
 
 	@Autowired
-    private CustomerService service;
+    private CustomerService customerService;
+	@Autowired
+	private EmployeeService employeeService;
 
 	@PostMapping("/customer")
     public CustomerDTO saveCustomer(@RequestBody CustomerDTO customerDTO){
     	Customer customer = dtoToCustomer(customerDTO);
-    	Customer savedCustomer = service.save(customer);
+    	Customer savedCustomer = customerService.save(customer);
         return customerToDto(savedCustomer);
     }
 
@@ -46,7 +50,7 @@ public class UserController {
 
 	@GetMapping("/customer")
     public List<CustomerDTO> getAllCustomers(){
-		List<Customer> customers = service.findAll();
+		List<Customer> customers = customerService.findAll();
 		return createCustomerDTOList(customers);
     }
 
@@ -65,13 +69,28 @@ public class UserController {
 
     @PostMapping("/employee")
     public EmployeeDTO saveEmployee(@RequestBody EmployeeDTO employeeDTO) {
-        throw new UnsupportedOperationException();
+    	Employee employee = dtoToEmployee(employeeDTO);
+    	Employee savedEmployee = employeeService.save(employee);
+    	return employeeToDto(savedEmployee);
     }
 
-    @PostMapping("/employee/{employeeId}")
+    private EmployeeDTO employeeToDto(Employee employee) {
+    	EmployeeDTO dto = new EmployeeDTO();
+    	BeanUtils.copyProperties(employee, dto);
+		return dto;
+	}
+
+	private Employee dtoToEmployee(EmployeeDTO dto) {
+    	Employee employee = new Employee();
+    	BeanUtils.copyProperties(dto, employee);
+    	return employee;
+	}
+
+	@PostMapping("/employee/{employeeId}")
     public EmployeeDTO getEmployee(@PathVariable long employeeId) {
-        throw new UnsupportedOperationException();
-    }
+		Employee employee = employeeService.findById(employeeId);
+		return employeeToDto(employee);
+	}
 
     @PutMapping("/employee/{employeeId}")
     public void setAvailability(@RequestBody Set<DayOfWeek> daysAvailable, @PathVariable long employeeId) {
