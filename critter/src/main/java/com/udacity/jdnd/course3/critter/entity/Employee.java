@@ -7,48 +7,22 @@ import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 
 import com.udacity.jdnd.course3.critter.user.EmployeeSkill;
 
 @Entity
-public class Employee {
-
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
-
-	private String name;
+public class Employee extends User{
 
 	@ElementCollection(targetClass = EmployeeSkill.class)
 	@Enumerated(EnumType.STRING)
 	private Set<EmployeeSkill> skills;
 
 	public Employee(Long id, String name, Set<EmployeeSkill> skills) {
-		this.id = id;
-		this.name = name;
+		super(id, name);
 		this.skills = skills;
 	}
 
 	public Employee() {
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public String getName() {
-		return name;
 	}
 
 	public void setSkills(Set<EmployeeSkill> skills) {
@@ -61,19 +35,22 @@ public class Employee {
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(id, name, skills);
+		final int prime = 31;
+		int result = super.hashCode();
+		result = prime * result + Objects.hash(skills);
+		return result;
 	}
 
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
 			return true;
-		if (obj == null)
+		if (!super.equals(obj))
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
 		Employee other = (Employee) obj;
-		return Objects.equals(id, other.id) && Objects.equals(name, other.name) && Objects.equals(skills, other.skills);
+		return Objects.equals(skills, other.skills);
 	}
 
 }
