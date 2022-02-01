@@ -10,9 +10,12 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
+import org.springframework.transaction.annotation.Transactional;
+
 import com.udacity.jdnd.course3.critter.pet.PetType;
 
 @Entity
+@Transactional
 public class Pet {
 
 	@Id

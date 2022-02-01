@@ -49,7 +49,7 @@ public class PetTests {
 		assertEquals(pet1, pet2);
 	}
 
-	private Pet getTestPet() {
+	public static Pet getTestPet() {
 		return new Pet(TEST_ID, TEST_TYPE, TEST_NAME, TEST_OWNER_ID, TEST_BIRTHDATE, TEST_NOTES);
 	}
 

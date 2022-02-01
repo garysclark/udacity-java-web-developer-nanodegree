@@ -8,9 +8,12 @@ import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 
+import org.springframework.transaction.annotation.Transactional;
+
 import com.udacity.jdnd.course3.critter.user.EmployeeSkill;
 
 @Entity
+@Transactional
 public class Employee extends User{
 
 	@ElementCollection(targetClass = EmployeeSkill.class)

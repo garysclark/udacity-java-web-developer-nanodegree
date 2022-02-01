@@ -1,5 +1,6 @@
 package com.udacity.jdnd.course3.critter.entity;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -8,13 +9,16 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
 
+import org.springframework.transaction.annotation.Transactional;
+
 @Entity
+@Transactional
 public class Customer extends User{
 
 	private String phoneNumber;
 	private String notes;
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "customer", cascade = CascadeType.ALL)
-	private List<Pet> pets;
+	private List<Pet> pets = new ArrayList<>();
 
 	public Customer(Long id, String name, String phoneNumber, String notes, List<Pet> pets) {
 		super(id, name);

@@ -10,8 +10,10 @@ import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 
 import org.hibernate.annotations.Nationalized;
+import org.springframework.transaction.annotation.Transactional;
 
 @Entity
+@Transactional
 @Inheritance(strategy = InheritanceType.JOINED)
 public abstract class User {
 
