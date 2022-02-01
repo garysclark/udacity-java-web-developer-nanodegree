@@ -6,49 +6,24 @@ import java.util.Objects;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
 @Entity
-public class Customer {
+public class Customer extends User{
 
-	@Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
-
-	private String name;
 	private String phoneNumber;
 	private String notes;
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "customer", cascade = CascadeType.ALL)
 	private List<Pet> pets;
 
 	public Customer(Long id, String name, String phoneNumber, String notes, List<Pet> pets) {
-		this.id = id;
-		this.name = name;
+		super(id, name);
 		this.phoneNumber = phoneNumber;
 		this.notes = notes;
 		this.pets = pets;
 	}
 
 	public Customer() {
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public String getName() {
-		return name;
 	}
 
 	public void setPhoneNumber(String phoneNumber) {
@@ -77,20 +52,23 @@ public class Customer {
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(id, name, notes, pets, phoneNumber);
+		final int prime = 31;
+		int result = super.hashCode();
+		result = prime * result + Objects.hash(notes, pets, phoneNumber);
+		return result;
 	}
 
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
 			return true;
-		if (obj == null)
+		if (!super.equals(obj))
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
 		Customer other = (Customer) obj;
-		return Objects.equals(id, other.id) && Objects.equals(name, other.name) && Objects.equals(notes, other.notes)
-				&& Objects.equals(pets, other.pets) && Objects.equals(phoneNumber, other.phoneNumber);
+		return Objects.equals(notes, other.notes) && Objects.equals(pets, other.pets)
+				&& Objects.equals(phoneNumber, other.phoneNumber);
 	}
 
 }
