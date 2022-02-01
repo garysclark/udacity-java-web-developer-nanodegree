@@ -88,7 +88,6 @@ public class CritterFunctionalTest {
 		Assertions.assertEquals(retrievedCustomer.getPetIds().get(0), retrievedPet.getId());
 	}
 
-    @Disabled
 	@Test
 	public void testFindPetsByOwner() {
 		CustomerDTO customerDTO = createCustomerDTO();
@@ -99,7 +98,7 @@ public class CritterFunctionalTest {
 		PetDTO newPet = petController.savePet(petDTO);
 		petDTO.setType(PetType.DOG);
 		petDTO.setName("DogName");
-		PetDTO newPet2 = petController.savePet(petDTO);
+		petController.savePet(petDTO);
 
 		List<PetDTO> pets = petController.getPetsByOwner(newCustomer.getId());
 		Assertions.assertEquals(pets.size(), 2);
@@ -267,13 +266,13 @@ public class CritterFunctionalTest {
 		petDTO.setType(PetType.CAT);
 		return petDTO;
 	}
-
-	private static EmployeeRequestDTO createEmployeeRequestDTO() {
-		EmployeeRequestDTO employeeRequestDTO = new EmployeeRequestDTO();
-		employeeRequestDTO.setDate(LocalDate.of(2019, 12, 25));
-		employeeRequestDTO.setSkills(Sets.newHashSet(EmployeeSkill.FEEDING, EmployeeSkill.WALKING));
-		return employeeRequestDTO;
-	}
+//
+//	private static EmployeeRequestDTO createEmployeeRequestDTO() {
+//		EmployeeRequestDTO employeeRequestDTO = new EmployeeRequestDTO();
+//		employeeRequestDTO.setDate(LocalDate.of(2019, 12, 25));
+//		employeeRequestDTO.setSkills(Sets.newHashSet(EmployeeSkill.FEEDING, EmployeeSkill.WALKING));
+//		return employeeRequestDTO;
+//	}
 
 	private static ScheduleDTO createScheduleDTO(List<Long> petIds, List<Long> employeeIds, LocalDate date, Set<EmployeeSkill> activities) {
 		ScheduleDTO scheduleDTO = new ScheduleDTO();
