@@ -17,7 +17,7 @@ public class EmployeeTests {
 
 	private static final Long TEST_ID = 99l;
 	private static final String TEST_NAME = "test employee name";
-	private static final Set<EmployeeSkill> TEST_SKILLS = new HashSet<>(Arrays.asList(EmployeeSkill.FEEDING));
+	private static final Set<EmployeeSkill> TEST_SKILLS = new HashSet<>(Arrays.asList(EmployeeSkill.FEEDING, EmployeeSkill.PETTING));
 	private static final Set<DayOfWeek> TEST_DAYS_AVAILABLE = Sets.newHashSet(DayOfWeek.MONDAY, DayOfWeek.WEDNESDAY, DayOfWeek.FRIDAY);
 
 	@Test

@@ -63,7 +63,7 @@ public class EmployeeServiceTests {
 		Employee employee = EmployeeTests.getTestEmployee();
 		List<Employee> employees = Collections.singletonList(employee);
 		DayOfWeek day = employee.getDaysAvailable().iterator().next();
-		when(mockRepository.findBySkillsInAndDaysAvailable(employee.getSkills(), day)).thenReturn(employees);
+		when(mockRepository.findDistinctEmployeesByDaysAvailableAndSkillsIn(day, employee.getSkills())).thenReturn(employees);
 
 		LocalDate date = LocalDate.now().with(TemporalAdjusters.previous(day));
 		List<Employee> foundEmployees = service.findEmployeesForServicesOnDate(employee.getSkills(), date);

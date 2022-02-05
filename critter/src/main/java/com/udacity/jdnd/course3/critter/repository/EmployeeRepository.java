@@ -15,5 +15,5 @@ import com.udacity.jdnd.course3.critter.user.EmployeeSkill;
 @Transactional
 public interface EmployeeRepository extends JpaRepository<Employee, Long>{
 
-	List<Employee> findBySkillsInAndDaysAvailable(Set<EmployeeSkill> skills, DayOfWeek day);
+	List<Employee> findDistinctEmployeesByDaysAvailableAndSkillsIn( DayOfWeek day, Set<EmployeeSkill> skills);
 }

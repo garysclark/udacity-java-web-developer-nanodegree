@@ -35,7 +35,7 @@ public class EmployeeService {
 	}
 
 	public List<Employee> findEmployeesForServicesOnDate(Set<EmployeeSkill> skills, LocalDate date) {
-		List<Employee> employees = repository.findBySkillsInAndDaysAvailable(skills, date.getDayOfWeek());
+		List<Employee> employees = repository.findDistinctEmployeesByDaysAvailableAndSkillsIn(date.getDayOfWeek(), skills);
 		List<Employee> employeesWithAllServices = new ArrayList<>();
 		
 		for(Employee employee:employees) {

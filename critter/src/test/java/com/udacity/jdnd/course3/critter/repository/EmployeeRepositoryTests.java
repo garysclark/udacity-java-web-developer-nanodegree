@@ -51,8 +51,9 @@ public class EmployeeRepositoryTests {
 	@Test
 	public void canFindEmployeesByServiceAndTime() {
 		DayOfWeek day = savedEmployee.getDaysAvailable().iterator().next();
-		List<Employee> foundEmployees = repository.findBySkillsInAndDaysAvailable(savedEmployee.getSkills(), day);
+		List<Employee> foundEmployees = repository.findDistinctEmployeesByDaysAvailableAndSkillsIn(day, savedEmployee.getSkills());
 		assertEquals(savedEmployee, foundEmployees.get(0));
+		assertEquals(1, foundEmployees.size());
 	}
 	
 	private Employee getEmployee() {

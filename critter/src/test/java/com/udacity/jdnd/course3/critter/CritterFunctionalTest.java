@@ -1,13 +1,12 @@
 package com.udacity.jdnd.course3.critter;
 
-import com.google.common.collect.Lists;
-import com.google.common.collect.Sets;
-import com.udacity.jdnd.course3.critter.pet.PetController;
-import com.udacity.jdnd.course3.critter.pet.PetDTO;
-import com.udacity.jdnd.course3.critter.pet.PetType;
-import com.udacity.jdnd.course3.critter.schedule.ScheduleController;
-import com.udacity.jdnd.course3.critter.schedule.ScheduleDTO;
-import com.udacity.jdnd.course3.critter.user.*;
+import java.time.DayOfWeek;
+import java.time.LocalDate;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -15,12 +14,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.DayOfWeek;
-import java.time.LocalDate;
-import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
+import com.udacity.jdnd.course3.critter.pet.PetController;
+import com.udacity.jdnd.course3.critter.pet.PetDTO;
+import com.udacity.jdnd.course3.critter.pet.PetType;
+import com.udacity.jdnd.course3.critter.schedule.ScheduleController;
+import com.udacity.jdnd.course3.critter.schedule.ScheduleDTO;
+import com.udacity.jdnd.course3.critter.user.CustomerDTO;
+import com.udacity.jdnd.course3.critter.user.EmployeeDTO;
+import com.udacity.jdnd.course3.critter.user.EmployeeRequestDTO;
+import com.udacity.jdnd.course3.critter.user.EmployeeSkill;
+import com.udacity.jdnd.course3.critter.user.UserController;
 
 /**
  * This is a set of functional tests to validate the basic capabilities desired for this application.
@@ -194,7 +199,7 @@ public class CritterFunctionalTest {
 		Assertions.assertEquals(scheduleDTO.getPetIds(), petList);
 	}
 
-    @Disabled
+	@Disabled
 	@Test
 	public void testFindScheduleByEntities() {
 		ScheduleDTO sched1 = populateSchedule(1, 2, LocalDate.of(2019, 12, 25), Sets.newHashSet(EmployeeSkill.FEEDING, EmployeeSkill.WALKING));

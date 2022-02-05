@@ -2,6 +2,7 @@ package com.udacity.jdnd.course3.critter.user;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import com.udacity.jdnd.course3.critter.entity.Customer;
@@ -25,6 +26,7 @@ import java.util.Set;
  */
 @RestController
 @RequestMapping("/user")
+@Transactional
 public class UserController {
 
 	@Autowired

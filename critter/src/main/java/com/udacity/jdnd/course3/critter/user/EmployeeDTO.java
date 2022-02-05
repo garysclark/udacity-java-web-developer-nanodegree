@@ -1,6 +1,7 @@
 package com.udacity.jdnd.course3.critter.user;
 
 import java.time.DayOfWeek;
+import java.util.Objects;
 import java.util.Set;
 
 /**
@@ -44,4 +45,22 @@ public class EmployeeDTO {
     public void setDaysAvailable(Set<DayOfWeek> daysAvailable) {
         this.daysAvailable = daysAvailable;
     }
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(daysAvailable, id, name, skills);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		EmployeeDTO other = (EmployeeDTO) obj;
+		return Objects.equals(daysAvailable, other.daysAvailable) && id == other.id && Objects.equals(name, other.name)
+				&& Objects.equals(skills, other.skills);
+	}
 }
