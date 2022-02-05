@@ -5,14 +5,31 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
+import javax.persistence.ElementCollection;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToMany;
+
 import com.udacity.jdnd.course3.critter.user.EmployeeSkill;
 
+@Entity
 public class Schedule {
 
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
+	@ManyToMany(fetch = FetchType.LAZY)
 	private List<Employee> employees;
+	@ManyToMany(fetch = FetchType.LAZY)
 	private List<Pet> pets;
 	private LocalDate date;
+	@ElementCollection(targetClass = EmployeeSkill.class)
+	@Enumerated(EnumType.STRING)
 	private Set<EmployeeSkill> activities;
 
 	public Schedule(Long id, List<Employee> employees, List<Pet> pets, LocalDate date,
