@@ -9,8 +9,10 @@ import com.udacity.jdnd.course3.critter.entity.Employee;
 import com.udacity.jdnd.course3.critter.entity.Pet;
 import com.udacity.jdnd.course3.critter.service.CustomerService;
 import com.udacity.jdnd.course3.critter.service.EmployeeService;
+import com.udacity.jdnd.course3.critter.service.PetService;
 
 import java.time.DayOfWeek;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -29,6 +31,8 @@ public class UserController {
 	private CustomerService customerService;
 	@Autowired
 	private EmployeeService employeeService;
+	@Autowired
+	private PetService petService;
 
 	@PostMapping("/customer")
 	public CustomerDTO saveCustomer(@RequestBody CustomerDTO customerDTO){
@@ -73,7 +77,16 @@ public class UserController {
 
 	@GetMapping("/customer/pet/{petId}")
 	public CustomerDTO getOwnerByPet(@PathVariable long petId){
-		throw new UnsupportedOperationException();
+		Pet pet = petService.findPetById(petId);
+		CustomerDTO dto = new CustomerDTO();
+		if(pet != null) {
+			Customer customer = customerService.findById(pet.getId());
+			if(customer != null) {
+				dto = customerToDto(customer);
+			}
+		}
+		
+		return dto;
 	}
 
 	@PostMapping("/employee")
@@ -103,12 +116,25 @@ public class UserController {
 
 	@PutMapping("/employee/{employeeId}")
 	public void setAvailability(@RequestBody Set<DayOfWeek> daysAvailable, @PathVariable long employeeId) {
-		throw new UnsupportedOperationException();
+		Employee employee = employeeService.findById(employeeId);
+		employee.setDaysAvailable(daysAvailable);
+		employeeService.save(employee);
 	}
 
 	@GetMapping("/employee/availability")
 	public List<EmployeeDTO> findEmployeesForService(@RequestBody EmployeeRequestDTO employeeDTO) {
-		throw new UnsupportedOperationException();
+		Set<EmployeeSkill> services = employeeDTO.getSkills();
+		LocalDate date = employeeDTO.getDate();
+		List<Employee> employees = employeeService.findEmployeesForServicesOnDate(services, date);
+		return createEmployeeDTOList(employees);
+	}
+
+	private List<EmployeeDTO> createEmployeeDTOList(List<Employee> employees) {
+		List<EmployeeDTO> dtos = new ArrayList<EmployeeDTO>();
+		for (Employee employee:employees) {
+			dtos.add(employeeToDto(employee));
+		}
+		return dtos;
 	}
 
 }

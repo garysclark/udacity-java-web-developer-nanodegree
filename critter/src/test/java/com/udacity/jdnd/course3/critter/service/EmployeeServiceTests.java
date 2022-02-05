@@ -4,6 +4,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.when;
 
+import java.time.DayOfWeek;
+import java.time.LocalDate;
+import java.time.temporal.TemporalAdjusters;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -53,5 +56,17 @@ public class EmployeeServiceTests {
 		when(mockRepository.findById(optionalEmployee.get().getId())).thenReturn(optionalEmployee);
 		Employee foundEmployee = service.findById(optionalEmployee.get().getId());
 		assertEquals(optionalEmployee.get(),foundEmployee);
+	}
+	
+	@Test
+	public void canFindEmployeeForServiceOnDate() {
+		Employee employee = EmployeeTests.getTestEmployee();
+		List<Employee> employees = Collections.singletonList(employee);
+		DayOfWeek day = employee.getDaysAvailable().iterator().next();
+		when(mockRepository.findBySkillsInAndDaysAvailable(employee.getSkills(), day)).thenReturn(employees);
+
+		LocalDate date = LocalDate.now().with(TemporalAdjusters.previous(day));
+		List<Employee> foundEmployees = service.findEmployeesForServicesOnDate(employee.getSkills(), date);
+		assertEquals(employees.get(0), foundEmployees.get(0));
 	}
 }

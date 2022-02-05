@@ -1,6 +1,7 @@
 package com.udacity.jdnd.course3.critter.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,6 +23,11 @@ public class CustomerService {
 
 	public List<Customer> findAll() {
 		return repository.findAll();
+	}
+
+	public Customer findById(Long id) {
+		Optional<Customer> optionalCustomer = repository.findById(id);
+		return optionalCustomer.get();
 	}
 
 }

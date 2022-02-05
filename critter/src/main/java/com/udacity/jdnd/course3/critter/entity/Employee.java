@@ -1,5 +1,6 @@
 package com.udacity.jdnd.course3.critter.entity;
 
+import java.time.DayOfWeek;
 import java.util.Objects;
 import java.util.Set;
 
@@ -19,10 +20,14 @@ public class Employee extends User{
 	@ElementCollection(targetClass = EmployeeSkill.class)
 	@Enumerated(EnumType.STRING)
 	private Set<EmployeeSkill> skills;
+	@ElementCollection(targetClass = DayOfWeek.class)
+	@Enumerated(EnumType.STRING)
+	private Set<DayOfWeek> daysAvailable;
 
-	public Employee(Long id, String name, Set<EmployeeSkill> skills) {
+	public Employee(Long id, String name, Set<EmployeeSkill> skills, Set<DayOfWeek> daysAvailable) {
 		super(id, name);
 		this.skills = skills;
+		this.daysAvailable = daysAvailable;
 	}
 
 	public Employee() {
@@ -54,6 +59,14 @@ public class Employee extends User{
 			return false;
 		Employee other = (Employee) obj;
 		return Objects.equals(skills, other.skills);
+	}
+
+	public void setDaysAvailable(Set<DayOfWeek> daysAvailable) {
+		this.daysAvailable = daysAvailable;
+	}
+
+	public Set<DayOfWeek> getDaysAvailable() {
+		return daysAvailable;
 	}
 
 }

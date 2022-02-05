@@ -6,6 +6,7 @@ import static org.mockito.Mockito.when;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,5 +46,14 @@ public class CustomerServiceTests {
 		when(mockRepository.findAll()).thenReturn(customers);
 		List<Customer> foundCustomers = service.findAll();
 		assertEquals(customers, foundCustomers);
+	}
+	
+	@Test
+	public void canFindCustomerById() {
+		Customer customer = CustomerTests.getTestCustomer();
+		when(mockRepository.findById(customer.getId())).thenReturn(Optional.of(customer));
+		
+		Customer foundCustomer = service.findById(customer.getId());
+		assertEquals(customer, foundCustomer);
 	}
 }

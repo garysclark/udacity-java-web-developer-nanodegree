@@ -3,12 +3,14 @@ package com.udacity.jdnd.course3.critter.entity;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
+import java.time.DayOfWeek;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
 import org.junit.jupiter.api.Test;
 
+import com.google.common.collect.Sets;
 import com.udacity.jdnd.course3.critter.user.EmployeeSkill;
 
 public class EmployeeTests {
@@ -16,6 +18,7 @@ public class EmployeeTests {
 	private static final Long TEST_ID = 99l;
 	private static final String TEST_NAME = "test employee name";
 	private static final Set<EmployeeSkill> TEST_SKILLS = new HashSet<>(Arrays.asList(EmployeeSkill.FEEDING));
+	private static final Set<DayOfWeek> TEST_DAYS_AVAILABLE = Sets.newHashSet(DayOfWeek.MONDAY, DayOfWeek.WEDNESDAY, DayOfWeek.FRIDAY);
 
 	@Test
 	public void canCreateEmployee() {
@@ -29,6 +32,7 @@ public class EmployeeTests {
 		employee.setId(TEST_ID);
 		employee.setName(TEST_NAME);
 		employee.setSkills(TEST_SKILLS);
+		employee.setDaysAvailable(TEST_DAYS_AVAILABLE);
 		validateAttributes(employee);
 	}
 	
@@ -49,9 +53,10 @@ public class EmployeeTests {
 		assertEquals(TEST_ID, employee.getId());
 		assertEquals(TEST_NAME, employee.getName());
 		assertEquals(TEST_SKILLS, employee.getSkills());
+		assertEquals(TEST_DAYS_AVAILABLE, employee.getDaysAvailable());
 	}
 
 	public static Employee getTestEmployee() {
-		return new Employee(TEST_ID, TEST_NAME, TEST_SKILLS);
+		return new Employee(TEST_ID, TEST_NAME, TEST_SKILLS, TEST_DAYS_AVAILABLE);
 	}
 }

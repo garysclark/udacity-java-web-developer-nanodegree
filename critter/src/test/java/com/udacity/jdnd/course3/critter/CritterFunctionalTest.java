@@ -106,8 +106,7 @@ public class CritterFunctionalTest {
 		Assertions.assertEquals(pets.get(0).getId(), newPet.getId());
 	}
 
-    @Disabled
-	@Test
+    @Test
 	public void testFindOwnerByPet() {
 		CustomerDTO customerDTO = createCustomerDTO();
 		CustomerDTO newCustomer = userController.saveCustomer(customerDTO);
@@ -121,7 +120,6 @@ public class CritterFunctionalTest {
 		Assertions.assertEquals(owner.getPetIds().get(0), newPet.getId());
 	}
 
-    @Disabled
 	@Test
 	public void testChangeEmployeeAvailability() {
 		EmployeeDTO employeeDTO = createEmployeeDTO();
@@ -135,7 +133,6 @@ public class CritterFunctionalTest {
 		Assertions.assertEquals(availability, emp2.getDaysAvailable());
 	}
 
-    @Disabled
 	@Test
 	public void testFindEmployeesByServiceAndTime() {
 		EmployeeDTO emp1 = createEmployeeDTO();
