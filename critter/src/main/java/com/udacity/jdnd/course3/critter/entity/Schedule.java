@@ -1,6 +1,8 @@
 package com.udacity.jdnd.course3.critter.entity;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
@@ -24,13 +26,13 @@ public class Schedule {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	@ManyToMany(fetch = FetchType.LAZY)
-	private List<Employee> employees;
+	private List<Employee> employees = new ArrayList<>();
 	@ManyToMany(fetch = FetchType.LAZY)
-	private List<Pet> pets;
+	private List<Pet> pets = new ArrayList<>();
 	private LocalDate date;
 	@ElementCollection(targetClass = EmployeeSkill.class)
 	@Enumerated(EnumType.STRING)
-	private Set<EmployeeSkill> activities;
+	private Set<EmployeeSkill> activities = new HashSet<>();
 
 	public Schedule(Long id, List<Employee> employees, List<Pet> pets, LocalDate date,
 			Set<EmployeeSkill> activities) {

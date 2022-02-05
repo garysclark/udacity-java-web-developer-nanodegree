@@ -170,7 +170,6 @@ public class CritterFunctionalTest {
 		Assertions.assertEquals(eIds2, eIds2expected);
 	}
 
-    @Disabled
 	@Test
 	public void testSchedulePetsForServiceWithEmployee() {
 		EmployeeDTO employeeTemp = createEmployeeDTO();

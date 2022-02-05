@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -38,12 +39,20 @@ public class ScheduleRepositoryTests {
 	
 	@Test
 	public void canSaveAndFindSchedule() {
-		Schedule schedule = getSchedule();
-		Schedule savedSchedule = scheduleRepository.save(schedule);
+		Schedule savedSchedule = scheduleRepository.save(getSchedule());
 		assertNotNull(savedSchedule);
 		Optional<Schedule> optionalSchedule = scheduleRepository.findById(savedSchedule.getId());
 		assertTrue(optionalSchedule.isPresent());
 		assertEquals(savedSchedule, optionalSchedule.get());
+	}
+
+	@Test
+	public void canFindAllSchedules() {
+		Schedule schedule1 = scheduleRepository.save(getSchedule());
+		Schedule schedule2 = scheduleRepository.save(getSchedule());
+		List<Schedule> schedules = scheduleRepository.findAll();
+		assertEquals(2, schedules.size());
+		assertTrue(schedules.containsAll(Arrays.asList(schedule1, schedule2)));
 	}
 
 	private Schedule getSchedule() {

@@ -1,7 +1,17 @@
 package com.udacity.jdnd.course3.critter.schedule;
 
+import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import com.udacity.jdnd.course3.critter.entity.Employee;
+import com.udacity.jdnd.course3.critter.entity.Pet;
+import com.udacity.jdnd.course3.critter.entity.Schedule;
+import com.udacity.jdnd.course3.critter.service.EmployeeService;
+import com.udacity.jdnd.course3.critter.service.PetService;
+import com.udacity.jdnd.course3.critter.service.ScheduleService;
+
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -11,28 +21,65 @@ import java.util.List;
 @RequestMapping("/schedule")
 public class ScheduleController {
 
-    @PostMapping
-    public ScheduleDTO createSchedule(@RequestBody ScheduleDTO scheduleDTO) {
-        throw new UnsupportedOperationException();
-    }
+	@Autowired
+	private ScheduleService scheduleService;
+	@Autowired
+	private EmployeeService employeeService;
+	@Autowired
+	private PetService petService;
 
-    @GetMapping
-    public List<ScheduleDTO> getAllSchedules() {
-        throw new UnsupportedOperationException();
-    }
+	@PostMapping
+	public ScheduleDTO createSchedule(@RequestBody ScheduleDTO scheduleDTO) {
+		Schedule schedule = dtoToSchedule(scheduleDTO);
+		return scheduleToDto(scheduleService.createSchedule(schedule));
+	}
 
-    @GetMapping("/pet/{petId}")
-    public List<ScheduleDTO> getScheduleForPet(@PathVariable long petId) {
-        throw new UnsupportedOperationException();
-    }
+	private ScheduleDTO scheduleToDto(Schedule schedule) {
+		ScheduleDTO dto = new ScheduleDTO();
+		BeanUtils.copyProperties(schedule, dto);
+		for(Employee employee:schedule.getEmployees()) {
+			dto.getEmployeeIds().add(employee.getId());
+		}
+		for(Pet pet:schedule.getPets()) {
+			dto.getPetIds().add(pet.getId());
+		}
+		return dto;
+	}
 
-    @GetMapping("/employee/{employeeId}")
-    public List<ScheduleDTO> getScheduleForEmployee(@PathVariable long employeeId) {
-        throw new UnsupportedOperationException();
-    }
+	private Schedule dtoToSchedule(ScheduleDTO dto) {
+		Schedule schedule = new Schedule();
+		BeanUtils.copyProperties(dto, schedule);
+		for(Long employeeId:dto.getEmployeeIds()) {
+			schedule.getEmployees().add(employeeService.findById(employeeId));
+		}
+		for(Long petId:dto.getPetIds()) {
+			schedule.getPets().add(petService.findPetById(petId));
+		}
+		return schedule;
+	}
 
-    @GetMapping("/customer/{customerId}")
-    public List<ScheduleDTO> getScheduleForCustomer(@PathVariable long customerId) {
-        throw new UnsupportedOperationException();
-    }
+	@GetMapping
+	public List<ScheduleDTO> getAllSchedules() {
+		List<ScheduleDTO> dtos = new ArrayList<>();
+		List<Schedule> schedules = scheduleService.findAllSchedules();
+		for(Schedule schedule:schedules) {
+			dtos.add(scheduleToDto(schedule));
+		}
+		return dtos;
+	}
+
+	@GetMapping("/pet/{petId}")
+	public List<ScheduleDTO> getScheduleForPet(@PathVariable long petId) {
+		throw new UnsupportedOperationException();
+	}
+
+	@GetMapping("/employee/{employeeId}")
+	public List<ScheduleDTO> getScheduleForEmployee(@PathVariable long employeeId) {
+		throw new UnsupportedOperationException();
+	}
+
+	@GetMapping("/customer/{customerId}")
+	public List<ScheduleDTO> getScheduleForCustomer(@PathVariable long customerId) {
+		throw new UnsupportedOperationException();
+	}
 }
