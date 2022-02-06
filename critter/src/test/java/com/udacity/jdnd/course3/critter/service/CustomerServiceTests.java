@@ -2,11 +2,14 @@ package com.udacity.jdnd.course3.critter.service;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
 
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+
+import javax.persistence.EntityNotFoundException;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +23,8 @@ import com.udacity.jdnd.course3.critter.repository.CustomerRepository;
 @SpringBootTest
 public class CustomerServiceTests {
 	
+	private static final Long TEST_INVALID_ID = -1l;
+
 	@MockBean
 	private CustomerRepository mockRepository;
 	
@@ -55,5 +60,12 @@ public class CustomerServiceTests {
 		
 		Customer foundCustomer = service.findById(customer.getId());
 		assertEquals(customer, foundCustomer);
+	}
+	
+	@Test
+	public void canHandleRecordNotFoundById() {
+		when(mockRepository.findById(TEST_INVALID_ID)).thenReturn(Optional.ofNullable(null));
+
+		assertThrows(EntityNotFoundException.class, ()->{service.findById(TEST_INVALID_ID);});
 	}
 }

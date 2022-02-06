@@ -1,6 +1,7 @@
 package com.udacity.jdnd.course3.critter.controller;
 
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Represents the form that customer request and response data takes. Does not map
@@ -52,4 +53,22 @@ public class CustomerDTO {
     public void setPetIds(List<Long> petIds) {
         this.petIds = petIds;
     }
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(id, name, notes, petIds, phoneNumber);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		CustomerDTO other = (CustomerDTO) obj;
+		return id == other.id && Objects.equals(name, other.name) && Objects.equals(notes, other.notes)
+				&& Objects.equals(petIds, other.petIds) && Objects.equals(phoneNumber, other.phoneNumber);
+	}
 }

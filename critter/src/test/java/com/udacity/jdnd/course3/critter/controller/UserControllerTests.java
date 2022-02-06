@@ -2,10 +2,14 @@ package com.udacity.jdnd.course3.critter.controller;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.time.LocalDate;
 import java.time.temporal.TemporalAdjusters;
+import java.util.ArrayList;
 import java.util.List;
+
+import javax.persistence.EntityNotFoundException;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.BeanUtils;
@@ -13,6 +17,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.udacity.jdnd.course3.critter.entity.Customer;
+import com.udacity.jdnd.course3.critter.entity.CustomerTests;
 import com.udacity.jdnd.course3.critter.entity.Employee;
 import com.udacity.jdnd.course3.critter.entity.EmployeeTests;
 
@@ -20,7 +26,8 @@ import com.udacity.jdnd.course3.critter.entity.EmployeeTests;
 @Transactional
 public class UserControllerTests {
 
-	@Autowired
+	private static final long TEST_INVALID_CUSTOMER_ID = 0;
+@Autowired
 	private UserController userController;
 
 	@Test
@@ -41,6 +48,33 @@ public class UserControllerTests {
 		assertNotNull(availableEmployees);
 		assertEquals(savedEmployeeDTO, availableEmployees.get(0));
 		assertEquals(1, availableEmployees.size());
+	}
+	
+	@Test
+	public void canSaveGetCustomer() {
+		CustomerDTO customerDto = getCustomerDto();
+		CustomerDTO savedCustomerDto = userController.saveCustomer(customerDto);
+		assertNotNull(savedCustomerDto);
+		CustomerDTO foundCustomerDto = userController.getCustomer(savedCustomerDto.getId());
+		assertEquals(savedCustomerDto,foundCustomerDto);
+	}
+	
+	@Test
+	public void canEntityNotFoundException() {
+		assertThrows(EntityNotFoundException.class, ()->{userController.getCustomer(TEST_INVALID_CUSTOMER_ID);});
+	}
+	
+	private CustomerDTO getCustomerDto() {
+		Customer customer = CustomerTests.getTestCustomer();
+		customer.setPets(new ArrayList<>());
+		CustomerDTO dto = new CustomerDTO();
+		BeanUtils.copyProperties(customer, dto);
+		return dto;
+	}
+
+	@Test
+	public void canHandleCustomerNotFoundException() {
+		
 	}
 
 	private EmployeeDTO getEmployeeDto() {

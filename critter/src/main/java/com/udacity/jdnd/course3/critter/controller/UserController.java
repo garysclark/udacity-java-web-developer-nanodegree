@@ -68,7 +68,7 @@ public class UserController {
 				dto = customerToDto(customer);
 			}
 		}
-		
+
 		return dto;
 	}
 
@@ -98,6 +98,12 @@ public class UserController {
 		LocalDate date = employeeDTO.getDate();
 		List<Employee> employees = employeeService.findEmployeesForServicesOnDate(services, date);
 		return createEmployeeDTOList(employees);
+	}
+
+	@GetMapping("/customer/{id}")
+	public CustomerDTO getCustomer(@PathVariable long id) {
+		Customer customer = customerService.findById(id);
+		return customerToDto(customer);
 	}
 
 	private CustomerDTO customerToDto(Customer customer) {

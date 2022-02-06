@@ -11,6 +11,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
+import org.hibernate.annotations.Nationalized;
 import org.springframework.transaction.annotation.Transactional;
 
 @Entity
@@ -27,10 +28,12 @@ public class Pet {
 
 	private PetType type;
 
+	@Nationalized
 	private String name;
 
 	private LocalDate birthDate;
 
+	@Nationalized
 	private String notes;
 
 	public Pet(Long id, PetType type, String name, Customer owner, LocalDate birthDate,
