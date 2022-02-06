@@ -31,18 +31,6 @@ public class PetController {
     	return petToDto(petService.savePet(pet));
     }
 
-    private PetDTO petToDto(Pet pet) {
-    	PetDTO dto = new PetDTO();
-    	BeanUtils.copyProperties(pet, dto);
-    	return dto;
-	}
-
-	private Pet dtoToPet(PetDTO dto) {
-    	Pet pet = new Pet();
-    	BeanUtils.copyProperties(dto, pet);
-		return pet;
-	}
-
 	@GetMapping("/{petId}")
     public PetDTO getPet(@PathVariable long petId) {
 		Pet pet = petService.findPetById(petId);
@@ -60,6 +48,18 @@ public class PetController {
     	List<Pet> pets = petService.findPetsByCustomerId(ownerId);
     	return createDTOList(pets);
     }
+
+    private PetDTO petToDto(Pet pet) {
+    	PetDTO dto = new PetDTO();
+    	BeanUtils.copyProperties(pet, dto);
+    	return dto;
+	}
+
+	private Pet dtoToPet(PetDTO dto) {
+    	Pet pet = new Pet();
+    	BeanUtils.copyProperties(dto, pet);
+		return pet;
+	}
     
     private List<PetDTO> createDTOList(List<Pet> pets) {
     	List<PetDTO> dtos = new ArrayList<PetDTO>();

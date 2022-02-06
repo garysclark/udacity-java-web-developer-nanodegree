@@ -43,26 +43,6 @@ public class UserController {
 		return customerToDto(savedCustomer);
 	}
 
-	private CustomerDTO customerToDto(Customer customer) {
-		CustomerDTO customerDTO = new CustomerDTO();
-		BeanUtils.copyProperties(customer, customerDTO);
-		List<Pet> pets = customer.getPets();
-		if(pets.size() > 0) {
-			List<Long> petIds = new ArrayList<>();
-			for(Pet pet:pets) {
-				petIds.add(pet.getId());
-			}
-			customerDTO.setPetIds(petIds);
-		}
-		return customerDTO;
-	}
-
-	private Customer dtoToCustomer(CustomerDTO customerDTO) {
-		Customer customer = new Customer();
-		BeanUtils.copyProperties(customerDTO, customer);
-		return customer;
-	}
-
 	@GetMapping("/customer")
 	public List<CustomerDTO> getAllCustomers(){
 		List<Customer> customers = customerService.findAll();
@@ -98,18 +78,6 @@ public class UserController {
 		return employeeToDto(savedEmployee);
 	}
 
-	private EmployeeDTO employeeToDto(Employee employee) {
-		EmployeeDTO dto = new EmployeeDTO();
-		BeanUtils.copyProperties(employee, dto);
-		return dto;
-	}
-
-	private Employee dtoToEmployee(EmployeeDTO dto) {
-		Employee employee = new Employee();
-		BeanUtils.copyProperties(dto, employee);
-		return employee;
-	}
-
 	@PostMapping("/employee/{employeeId}")
 	public EmployeeDTO getEmployee(@PathVariable long employeeId) {
 		Employee employee = employeeService.findById(employeeId);
@@ -129,6 +97,38 @@ public class UserController {
 		LocalDate date = employeeDTO.getDate();
 		List<Employee> employees = employeeService.findEmployeesForServicesOnDate(services, date);
 		return createEmployeeDTOList(employees);
+	}
+
+	private CustomerDTO customerToDto(Customer customer) {
+		CustomerDTO customerDTO = new CustomerDTO();
+		BeanUtils.copyProperties(customer, customerDTO);
+		List<Pet> pets = customer.getPets();
+		if(pets.size() > 0) {
+			List<Long> petIds = new ArrayList<>();
+			for(Pet pet:pets) {
+				petIds.add(pet.getId());
+			}
+			customerDTO.setPetIds(petIds);
+		}
+		return customerDTO;
+	}
+
+	private Customer dtoToCustomer(CustomerDTO customerDTO) {
+		Customer customer = new Customer();
+		BeanUtils.copyProperties(customerDTO, customer);
+		return customer;
+	}
+
+	private EmployeeDTO employeeToDto(Employee employee) {
+		EmployeeDTO dto = new EmployeeDTO();
+		BeanUtils.copyProperties(employee, dto);
+		return dto;
+	}
+
+	private Employee dtoToEmployee(EmployeeDTO dto) {
+		Employee employee = new Employee();
+		BeanUtils.copyProperties(dto, employee);
+		return employee;
 	}
 
 	private List<EmployeeDTO> createEmployeeDTOList(List<Employee> employees) {
