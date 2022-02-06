@@ -58,4 +58,14 @@ public class PetServiceTests {
 		List<Pet> foundPets = service.findPetsByCustomerId(pet.getOwnerId());
 		assertEquals(pet, foundPets.get(0));
 	}
+	
+	@Test
+	public void canFindAllPets() {
+		Pet pet = PetTests.getTestPet();
+		List<Pet> pets = Collections.singletonList(pet);
+		when(mockPetRepository.findAll()).thenReturn(pets);
+		
+		List<Pet> foundPets = service.findAllPets();
+		assertEquals(pet, foundPets.get(0));
+	}
 }

@@ -54,6 +54,33 @@ public class ScheduleRepositoryTests {
 		assertEquals(2, schedules.size());
 		assertTrue(schedules.containsAll(Arrays.asList(schedule1, schedule2)));
 	}
+	
+	@Test
+	public void canFindScheduleByEmployee() {
+		Schedule savedSchedule = scheduleRepository.save(getSchedule());
+		List<Schedule> foundSchedules = scheduleRepository.findAllByEmployeesId(savedSchedule.getEmployees().get(0).getId());
+		assertNotNull(foundSchedules);
+		assertEquals(1, foundSchedules.size());
+		assertEquals(savedSchedule, foundSchedules.get(0));
+	}
+	
+	@Test
+	public void canFindScheduleByPet() {
+		Schedule savedSchedule = scheduleRepository.save(getSchedule());
+		List<Schedule> foundSchedules = scheduleRepository.findAllByPetsId(savedSchedule.getPets().get(0).getId());
+		assertNotNull(foundSchedules);
+		assertEquals(1, foundSchedules.size());
+		assertEquals(savedSchedule, foundSchedules.get(0));
+	}
+	
+	@Test
+	public void canFindScheduleByCustomer() {
+		Schedule savedSchedule = scheduleRepository.save(getSchedule());
+		List<Schedule> foundSchedules = scheduleRepository.findAllByPetsOwnerId(savedSchedule.getPets().get(0).getOwnerId());
+		assertNotNull(foundSchedules);
+		assertEquals(1, foundSchedules.size());
+		assertEquals(savedSchedule, foundSchedules.get(0));
+	}
 
 	private Schedule getSchedule() {
 		Schedule schedule = ScheduleTests.getTestSchedule();

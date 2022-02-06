@@ -24,4 +24,16 @@ public class ScheduleService {
 		return repository.findAll();
 	}
 
+	public List<Schedule> findAllSchedulesForEmployee(Long id) {
+		return repository.findAllByEmployeesId(id);
+	}
+
+	public List<Schedule> findAllSchedulesForPet(Long id) {
+		return repository.findAllByPetsId(id);
+	}
+
+	public List<Schedule> findAllSchedulesForPetOwnerId(Long ownerId) {
+		return repository.findAllByPetsOwnerId(ownerId);
+	}
+
 }

@@ -82,7 +82,7 @@ public class UserController {
 		Pet pet = petService.findPetById(petId);
 		CustomerDTO dto = new CustomerDTO();
 		if(pet != null) {
-			Customer customer = customerService.findById(pet.getId());
+			Customer customer = customerService.findById(pet.getOwnerId());
 			if(customer != null) {
 				dto = customerToDto(customer);
 			}

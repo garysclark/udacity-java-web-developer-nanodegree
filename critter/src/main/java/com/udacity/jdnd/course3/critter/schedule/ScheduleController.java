@@ -34,6 +34,42 @@ public class ScheduleController {
 		return scheduleToDto(scheduleService.createSchedule(schedule));
 	}
 
+	@GetMapping
+	public List<ScheduleDTO> getAllSchedules() {
+		List<ScheduleDTO> dtos = new ArrayList<>();
+		List<Schedule> schedules = scheduleService.findAllSchedules();
+		for(Schedule schedule:schedules) {
+			dtos.add(scheduleToDto(schedule));
+		}
+		return dtos;
+	}
+
+	@GetMapping("/pet/{petId}")
+	public List<ScheduleDTO> getScheduleForPet(@PathVariable long petId) {
+		List<Schedule> schedules = scheduleService.findAllSchedulesForPet(petId);
+		return schedulesToDtos(schedules);
+	}
+
+	@GetMapping("/employee/{employeeId}")
+	public List<ScheduleDTO> getScheduleForEmployee(@PathVariable long employeeId) {
+		List<Schedule> schedules = scheduleService.findAllSchedulesForEmployee(employeeId);
+		return schedulesToDtos(schedules);
+	}
+
+	@GetMapping("/customer/{customerId}")
+	public List<ScheduleDTO> getScheduleForCustomer(@PathVariable long customerId) {
+		List<Schedule> schedules = scheduleService.findAllSchedulesForPetOwnerId(customerId);
+		return schedulesToDtos(schedules);
+	}
+
+	private List<ScheduleDTO> schedulesToDtos(List<Schedule> schedules) {
+		List<ScheduleDTO> dtos = new ArrayList<>();
+		for(Schedule schedule:schedules) {
+			dtos.add(scheduleToDto(schedule));
+		}
+		return dtos;
+	}
+
 	private ScheduleDTO scheduleToDto(Schedule schedule) {
 		ScheduleDTO dto = new ScheduleDTO();
 		BeanUtils.copyProperties(schedule, dto);
@@ -56,30 +92,5 @@ public class ScheduleController {
 			schedule.getPets().add(petService.findPetById(petId));
 		}
 		return schedule;
-	}
-
-	@GetMapping
-	public List<ScheduleDTO> getAllSchedules() {
-		List<ScheduleDTO> dtos = new ArrayList<>();
-		List<Schedule> schedules = scheduleService.findAllSchedules();
-		for(Schedule schedule:schedules) {
-			dtos.add(scheduleToDto(schedule));
-		}
-		return dtos;
-	}
-
-	@GetMapping("/pet/{petId}")
-	public List<ScheduleDTO> getScheduleForPet(@PathVariable long petId) {
-		throw new UnsupportedOperationException();
-	}
-
-	@GetMapping("/employee/{employeeId}")
-	public List<ScheduleDTO> getScheduleForEmployee(@PathVariable long employeeId) {
-		throw new UnsupportedOperationException();
-	}
-
-	@GetMapping("/customer/{customerId}")
-	public List<ScheduleDTO> getScheduleForCustomer(@PathVariable long customerId) {
-		throw new UnsupportedOperationException();
 	}
 }

@@ -28,6 +28,7 @@ public class PetService {
 		if(optionalCustomer.isPresent()) {
 			Customer customer = optionalCustomer.get();
 			customer.getPets().add(savedPet);
+			customerRepository.save(customer);
 		}
 		
 		return savedPet;
@@ -40,6 +41,10 @@ public class PetService {
 
 	public List<Pet> findPetsByCustomerId(Long ownerId) {
 		return repository.findByOwnerId(ownerId);
+	}
+
+	public List<Pet> findAllPets() {
+		return repository.findAll();
 	}
 
 }

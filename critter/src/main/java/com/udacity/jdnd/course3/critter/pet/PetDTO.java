@@ -1,6 +1,7 @@
 package com.udacity.jdnd.course3.critter.pet;
 
 import java.time.LocalDate;
+import java.util.Objects;
 
 /**
  * Represents the form that pet request and response data takes. Does not map
@@ -61,4 +62,22 @@ public class PetDTO {
     public void setId(long id) {
         this.id = id;
     }
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(birthDate, id, name, notes, ownerId, type);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		PetDTO other = (PetDTO) obj;
+		return Objects.equals(birthDate, other.birthDate) && id == other.id && Objects.equals(name, other.name)
+				&& Objects.equals(notes, other.notes) && ownerId == other.ownerId && type == other.type;
+	}
 }
