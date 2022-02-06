@@ -10,8 +10,6 @@ import java.util.Set;
 
 import org.junit.jupiter.api.Test;
 
-import com.udacity.jdnd.course3.critter.user.EmployeeSkill;
-
 public class ScheduleTests {
 
 	private static final Long TEST_ID = 99l;

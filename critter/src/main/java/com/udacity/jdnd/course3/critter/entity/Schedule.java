@@ -17,8 +17,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 
-import com.udacity.jdnd.course3.critter.user.EmployeeSkill;
-
 @Entity
 public class Schedule {
 

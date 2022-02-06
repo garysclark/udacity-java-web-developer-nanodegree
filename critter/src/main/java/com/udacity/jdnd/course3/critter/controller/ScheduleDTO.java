@@ -1,12 +1,12 @@
-package com.udacity.jdnd.course3.critter.schedule;
-
-import com.udacity.jdnd.course3.critter.user.EmployeeSkill;
+package com.udacity.jdnd.course3.critter.controller;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
+import com.udacity.jdnd.course3.critter.entity.EmployeeSkill;
 
 /**
  * Represents the form that schedule request and response data takes. Does not map

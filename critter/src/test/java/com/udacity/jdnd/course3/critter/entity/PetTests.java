@@ -7,8 +7,6 @@ import java.time.LocalDate;
 
 import org.junit.jupiter.api.Test;
 
-import com.udacity.jdnd.course3.critter.pet.PetType;
-
 public class PetTests {
 
 	private static final Long TEST_ID = 99l;

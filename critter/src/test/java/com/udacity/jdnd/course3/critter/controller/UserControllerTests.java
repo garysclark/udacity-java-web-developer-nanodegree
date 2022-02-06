@@ -15,9 +15,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.udacity.jdnd.course3.critter.entity.Employee;
 import com.udacity.jdnd.course3.critter.entity.EmployeeTests;
-import com.udacity.jdnd.course3.critter.user.EmployeeDTO;
-import com.udacity.jdnd.course3.critter.user.EmployeeRequestDTO;
-import com.udacity.jdnd.course3.critter.user.UserController;
 
 @SpringBootTest
 @Transactional

@@ -1,7 +1,9 @@
-package com.udacity.jdnd.course3.critter.pet;
+package com.udacity.jdnd.course3.critter.controller;
 
 import java.time.LocalDate;
 import java.util.Objects;
+
+import com.udacity.jdnd.course3.critter.entity.PetType;
 
 /**
  * Represents the form that pet request and response data takes. Does not map

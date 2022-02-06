@@ -11,7 +11,6 @@ import java.util.Set;
 import org.junit.jupiter.api.Test;
 
 import com.google.common.collect.Sets;
-import com.udacity.jdnd.course3.critter.user.EmployeeSkill;
 
 public class EmployeeTests {
 
