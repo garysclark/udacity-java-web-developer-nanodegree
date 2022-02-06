@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.udacity.jdnd.course3.critter.entity.Pet;
+import com.udacity.jdnd.course3.critter.service.CustomerService;
 import com.udacity.jdnd.course3.critter.service.PetService;
 
 /**
@@ -24,6 +25,8 @@ public class PetController {
 
 	@Autowired
     private PetService petService;
+	@Autowired
+	private CustomerService customerService;
 
 	@PostMapping
     public PetDTO savePet(@RequestBody PetDTO petDTO) {
@@ -52,12 +55,14 @@ public class PetController {
     private PetDTO petToDto(Pet pet) {
     	PetDTO dto = new PetDTO();
     	BeanUtils.copyProperties(pet, dto);
+    	dto.setOwnerId(pet.getOwner().getId());
     	return dto;
 	}
 
 	private Pet dtoToPet(PetDTO dto) {
     	Pet pet = new Pet();
     	BeanUtils.copyProperties(dto, pet);
+    	pet.setOwner(customerService.findById(dto.getOwnerId()));
 		return pet;
 	}
     

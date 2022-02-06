@@ -17,7 +17,7 @@ public class Customer extends User{
 
 	private String phoneNumber;
 	private String notes;
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "customer", cascade = CascadeType.ALL)
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "owner", cascade = CascadeType.ALL)
 	private List<Pet> pets = new ArrayList<>();
 
 	public Customer(Long id, String name, String phoneNumber, String notes, List<Pet> pets) {

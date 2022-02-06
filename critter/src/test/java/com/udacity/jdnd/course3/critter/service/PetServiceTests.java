@@ -53,9 +53,9 @@ public class PetServiceTests {
 	public void canFindPetsByCustomerId() {
 		Pet pet = PetTests.getTestPet();
 		List<Pet> pets = Collections.singletonList(pet);
-		when(mockPetRepository.findByOwnerId(pet.getOwnerId())).thenReturn(pets);
+		when(mockPetRepository.findByOwnerId(pet.getOwner().getId())).thenReturn(pets);
 		
-		List<Pet> foundPets = service.findPetsByCustomerId(pet.getOwnerId());
+		List<Pet> foundPets = service.findPetsByCustomerId(pet.getOwner().getId());
 		assertEquals(pet, foundPets.get(0));
 	}
 	

@@ -8,6 +8,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
 import org.springframework.transaction.annotation.Transactional;
@@ -23,24 +24,23 @@ public class Pet {
 	private Long id;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	private Customer customer;
+	@JoinColumn(name = "owner_id")
+	private Customer owner;
 
 	private PetType type;
 
 	private String name;
 
-	private Long ownerId;
-
 	private LocalDate birthDate;
 
 	private String notes;
 
-	public Pet(Long id, PetType type, String name, Long ownerId, LocalDate birthDate,
+	public Pet(Long id, PetType type, String name, Customer owner, LocalDate birthDate,
 			String notes) {
 		this.id = id;
 		this.type = type;
 		this.name = name;
-		this.ownerId = ownerId;
+		this.owner = owner;
 		this.birthDate = birthDate;
 		this.notes = notes;
 	}
@@ -72,14 +72,6 @@ public class Pet {
 		return name;
 	}
 
-	public void setOwnerId(Long ownerId) {
-		this.ownerId = ownerId;
-	}
-
-	public Long getOwnerId() {
-		return ownerId;
-	}
-
 	public void setBirthDate(LocalDate birthDate) {
 		this.birthDate = birthDate;
 	}
@@ -98,7 +90,7 @@ public class Pet {
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(birthDate, customer, id, name, notes, ownerId, type);
+		return Objects.hash(birthDate, id, name, notes, owner, type);
 	}
 
 	@Override
@@ -110,8 +102,16 @@ public class Pet {
 		if (getClass() != obj.getClass())
 			return false;
 		Pet other = (Pet) obj;
-		return Objects.equals(birthDate, other.birthDate) && Objects.equals(customer, other.customer)
-				&& Objects.equals(id, other.id) && Objects.equals(name, other.name)
-				&& Objects.equals(notes, other.notes) && Objects.equals(ownerId, other.ownerId) && type == other.type;
+		return Objects.equals(birthDate, other.birthDate) && Objects.equals(id, other.id)
+				&& Objects.equals(name, other.name) && Objects.equals(notes, other.notes)
+				&& Objects.equals(owner, other.owner) && type == other.type;
+	}
+
+	public void setOwner(Customer owner) {
+		this.owner = owner;
+	}
+
+	public Customer getOwner() {
+		return owner;
 	}
 }

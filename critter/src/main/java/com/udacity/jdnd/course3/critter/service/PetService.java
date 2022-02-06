@@ -23,7 +23,7 @@ public class PetService {
 
 	public Pet savePet(Pet pet) {
 		Pet savedPet = repository.save(pet);
-		Long customerId = savedPet.getOwnerId();
+		Long customerId = savedPet.getOwner().getId();
 		Optional<Customer> optionalCustomer = customerRepository.findById(customerId);
 		if(optionalCustomer.isPresent()) {
 			Customer customer = optionalCustomer.get();

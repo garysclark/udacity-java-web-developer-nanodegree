@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -13,10 +14,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.udacity.jdnd.course3.critter.entity.Customer;
+import com.udacity.jdnd.course3.critter.entity.CustomerTests;
 import com.udacity.jdnd.course3.critter.entity.Pet;
 import com.udacity.jdnd.course3.critter.entity.PetTests;
 import com.udacity.jdnd.course3.critter.pet.PetController;
 import com.udacity.jdnd.course3.critter.pet.PetDTO;
+import com.udacity.jdnd.course3.critter.service.CustomerService;
 
 @SpringBootTest
 @Transactional
@@ -24,6 +28,8 @@ public class PetControllerTests {
 
 	@Autowired
 	private PetController petController;
+	@Autowired
+	private CustomerService customerService;
 
 	@Test
 	public void canAccessController() {
@@ -43,8 +49,18 @@ public class PetControllerTests {
 	private PetDTO getPet() {
 		Pet pet = PetTests.getTestPet();
 		pet.setId(0l);
+		pet.setOwner(getSavedCustomer());
 		PetDTO dto = new PetDTO();
 		BeanUtils.copyProperties(pet, dto);
+		dto.setOwnerId(pet.getOwner().getId());
 		return dto;
 	}
+	
+	private Customer getSavedCustomer() {
+		Customer customer = CustomerTests.getTestCustomer();
+		customer.setId(null);
+		customer.setPets(new ArrayList<>());
+		return customerService.save(customer);
+	}
+
 }

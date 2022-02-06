@@ -80,9 +80,9 @@ public class ScheduleServiceTests {
 	public void canFindAllSchedulesForCustomer() {
 		Schedule schedule = ScheduleTests.getTestSchedule();
 		List<Schedule> schedules = Collections.singletonList(schedule);
-		when(scheduleRepository.findAllByPetsOwnerId(schedule.getPets().get(0).getOwnerId())).thenReturn(schedules);
+		when(scheduleRepository.findAllByPetsOwnerId(schedule.getPets().get(0).getOwner().getId())).thenReturn(schedules);
 		
-		List<Schedule> foundSchedules = scheduleService.findAllSchedulesForPetOwnerId(schedule.getPets().get(0).getOwnerId());
+		List<Schedule> foundSchedules = scheduleService.findAllSchedulesForPetOwnerId(schedule.getPets().get(0).getOwner().getId());
 		
 		assertEquals(1, foundSchedules.size());
 		assertEquals(schedule, foundSchedules.get(0));

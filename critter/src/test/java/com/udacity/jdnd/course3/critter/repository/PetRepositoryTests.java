@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -42,11 +43,9 @@ public class PetRepositoryTests {
 
 	@Test
 	public void canFindPetByOwnerId() {
-		Customer customer = getSavedCustomer();
 		Pet pet = getNewPet();
-		pet.setOwnerId(customer.getId());
 		Pet savedPet = petRepository.save(pet);
-		List<Pet> pets = petRepository.findByOwnerId(customer.getId());
+		List<Pet> pets = petRepository.findByOwnerId(savedPet.getOwner().getId());
 		assertNotNull(pets);
 		assertEquals(savedPet, pets.get(0));
 	}
@@ -54,12 +53,8 @@ public class PetRepositoryTests {
 	@Test
 	public void canFindAllPets() {
 		Pet pet1 = getNewPet();
-		Customer customer1 = getSavedCustomer();
-		pet1.setOwnerId(customer1.getId());
 		petRepository.save(pet1);
 		Pet pet2 = getNewPet();
-		Customer customer2 = getSavedCustomer();
-		pet2.setOwnerId(customer2.getId());
 		petRepository.save(pet2);
 		
 		List<Pet> foundPets = petRepository.findAll();
@@ -71,13 +66,14 @@ public class PetRepositoryTests {
 	private Customer getSavedCustomer() {
 		Customer customer = CustomerTests.getTestCustomer();
 		customer.setId(null);
+		customer.setPets(new ArrayList<>());
 		return customerRepository.save(customer);
 	}
 
 	private Pet getNewPet() {
 		Pet pet = PetTests.getTestPet();
 		pet.setId(null);
-		pet.setOwnerId(null);
+		pet.setOwner(getSavedCustomer());
 		return pet;
 	}
 }

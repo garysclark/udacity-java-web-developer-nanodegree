@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -14,6 +15,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.udacity.jdnd.course3.critter.entity.Customer;
+import com.udacity.jdnd.course3.critter.entity.CustomerTests;
 import com.udacity.jdnd.course3.critter.entity.Employee;
 import com.udacity.jdnd.course3.critter.entity.EmployeeTests;
 import com.udacity.jdnd.course3.critter.entity.Pet;
@@ -31,6 +34,8 @@ public class ScheduleRepositoryTests {
 	private EmployeeRepository employeeRepository;
 	@Autowired
 	private PetRepository petRepository;
+	@Autowired
+	private CustomerRepository customerRepository;
 
 	@Test
 	public void canAccessRepository() {
@@ -76,7 +81,7 @@ public class ScheduleRepositoryTests {
 	@Test
 	public void canFindScheduleByCustomer() {
 		Schedule savedSchedule = scheduleRepository.save(getSchedule());
-		List<Schedule> foundSchedules = scheduleRepository.findAllByPetsOwnerId(savedSchedule.getPets().get(0).getOwnerId());
+		List<Schedule> foundSchedules = scheduleRepository.findAllByPetsOwnerId(savedSchedule.getPets().get(0).getOwner().getId());
 		assertNotNull(foundSchedules);
 		assertEquals(1, foundSchedules.size());
 		assertEquals(savedSchedule, foundSchedules.get(0));
@@ -93,6 +98,7 @@ public class ScheduleRepositoryTests {
 	private List<Pet> getPets() {
 		Pet pet = PetTests.getTestPet();
 		pet.setId(null);
+		pet.setOwner(getCustomer());
 		return Collections.singletonList(petRepository.save(pet));
 	}
 
@@ -100,5 +106,12 @@ public class ScheduleRepositoryTests {
 		Employee employee = EmployeeTests.getTestEmployee();
 		employee.setId(null);
 		return Collections.singletonList(employeeRepository.save(employee));
+	}
+	
+	private Customer getCustomer() {
+		Customer customer = CustomerTests.getTestCustomer();
+		customer.setId(null);
+		customer.setPets(new ArrayList<>());
+		return customerRepository.save(customer);
 	}
 }
