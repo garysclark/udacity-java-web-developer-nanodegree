@@ -2,19 +2,16 @@ package com.udacity.jdnd.course3.critter.entity;
 
 import java.util.Objects;
 
-import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.Inheritance;
-import javax.persistence.InheritanceType;
+import javax.persistence.MappedSuperclass;
 
 import org.hibernate.annotations.Nationalized;
 import org.springframework.transaction.annotation.Transactional;
 
-@Entity
 @Transactional
-@Inheritance(strategy = InheritanceType.JOINED)
+@MappedSuperclass
 public abstract class User {
 
 	@Id
