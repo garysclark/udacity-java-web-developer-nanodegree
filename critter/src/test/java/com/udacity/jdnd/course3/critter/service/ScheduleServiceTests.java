@@ -37,7 +37,7 @@ public class ScheduleServiceTests {
 		Schedule schedule = ScheduleTests.getTestSchedule();
 		when(scheduleRepository.save(schedule)).thenReturn(schedule);
 		
-		Schedule createdSchedule = scheduleService.createSchedule(schedule);
+		Schedule createdSchedule = scheduleService.saveSchedule(schedule);
 		
 		assertEquals(schedule, createdSchedule);
 	}
@@ -47,7 +47,7 @@ public class ScheduleServiceTests {
 		List<Schedule> schedules = Collections.singletonList(ScheduleTests.getTestSchedule());
 		when(scheduleRepository.findAll()).thenReturn(schedules);
 		
-		List<Schedule> foundSchedules = scheduleService.findAllSchedules();
+		List<Schedule> foundSchedules = scheduleService.getAllSchedules();
 		
 		assertEquals(schedules, foundSchedules);
 	}
@@ -58,7 +58,7 @@ public class ScheduleServiceTests {
 		List<Schedule> schedules = Collections.singletonList(schedule);
 		when(scheduleRepository.findAllByEmployeesId(schedule.getEmployees().get(0).getId())).thenReturn(schedules);
 		
-		List<Schedule> foundSchedules = scheduleService.findAllSchedulesForEmployee(schedule.getEmployees().get(0).getId());
+		List<Schedule> foundSchedules = scheduleService.getAllSchedulesForEmployee(schedule.getEmployees().get(0).getId());
 		
 		assertEquals(1, foundSchedules.size());
 		assertEquals(schedule, foundSchedules.get(0));
@@ -70,7 +70,7 @@ public class ScheduleServiceTests {
 		List<Schedule> schedules = Collections.singletonList(schedule);
 		when(scheduleRepository.findAllByPetsId(schedule.getPets().get(0).getId())).thenReturn(schedules);
 		
-		List<Schedule> foundSchedules = scheduleService.findAllSchedulesForPet(schedule.getPets().get(0).getId());
+		List<Schedule> foundSchedules = scheduleService.getAllSchedulesForPet(schedule.getPets().get(0).getId());
 		
 		assertEquals(1, foundSchedules.size());
 		assertEquals(schedule, foundSchedules.get(0));
@@ -82,7 +82,7 @@ public class ScheduleServiceTests {
 		List<Schedule> schedules = Collections.singletonList(schedule);
 		when(scheduleRepository.findAllByPetsOwnerId(schedule.getPets().get(0).getOwner().getId())).thenReturn(schedules);
 		
-		List<Schedule> foundSchedules = scheduleService.findAllSchedulesForPetOwnerId(schedule.getPets().get(0).getOwner().getId());
+		List<Schedule> foundSchedules = scheduleService.getAllSchedulesForPetOwnerId(schedule.getPets().get(0).getOwner().getId());
 		
 		assertEquals(1, foundSchedules.size());
 		assertEquals(schedule, foundSchedules.get(0));

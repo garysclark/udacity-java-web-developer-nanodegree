@@ -2,11 +2,14 @@ package com.udacity.jdnd.course3.critter.controller;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
+import javax.persistence.EntityNotFoundException;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.BeanUtils;
@@ -24,6 +27,7 @@ import com.udacity.jdnd.course3.critter.service.CustomerService;
 @Transactional
 public class PetControllerTests {
 
+	private static final long TEST_INVALID_ENTITY_ID = 0l;
 	@Autowired
 	private PetController petController;
 	@Autowired
@@ -43,6 +47,11 @@ public class PetControllerTests {
 		assertEquals(2, pets.size());
 		assertTrue(pets.containsAll(Arrays.asList(petDto1, petDto2)));
 	}
+	
+	@Test
+	public void canHandlePetNotFoundException() {
+		assertThrows(EntityNotFoundException.class, ()->{petController.getPet(TEST_INVALID_ENTITY_ID);});
+	}
 
 	private PetDTO getPet() {
 		Pet pet = PetTests.getTestPet();
@@ -58,7 +67,7 @@ public class PetControllerTests {
 		Customer customer = CustomerTests.getTestCustomer();
 		customer.setId(null);
 		customer.setPets(new ArrayList<>());
-		return customerService.save(customer);
+		return customerService.saveCustomer(customer);
 	}
 
 }

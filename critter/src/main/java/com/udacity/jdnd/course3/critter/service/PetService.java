@@ -3,6 +3,8 @@ package com.udacity.jdnd.course3.critter.service;
 import java.util.List;
 import java.util.Optional;
 
+import javax.persistence.EntityNotFoundException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,6 +18,7 @@ import com.udacity.jdnd.course3.critter.repository.PetRepository;
 @Transactional
 public class PetService {
 
+	private static final String PET_NOT_FOUND_EXCEPTION_MESSAGE = "Pet not found - id : ";
 	@Autowired
 	private PetRepository repository;
 	@Autowired
@@ -34,16 +37,19 @@ public class PetService {
 		return savedPet;
 	}
 
-	public Pet findPetById(Long id) {
+	public Pet getPetById(Long id) {
 		Optional<Pet> optionalPet = repository.findById(id);
+		if(optionalPet.isEmpty()) {
+			throw new EntityNotFoundException(PET_NOT_FOUND_EXCEPTION_MESSAGE + id);
+		}
 		return optionalPet.get();
 	}
 
-	public List<Pet> findPetsByCustomerId(Long ownerId) {
+	public List<Pet> getPetsByCustomerId(Long ownerId) {
 		return repository.findByOwnerId(ownerId);
 	}
 
-	public List<Pet> findAllPets() {
+	public List<Pet> getAllPets() {
 		return repository.findAll();
 	}
 

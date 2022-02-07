@@ -31,13 +31,13 @@ public class ScheduleController {
 	@PostMapping
 	public ScheduleDTO createSchedule(@RequestBody ScheduleDTO scheduleDTO) {
 		Schedule schedule = dtoToSchedule(scheduleDTO);
-		return scheduleToDto(scheduleService.createSchedule(schedule));
+		return scheduleToDto(scheduleService.saveSchedule(schedule));
 	}
 
 	@GetMapping
 	public List<ScheduleDTO> getAllSchedules() {
 		List<ScheduleDTO> dtos = new ArrayList<>();
-		List<Schedule> schedules = scheduleService.findAllSchedules();
+		List<Schedule> schedules = scheduleService.getAllSchedules();
 		for(Schedule schedule:schedules) {
 			dtos.add(scheduleToDto(schedule));
 		}
@@ -46,19 +46,19 @@ public class ScheduleController {
 
 	@GetMapping("/pet/{petId}")
 	public List<ScheduleDTO> getScheduleForPet(@PathVariable long petId) {
-		List<Schedule> schedules = scheduleService.findAllSchedulesForPet(petId);
+		List<Schedule> schedules = scheduleService.getAllSchedulesForPet(petId);
 		return schedulesToDtos(schedules);
 	}
 
 	@GetMapping("/employee/{employeeId}")
 	public List<ScheduleDTO> getScheduleForEmployee(@PathVariable long employeeId) {
-		List<Schedule> schedules = scheduleService.findAllSchedulesForEmployee(employeeId);
+		List<Schedule> schedules = scheduleService.getAllSchedulesForEmployee(employeeId);
 		return schedulesToDtos(schedules);
 	}
 
 	@GetMapping("/customer/{customerId}")
 	public List<ScheduleDTO> getScheduleForCustomer(@PathVariable long customerId) {
-		List<Schedule> schedules = scheduleService.findAllSchedulesForPetOwnerId(customerId);
+		List<Schedule> schedules = scheduleService.getAllSchedulesForPetOwnerId(customerId);
 		return schedulesToDtos(schedules);
 	}
 
@@ -86,10 +86,10 @@ public class ScheduleController {
 		Schedule schedule = new Schedule();
 		BeanUtils.copyProperties(dto, schedule);
 		for(Long employeeId:dto.getEmployeeIds()) {
-			schedule.getEmployees().add(employeeService.findById(employeeId));
+			schedule.getEmployees().add(employeeService.getEmployeeById(employeeId));
 		}
 		for(Long petId:dto.getPetIds()) {
-			schedule.getPets().add(petService.findPetById(petId));
+			schedule.getPets().add(petService.getPetById(petId));
 		}
 		return schedule;
 	}

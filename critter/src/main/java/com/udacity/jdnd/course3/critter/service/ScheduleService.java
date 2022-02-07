@@ -16,23 +16,23 @@ public class ScheduleService {
 	@Autowired
 	private ScheduleRepository repository;
 
-	public Schedule createSchedule(Schedule schedule) {
+	public Schedule saveSchedule(Schedule schedule) {
 		return repository.save(schedule);
 	}
 
-	public List<Schedule> findAllSchedules() {
+	public List<Schedule> getAllSchedules() {
 		return repository.findAll();
 	}
 
-	public List<Schedule> findAllSchedulesForEmployee(Long id) {
+	public List<Schedule> getAllSchedulesForEmployee(Long id) {
 		return repository.findAllByEmployeesId(id);
 	}
 
-	public List<Schedule> findAllSchedulesForPet(Long id) {
+	public List<Schedule> getAllSchedulesForPet(Long id) {
 		return repository.findAllByPetsId(id);
 	}
 
-	public List<Schedule> findAllSchedulesForPetOwnerId(Long ownerId) {
+	public List<Schedule> getAllSchedulesForPetOwnerId(Long ownerId) {
 		return repository.findAllByPetsOwnerId(ownerId);
 	}
 

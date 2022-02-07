@@ -36,19 +36,19 @@ public class PetController {
 
 	@GetMapping("/{petId}")
     public PetDTO getPet(@PathVariable long petId) {
-		Pet pet = petService.findPetById(petId);
+		Pet pet = petService.getPetById(petId);
 		return petToDto(pet);
     }
 
     @GetMapping
     public List<PetDTO> getPets(){
-    	List<Pet> pets = petService.findAllPets();
+    	List<Pet> pets = petService.getAllPets();
     	return createDTOList(pets);
     }
 
     @GetMapping("/owner/{ownerId}")
     public List<PetDTO> getPetsByOwner(@PathVariable long ownerId) {
-    	List<Pet> pets = petService.findPetsByCustomerId(ownerId);
+    	List<Pet> pets = petService.getPetsByCustomerId(ownerId);
     	return createDTOList(pets);
     }
 
@@ -62,7 +62,7 @@ public class PetController {
 	private Pet dtoToPet(PetDTO dto) {
     	Pet pet = new Pet();
     	BeanUtils.copyProperties(dto, pet);
-    	pet.setOwner(customerService.findById(dto.getOwnerId()));
+    	pet.setOwner(customerService.getCustomerById(dto.getOwnerId()));
 		return pet;
 	}
     

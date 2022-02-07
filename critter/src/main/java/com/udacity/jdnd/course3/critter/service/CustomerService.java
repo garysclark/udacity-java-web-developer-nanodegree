@@ -21,15 +21,15 @@ public class CustomerService {
 	@Autowired
 	private CustomerRepository repository;
 
-	public Customer save(Customer customer) {
+	public Customer saveCustomer(Customer customer) {
 		return repository.save(customer);
 	}
 
-	public List<Customer> findAll() {
+	public List<Customer> getAllCustomers() {
 		return repository.findAll();
 	}
 
-	public Customer findById(Long id) {
+	public Customer getCustomerById(Long id) {
 		Optional<Customer> optionalCustomer = repository.findById(id);
 		if(optionalCustomer.isEmpty()) {
 			throw new EntityNotFoundException(CUSTOMER_NOT_FOUND_EXCEPTION_MESSAGE + id);

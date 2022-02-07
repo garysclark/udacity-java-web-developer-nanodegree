@@ -26,7 +26,7 @@ import com.udacity.jdnd.course3.critter.entity.EmployeeTests;
 @Transactional
 public class UserControllerTests {
 
-	private static final long TEST_INVALID_CUSTOMER_ID = 0;
+	private static final long TEST_INVALID_ENTITY_ID = 0;
 @Autowired
 	private UserController userController;
 
@@ -60,8 +60,13 @@ public class UserControllerTests {
 	}
 	
 	@Test
-	public void canEntityNotFoundException() {
-		assertThrows(EntityNotFoundException.class, ()->{userController.getCustomer(TEST_INVALID_CUSTOMER_ID);});
+	public void canCustomerNotFoundException() {
+		assertThrows(EntityNotFoundException.class, ()->{userController.getCustomer(TEST_INVALID_ENTITY_ID);});
+	}
+	
+	@Test
+	public void canEmployeeNotFoundException() {
+		assertThrows(EntityNotFoundException.class, ()->{userController.getEmployee(TEST_INVALID_ENTITY_ID);});
 	}
 	
 	private CustomerDTO getCustomerDto() {
@@ -70,11 +75,6 @@ public class UserControllerTests {
 		CustomerDTO dto = new CustomerDTO();
 		BeanUtils.copyProperties(customer, dto);
 		return dto;
-	}
-
-	@Test
-	public void canHandleCustomerNotFoundException() {
-		
 	}
 
 	private EmployeeDTO getEmployeeDto() {

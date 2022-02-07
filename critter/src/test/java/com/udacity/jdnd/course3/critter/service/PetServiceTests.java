@@ -2,11 +2,14 @@ package com.udacity.jdnd.course3.critter.service;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
 
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+
+import javax.persistence.EntityNotFoundException;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,8 +23,10 @@ import com.udacity.jdnd.course3.critter.repository.PetRepository;
 @SpringBootTest
 public class PetServiceTests {
 
+	private static final Long TEST_INVALID_ID = 0l;
+
 	@MockBean
-	private PetRepository mockPetRepository;
+	private PetRepository mockRepository;
 	
 	@Autowired
 	private PetService service;
@@ -34,7 +39,7 @@ public class PetServiceTests {
 	@Test
 	public void canSavePet() {
 		Pet pet = PetTests.getTestPet();
-		when(mockPetRepository.save(pet)).thenReturn(pet);
+		when(mockRepository.save(pet)).thenReturn(pet);
 
 		Pet savedPet = service.savePet(pet);
 		assertEquals(pet, savedPet);
@@ -43,19 +48,26 @@ public class PetServiceTests {
 	@Test
 	public void canFindPetById() {
 		Pet pet = PetTests.getTestPet();
-		when(mockPetRepository.findById(pet.getId())).thenReturn(Optional.of(pet));
+		when(mockRepository.findById(pet.getId())).thenReturn(Optional.of(pet));
 		
-		Pet foundPet = service.findPetById(pet.getId());
+		Pet foundPet = service.getPetById(pet.getId());
 		assertEquals(pet, foundPet);
 	}
 	
 	@Test
+	public void canHandleEntityNotFoundException() {
+		when(mockRepository.findById(TEST_INVALID_ID)).thenReturn(Optional.ofNullable(null));
+
+		assertThrows(EntityNotFoundException.class, ()->{service.getPetById(TEST_INVALID_ID);});
+	}
+
+	@Test
 	public void canFindPetsByCustomerId() {
 		Pet pet = PetTests.getTestPet();
 		List<Pet> pets = Collections.singletonList(pet);
-		when(mockPetRepository.findByOwnerId(pet.getOwner().getId())).thenReturn(pets);
+		when(mockRepository.findByOwnerId(pet.getOwner().getId())).thenReturn(pets);
 		
-		List<Pet> foundPets = service.findPetsByCustomerId(pet.getOwner().getId());
+		List<Pet> foundPets = service.getPetsByCustomerId(pet.getOwner().getId());
 		assertEquals(pet, foundPets.get(0));
 	}
 	
@@ -63,9 +75,9 @@ public class PetServiceTests {
 	public void canFindAllPets() {
 		Pet pet = PetTests.getTestPet();
 		List<Pet> pets = Collections.singletonList(pet);
-		when(mockPetRepository.findAll()).thenReturn(pets);
+		when(mockRepository.findAll()).thenReturn(pets);
 		
-		List<Pet> foundPets = service.findAllPets();
+		List<Pet> foundPets = service.getAllPets();
 		assertEquals(pet, foundPets.get(0));
 	}
 }

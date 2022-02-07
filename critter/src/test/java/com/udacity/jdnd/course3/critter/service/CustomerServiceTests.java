@@ -40,7 +40,7 @@ public class CustomerServiceTests {
 	public void canCreateCustomer() {
 		Customer customer = CustomerTests.getTestCustomer();
 		when(mockRepository.save(customer)).thenReturn(customer);
-		Customer savedCustomer = service.save(customer);
+		Customer savedCustomer = service.saveCustomer(customer);
 		assertEquals(customer, savedCustomer);
 	}
 	
@@ -49,7 +49,7 @@ public class CustomerServiceTests {
 		Customer customer = CustomerTests.getTestCustomer();
 		List<Customer> customers = Collections.singletonList(customer);
 		when(mockRepository.findAll()).thenReturn(customers);
-		List<Customer> foundCustomers = service.findAll();
+		List<Customer> foundCustomers = service.getAllCustomers();
 		assertEquals(customers, foundCustomers);
 	}
 	
@@ -58,7 +58,7 @@ public class CustomerServiceTests {
 		Customer customer = CustomerTests.getTestCustomer();
 		when(mockRepository.findById(customer.getId())).thenReturn(Optional.of(customer));
 		
-		Customer foundCustomer = service.findById(customer.getId());
+		Customer foundCustomer = service.getCustomerById(customer.getId());
 		assertEquals(customer, foundCustomer);
 	}
 	
@@ -66,6 +66,6 @@ public class CustomerServiceTests {
 	public void canHandleRecordNotFoundById() {
 		when(mockRepository.findById(TEST_INVALID_ID)).thenReturn(Optional.ofNullable(null));
 
-		assertThrows(EntityNotFoundException.class, ()->{service.findById(TEST_INVALID_ID);});
+		assertThrows(EntityNotFoundException.class, ()->{service.getCustomerById(TEST_INVALID_ID);});
 	}
 }
